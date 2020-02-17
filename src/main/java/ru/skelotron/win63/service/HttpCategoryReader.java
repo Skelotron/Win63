@@ -11,6 +11,9 @@ import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.service.settings.SettingsService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class HttpCategoryReader implements CategoryReader {
 
@@ -24,8 +27,14 @@ public class HttpCategoryReader implements CategoryReader {
     }
 
     @Override
-    public void read() {
+    public synchronized void read() {
         String url = settingsService.getCatalogUrl();
+
+        Iterable<CategoryEntity> existingCategories = categoryRepository.findAll();
+        List<CategoryEntity> existingCategoriesList = new ArrayList<>();
+        for (CategoryEntity categoryEntity : existingCategories) {
+            existingCategoriesList.add(categoryEntity);
+        }
 
         RestTemplate restTemplate = new RestTemplate();
         String htmlContent = restTemplate.getForObject(url, String.class);
@@ -50,6 +59,13 @@ public class HttpCategoryReader implements CategoryReader {
                     CategoryEntity subcategoryEntity = new CategoryEntity( subcategoryTitle, subcategoryUrl );
                     subcategoryEntity.setParentCategory(categoryEntity);
                     categoryEntity.getSubCategories().add( subcategoryEntity );
+                }
+
+                if ( existingCategoriesList.contains(categoryEntity) ) {
+                    CategoryEntity existingCategory = existingCategoriesList.get( existingCategoriesList.indexOf(categoryEntity) );
+                    existingCategory.setExternalId(categoryEntity.getExternalId());
+                    existingCategory.setSubCategories(categoryEntity.getSubCategories());
+                    categoryEntity = existingCategory;
                 }
 
                 categoryRepository.save(categoryEntity);

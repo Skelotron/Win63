@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -19,14 +20,13 @@ import ru.skelotron.win63.entity.Settings;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SettingsRepository;
-import ru.skelotron.win63.service.CategoryReader;
-import ru.skelotron.win63.service.LoadCategoryService;
 import ru.skelotron.win63.service.item.ItemService;
 
 
 @SpringBootApplication
 @EnableWebMvc
 @Configuration
+@EnableScheduling
 public class Application extends WebMvcConfigurerAdapter {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -58,13 +58,11 @@ public class Application extends WebMvcConfigurerAdapter {
     }
 
     @Bean
-    public CommandLineRunner demo(CategoryReader categoryReader, ItemService itemService, SettingsRepository settingsRepository, CategoryRepository categoryRepository, ItemRepository itemRepository, LoadCategoryService loadCategoryService) {
+    public CommandLineRunner demo(ItemService itemService, SettingsRepository settingsRepository, CategoryRepository categoryRepository, ItemRepository itemRepository) {
         return (args -> {
             settingsRepository.save( new Settings( "pageSize", 20 ) );
 
 //            loadCategoryService.load();
-
-            categoryReader.read();
 
             for (CategoryEntity category : categoryRepository.findAll()) {
                 log.info(category.toString());
@@ -74,7 +72,7 @@ public class Application extends WebMvcConfigurerAdapter {
                 log.info(item.toString());
             }
 
-            itemService.load( categoryRepository.findByUrl("/catalog/telefony/") );
+//            itemService.load( categoryRepository.findByUrl("/catalog/telefony/") );
         });
     }
 }

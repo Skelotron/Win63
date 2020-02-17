@@ -1,7 +1,8 @@
 package ru.skelotron.win63.service.item;
 
 import ru.skelotron.win63.entity.CategoryEntity;
+import ru.skelotron.win63.model.ItemsChangeData;
 
 public interface ItemService {
-    void load(CategoryEntity category);
+    ItemsChangeData load(CategoryEntity category);
 }

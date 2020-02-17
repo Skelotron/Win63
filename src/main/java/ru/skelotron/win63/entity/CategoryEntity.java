@@ -5,11 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import javax.persistence.Entity;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "category")
-@EqualsAndHashCode(callSuper = true, exclude = "parentCategory")
 @Getter
 @Setter
 @ToString(exclude = "parentCategory")
@@ -41,5 +41,19 @@ public class CategoryEntity extends AuditedEntity {
     public CategoryEntity(String name, String url) {
         this.name = name;
         this.url = url;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CategoryEntity that = (CategoryEntity) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(url, that.url);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, url);
     }
 }

@@ -3,7 +3,7 @@ package ru.skelotron.win63.converer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.entity.entity.PhotoEntity;
+import ru.skelotron.win63.entity.PhotoEntity;
 import ru.skelotron.win63.http_entities.Photo;
 import ru.skelotron.win63.service.photo_loader.PhotoLoader;
 

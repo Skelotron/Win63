@@ -1,4 +1,4 @@
-package ru.skelotron.win63.entity.entity;
+package ru.skelotron.win63.entity;
 
 import lombok.*;
 
@@ -14,13 +14,10 @@ import javax.persistence.Entity;
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("EMAIL")
-public class EmailNotified extends Notified {
+public class EmailNotification extends Notification {
     @Column
-    private String email;
+    private String subject;
 
     @Column
-    private String subjectTemplate;
-
-    @Column
-    private String textTemplate;
+    private String text;
 }

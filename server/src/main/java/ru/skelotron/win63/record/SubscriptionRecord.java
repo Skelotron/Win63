@@ -2,7 +2,7 @@ package ru.skelotron.win63.record;
 
 import lombok.Getter;
 import lombok.Setter;
-import ru.skelotron.win63.entity.entity.NotificationType;
+import ru.skelotron.win63.entity.NotificationType;
 
 import java.io.Serializable;
 

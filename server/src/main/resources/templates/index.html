@@ -55,14 +55,20 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
-                One of three columns
+                Category
             </div>
             <div class="col-sm">
-                One of three columns
+                Recipient
             </div>
             <div class="col-sm">
-                One of three columns
+                Message Template
             </div>
+        </div>
+        <hr>
+        <div class="row" th:each="subscription: ${subscriptions}">
+            <div class="col-sm" th:text="${subscription.category}"></div>
+            <div class="col-sm" th:text="${subscription.recipient}"></div>
+            <div class="col-sm" th:text="${subscription.message}"></div>
         </div>
     </div>
 
@@ -135,7 +141,7 @@
             url: "/subscription/add",
             contentType: "application/json",
             data: JSON.stringify({
-                categoryExternalId: category,
+                categoryUrl: category,
                 type: 'EMAIL',
                 address: email,
                 subjectTemplate: subject,

@@ -6,27 +6,33 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skelotron.win63.entity.entity.CategoryEntity;
-import ru.skelotron.win63.entity.entity.EmailNotified;
-import ru.skelotron.win63.entity.entity.Notified;
-import ru.skelotron.win63.entity.entity.Subscription;
+import ru.skelotron.win63.entity.*;
 import ru.skelotron.win63.record.SubscriptionRecord;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/subscription")
 public class SubscriptionController {
+    private final SubscriptionRepository subscriptionRepository;
+    private final CategoryRepository categoryRepository;
+
     @Autowired
-    private SubscriptionRepository subscriptionRepository;
-    @Autowired
-    private CategoryRepository categoryRepository;
+    public SubscriptionController(SubscriptionRepository subscriptionRepository, CategoryRepository categoryRepository) {
+        this.subscriptionRepository = subscriptionRepository;
+        this.categoryRepository = categoryRepository;
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Void> subscribe(@RequestBody SubscriptionRecord record) {
         CategoryEntity category = categoryRepository.findByUrl(record.getCategoryUrl());
+        if (category == null) {
+            return ResponseEntity.badRequest().build();
+        }
         Subscription subscription = subscriptionRepository.findByCategory(category);
         if (subscription == null) {
             subscription = new Subscription();
@@ -34,12 +40,24 @@ public class SubscriptionController {
         }
 
         Notified notified = new EmailNotified(record.getAddress(), record.getSubjectTemplate(), record.getTextTemplate());
-        subscription.getNotifiedEntities().add( notified );
-        subscriptionRepository.save(subscription);
+        if (!contains(subscription.getNotifiedEntities(), notified)) {
+            subscription.getNotifiedEntities().add(notified);
+            subscriptionRepository.save(subscription);
+        }
 
         System.out.println(subscription);
 
         return ResponseEntity.ok().build();
+    }
+
+    private boolean contains(Set<Notified> notifiedEntities, Notified notified) {
+        for (Notified entity : notifiedEntities) {
+            if (Objects.equals(entity.getNotificationType(), notified.getNotificationType())
+                    && Objects.equals(entity.getRecipient(), notified.getRecipient())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @PostMapping("/remove")

@@ -3,8 +3,8 @@ package ru.skelotron.win63.service.item;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.entity.entity.CategoryEntity;
-import ru.skelotron.win63.entity.entity.Subscription;
+import ru.skelotron.win63.entity.CategoryEntity;
+import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.model.ItemsChangeData;
 import ru.skelotron.win63.service.subscription.SubscriptionService;
 

@@ -2,7 +2,7 @@ package email_sender;
 
 import ru.skelotron.win63.common.ItemTagProcessor;
 import ru.skelotron.win63.common.Tag;
-import ru.skelotron.win63.entity.entity.Item;
+import ru.skelotron.win63.entity.Item;
 
 public class MessageProcessor {
     private final String template;

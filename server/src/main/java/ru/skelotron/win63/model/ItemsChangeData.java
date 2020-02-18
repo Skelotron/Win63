@@ -1,7 +1,7 @@
 package ru.skelotron.win63.model;
 
 import lombok.Getter;
-import ru.skelotron.win63.entity.entity.Item;
+import ru.skelotron.win63.entity.Item;
 
 import java.util.Collections;
 import java.util.List;

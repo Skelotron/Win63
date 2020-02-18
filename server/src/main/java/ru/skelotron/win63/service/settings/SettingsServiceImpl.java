@@ -2,7 +2,7 @@ package ru.skelotron.win63.service.settings;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.skelotron.win63.entity.entity.Settings;
+import ru.skelotron.win63.entity.Settings;
 import ru.skelotron.win63.repository.SettingsRepository;
 import ru.skelotron.win63.service.PropertiesHolder;
 

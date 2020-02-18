@@ -1,5 +1,6 @@
-package ru.skelotron.win63.entity.entity;
+package ru.skelotron.win63.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,4 +21,6 @@ public abstract class Notified extends AuditedEntity {
 
     @ManyToMany(mappedBy = "notifiedEntities")
     private Set<Subscription> subscriptions;
+
+    public abstract String getRecipient();
 }

@@ -2,9 +2,9 @@ package ru.skelotron.win63.service.subscription;
 
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.common.NotificationSender;
-import ru.skelotron.win63.entity.entity.Item;
-import ru.skelotron.win63.entity.entity.NotificationType;
-import ru.skelotron.win63.entity.entity.Notified;
+import ru.skelotron.win63.entity.Item;
+import ru.skelotron.win63.entity.NotificationType;
+import ru.skelotron.win63.entity.Notified;
 
 import java.util.List;
 import java.util.Map;

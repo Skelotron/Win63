@@ -7,7 +7,7 @@ import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import ru.skelotron.win63.entity.entity.CategoryEntity;
+import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.service.settings.SettingsService;
 

@@ -1,4 +1,4 @@
-package ru.skelotron.win63.entity.entity;
+package ru.skelotron.win63.entity;
 
 import lombok.*;
 import org.hibernate.envers.Audited;

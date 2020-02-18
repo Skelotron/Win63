@@ -1,9 +1,9 @@
 package email_sender;
 
 import ru.skelotron.win63.common.NotificationSender;
-import ru.skelotron.win63.entity.entity.EmailNotified;
-import ru.skelotron.win63.entity.entity.Item;
-import ru.skelotron.win63.entity.entity.Notified;
+import ru.skelotron.win63.entity.EmailNotified;
+import ru.skelotron.win63.entity.Item;
+import ru.skelotron.win63.entity.Notified;
 
 import javax.mail.*;
 import java.util.Collections;
@@ -81,7 +81,7 @@ public class EmailSender implements NotificationSender {
 
     private Email convertToEmail(EmailNotified notified, Item item) {
         Email email = new Email();
-        email.setTo(Collections.singletonList( notified.getEmail() ) );
+        email.setTo(Collections.singletonList( notified.getRecipient() ) );
         email.setSubject( new MessageProcessor(notified.getSubjectTemplate()).process(item) );
         email.setMessage( new MessageProcessor(notified.getTextTemplate()).process(item) );
 

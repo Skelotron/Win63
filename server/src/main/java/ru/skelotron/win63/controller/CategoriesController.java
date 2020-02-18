@@ -5,7 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import ru.skelotron.win63.entity.entity.CategoryEntity;
+import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.record.Categories;
 import ru.skelotron.win63.record.CategoryRecord;
 import ru.skelotron.win63.repository.CategoryRepository;

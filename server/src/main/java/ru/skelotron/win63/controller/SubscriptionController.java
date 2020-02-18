@@ -7,10 +7,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skelotron.win63.entity.*;
+import ru.skelotron.win63.record.FilterRecord;
 import ru.skelotron.win63.record.SubscriptionRecord;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
@@ -39,7 +41,12 @@ public class SubscriptionController {
             subscription.setCategory( category );
         }
 
-        Notified notified = new EmailNotified(record.getAddress(), record.getSubjectTemplate(), record.getTextTemplate());
+        Set<Filter> filters = new HashSet<>();
+        for (FilterRecord filterRecord : record.getFilters()) {
+            Filter filter = new Filter(filterRecord.getType(), Item.ENTITY_NAME, filterRecord.getField(), filterRecord.getValue());
+            filters.add(filter);
+        }
+        Notified notified = new EmailNotified(record.getAddress(), record.getSubjectTemplate(), record.getTextTemplate(), filters);
         if (!contains(subscription.getNotifiedEntities(), notified)) {
             subscription.getNotifiedEntities().add(notified);
             subscriptionRepository.save(subscription);

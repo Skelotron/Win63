@@ -16,6 +16,8 @@ import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SettingsRepository;
 import ru.skelotron.win63.service.item.ItemService;
+import ru.skelotron.win63.service.subscription.filter.checker.FilterCheckerFactory;
+import ru.skelotron.win63.service.subscription.filter.checker.ItemFilterChecker;
 
 
 @SpringBootApplication
@@ -41,6 +43,8 @@ public class Application {
     public CommandLineRunner demo(ItemService itemService, SettingsRepository settingsRepository, CategoryRepository categoryRepository, ItemRepository itemRepository) {
         return (args -> {
             settingsRepository.save( new Settings( "pageSize", 20 ) );
+
+            FilterCheckerFactory.getInstance().register(Item.class, ItemFilterChecker::getInstance);
 
 //            loadCategoryService.load();
 

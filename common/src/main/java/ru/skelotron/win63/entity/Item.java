@@ -19,6 +19,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Audited
 public class Item extends AuditedEntity {
+    public static final String ENTITY_NAME = "Item";
 
     @Column
     private String url;

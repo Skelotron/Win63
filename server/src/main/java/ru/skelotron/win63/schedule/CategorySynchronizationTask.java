@@ -17,7 +17,7 @@ public class CategorySynchronizationTask {
         this.categoryReader = categoryReader;
     }
 
-    @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // 1 day
+//    @Scheduled(fixedRate = 24 * 60 * 60 * 1000) // 1 day
     public void synchronize() {
         log.info("Start Category Synchronization");
         categoryReader.read();

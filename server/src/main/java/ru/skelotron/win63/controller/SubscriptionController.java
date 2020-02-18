@@ -2,10 +2,7 @@ package ru.skelotron.win63.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import ru.skelotron.win63.entity.*;
 import ru.skelotron.win63.record.FilterRecord;
 import ru.skelotron.win63.record.SubscriptionRecord;
@@ -30,7 +27,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Void> subscribe(@RequestBody SubscriptionRecord record) {
+    public ResponseEntity<SubscriptionRecord> subscribe(@RequestBody SubscriptionRecord record) {
         CategoryEntity category = categoryRepository.findByUrl(record.getCategoryUrl());
         if (category == null) {
             return ResponseEntity.badRequest().build();
@@ -54,7 +51,7 @@ public class SubscriptionController {
 
         System.out.println(subscription);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(record);
     }
 
     private boolean contains(Set<Notified> notifiedEntities, Notified notified) {
@@ -68,7 +65,7 @@ public class SubscriptionController {
     }
 
     @PostMapping("/remove")
-    public ResponseEntity<Void> unsubscribe(@RequestBody SubscriptionRecord record) {
+    public ResponseEntity<SubscriptionRecord> unsubscribe(@RequestBody SubscriptionRecord record) {
         CategoryEntity category = categoryRepository.findByUrl(record.getCategoryUrl());
         Subscription subscription = subscriptionRepository.findByCategory(category);
         if (subscription == null) {
@@ -85,6 +82,23 @@ public class SubscriptionController {
         }
         subscriptionRepository.save(subscription);
 
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(record);
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<SubscriptionRecord> getSubscription(@PathVariable("id") Long id) {
+        Subscription subscription = subscriptionRepository.findById(id).orElse(null);
+        SubscriptionRecord record = new SubscriptionRecord();
+        if (subscription != null) {
+            Notified notified = subscription.getNotifiedEntities().iterator().next();
+            record.setAddress(notified.getRecipient());
+            if (notified instanceof EmailNotified) {
+                EmailNotified emailNotified = (EmailNotified) notified;
+                record.setSubjectTemplate(emailNotified.getSubjectTemplate());
+                record.setTextTemplate(emailNotified.getTextTemplate());
+            }
+            record.setCategoryUrl(subscription.getCategory().getUrl());
+        }
+        return ResponseEntity.ok(record);
     }
 }

@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -7,162 +8,157 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="/js/lib/ext-theme-classic-all-debug.css">
 
     <title>Hello, world!</title>
 </head>
+
 <body>
-
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="/">Home</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">
-                <a class="nav-link" href="#addSubscription" data-toggle="modal" data-target="#addSubscription">Add
-                    subscription</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-                   aria-haspopup="true" aria-expanded="false">
-                    Dropdown
-                </a>
-                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item" href="#">Action</a>
-                    <a class="dropdown-item" href="#">Another action</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-            </li>
-        </ul>
-    </div>
-</nav>
-
-<h1>Hello, world!</h1>
+<script src="https://kit.fontawesome.com/c1fbc8c735.js" crossorigin="anonymous"></script>
+<script type="text/javascript" th:src="@{/js/lib/ext-all-debug.js}"></script>
+<script type="text/javascript" th:src="@{/js/src/SubscriptionForm.js}"></script>
+<script type="text/javascript" th:src="@{/js/src/main.js}"></script>
+<!--<script>
+    Ext.onReady(function() {
+Ext.create('Ext.panel.Panel', {
+    title: 'Hello',
+    width: 200,
+    html: '<p>World!</p>',
+    renderTo: 'mainContent'
+});
+    });
+</script>-->
 
 <div class="container-lg">
-
-    <div class="container">
-        <div class="row">
-            <div class="col-sm">
-                Edit
-            </div>
-            <div class="col-sm">
-                Category
-            </div>
-            <div class="col-sm">
-                Recipient
-            </div>
-            <div class="col-sm">
-                Message Template
-            </div>
-            <div class="col-sm">
-                Delete
-            </div>
-        </div>
-        <hr>
-        <div class="row" th:each="subscription: ${subscriptions}">
-            <div class="col-sm" th:value="${subscription.id}"><i class="fas fa-edit"></i></div>
-            <div class="col-sm" th:text="${subscription.category}"></div>
-            <div class="col-sm" th:text="${subscription.recipient}"></div>
-            <div class="col-sm" th:text="${subscription.message}"></div>
-            <div class="col-sm" th:value="${subscription.id}"><i class="fas fa-trash"></i></div>
-        </div>
-    </div>
-
-    <div class="modal fade" id="addSubscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Add subscription</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="form-group">
-                            <label for="email">Email address</label>
-                            <input type="email" class="form-control" id="email" placeholder="name@example.com">
-                        </div>
-                        <div class="form-group">
-                            <label for="category">Category</label>
-                            <select class="form-control" id="category">
-                                <option th:each="category : ${categories}" th:value="${category.url}" th:text="${category.name}"></option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="email_subject">Subject</label>
-                            <input type="text" class="form-control" id="email_subject" placeholder="New Item">
-                        </div>
-                        <div class="form-group">
-                            <label for="email_text">Template</label>
-                            <textarea class="form-control" id="email_text" rows="3"></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-primary" onclick="addSubscription()">Add</button>
-                </div>
-            </div>
-        </div>
+    <div class="container" id="mainContent">
     </div>
 
 </div>
 
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    <!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="/">Home</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" href="#addSubscription" data-toggle="modal" data-target="#addSubscription">Add
+                        subscription</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Dropdown
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#">Action</a>
+                        <a class="dropdown-item" href="#">Another action</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <h1>Hello, world!</h1>
+
+    <div class="container-lg">
+
+        <div class="container">
+            <div class="row">
+                <div class="col-sm">
+                    Edit
+                </div>
+                <div class="col-sm">
+                    Category
+                </div>
+                <div class="col-sm">
+                    Recipient
+                </div>
+                <div class="col-sm">
+                    Message Template
+                </div>
+                <div class="col-sm">
+                    Delete
+                </div>
+            </div>
+            <hr>
+            <div class="row" th:each="subscription: ${subscriptions}">
+                <div class="col-sm edit-subscription" th:value="${subscription.id}"><i class="fas fa-edit"></i></div>
+                <div class="col-sm" th:text="${subscription.category}"></div>
+                <div class="col-sm" th:text="${subscription.recipient}"></div>
+                <div class="col-sm" th:text="${subscription.message}"></div>
+                <div class="col-sm" th:value="${subscription.id}"><i class="fas fa-trash"></i></div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="addSubscription" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add subscription</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="email">Email address</label>
+                                <input type="email" class="form-control" id="email" placeholder="name@example.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="category">Category</label>
+                                <select class="form-control" id="category">
+                                    <option th:each="category : ${categories}" th:value="${category.url}"
+                                        th:text="${category.name}"></option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="email_subject">Subject</label>
+                                <input type="text" class="form-control" id="email_subject" placeholder="New Item">
+                            </div>
+                            <div class="form-group">
+                                <label for="email_text">Template</label>
+                                <textarea class="form-control" id="email_text" rows="3"></textarea>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-primary add-subscription">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    &lt;!&ndash; Optional JavaScript &ndash;&gt;
+    &lt;!&ndash; jQuery first, then Popper.js, then Bootstrap JS &ndash;&gt;
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
         integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
         crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-<script src="https://kit.fontawesome.com/c1fbc8c735.js" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/c1fbc8c735.js" crossorigin="anonymous"></script>-->
 
-<script>
-    $(document).ready(function() {
-
-    });
-
-    function addSubscription() {
-        var email = $('#email').val();
-        var category = $('#category').val();
-        var subject = $('#email_subject').val();
-        var text = $('#email_text').val();
-
-        console.log(email + ', ' + category + ', ' + subject + ', ' + text);
-
-        $.post({
-            url: "/subscription/add",
-            contentType: "application/json",
-            data: JSON.stringify({
-                categoryUrl: category,
-                type: 'EMAIL',
-                address: email,
-                subjectTemplate: subject,
-                textTemplate: text
-            }),
-            success: function() {
-                $('#addSubscription').modal('hide');
-            },
-            dataType: 'application/json'
-        });
-    }
-
-</script>
+    <!--<script type="text/javascript" th:src="@{/js/src/subscription.js}"></script>-->
 </body>
+
 </html>

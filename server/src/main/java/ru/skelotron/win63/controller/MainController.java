@@ -43,7 +43,7 @@ public class MainController {
                     .map(notified -> (EmailNotified) notified)
                     .collect(Collectors.toList());
             for (EmailNotified emailNotified : emailNotifiedEntities) {
-                subscriptionModelList.add( new SubscriptionModel( subscription.getCategory().getName(), emailNotified.getEmail(), emailNotified.getTextTemplate() ) );
+                subscriptionModelList.add( new SubscriptionModel( subscription.getId(), subscription.getCategory().getName(), emailNotified.getEmail(), emailNotified.getTextTemplate() ) );
             }
         }
         model.addAttribute("subscriptions", subscriptionModelList);

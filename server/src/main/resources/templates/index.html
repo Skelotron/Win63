@@ -55,6 +55,9 @@
     <div class="container">
         <div class="row">
             <div class="col-sm">
+                Edit
+            </div>
+            <div class="col-sm">
                 Category
             </div>
             <div class="col-sm">
@@ -63,12 +66,17 @@
             <div class="col-sm">
                 Message Template
             </div>
+            <div class="col-sm">
+                Delete
+            </div>
         </div>
         <hr>
         <div class="row" th:each="subscription: ${subscriptions}">
+            <div class="col-sm" th:value="${subscription.id}"><i class="fas fa-edit"></i></div>
             <div class="col-sm" th:text="${subscription.category}"></div>
             <div class="col-sm" th:text="${subscription.recipient}"></div>
             <div class="col-sm" th:text="${subscription.message}"></div>
+            <div class="col-sm" th:value="${subscription.id}"><i class="fas fa-trash"></i></div>
         </div>
     </div>
 
@@ -123,6 +131,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/c1fbc8c735.js" crossorigin="anonymous"></script>
 
 <script>
     $(document).ready(function() {

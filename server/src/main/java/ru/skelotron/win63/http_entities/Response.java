@@ -46,6 +46,7 @@ public class Response {
     // start_minprice
     // start_maxprice
     // filter
+    @JsonProperty("goods")
     private List<GoodsEntry> goods;
     // declension_count
     // declension_goods

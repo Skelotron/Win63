@@ -7,13 +7,16 @@ import ru.skelotron.win63.converer.ItemConverter;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.PhotoEntity;
+import ru.skelotron.win63.http_entities.Category;
 import ru.skelotron.win63.http_entities.GoodsEntry;
 import ru.skelotron.win63.http_entities.Request;
 import ru.skelotron.win63.http_entities.Response;
 import ru.skelotron.win63.model.ItemsChangeData;
+import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SettingsRepository;
 import ru.skelotron.win63.service.response_reader.ResponseReader;
+import ru.skelotron.win63.service.settings.SettingsService;
 import ru.skelotron.win63.util.CollectionUtil;
 
 import java.util.*;
@@ -25,13 +28,17 @@ public class ItemServiceImpl implements ItemService {
     private final ResponseReader responseReader;
     private final ItemConverter itemConverter;
     private final ItemRepository itemRepository;
+    private final SettingsService settingsService;
+    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServiceImpl(SettingsRepository settingsRepository, @Qualifier("DummyResponseReader") ResponseReader responseReader, ItemConverter itemConverter, ItemRepository itemRepository) {
+    public ItemServiceImpl(SettingsRepository settingsRepository, @Qualifier("DummyResponseReader") ResponseReader responseReader, ItemConverter itemConverter, ItemRepository itemRepository, SettingsService settingsService, CategoryRepository categoryRepository) {
         this.settingsRepository = settingsRepository;
         this.responseReader = responseReader;
         this.itemConverter = itemConverter;
         this.itemRepository = itemRepository;
+        this.settingsService = settingsService;
+        this.categoryRepository = categoryRepository;
     }
 
     @Override
@@ -42,10 +49,29 @@ public class ItemServiceImpl implements ItemService {
             int batchesCount = (count / quantity) + (((count % quantity) == 0) ? 0 : 1);
 
             Collection<GoodsEntry> goods = new ArrayList<>();
-            for (int batch = 0; batch < batchesCount; batchesCount++) {
-                Response response = getPage(category, batch, quantity);
-                System.out.println(response);
+            Collection<Category> categories = new ArrayList<>();
+            for (int batch = 0; batch < batchesCount; batch++) {
+                Response response = getPage(category, batch + 1, quantity);
+                categories.addAll(response.getCategories());
                 goods.addAll(response.getGoods());
+            }
+
+            String baseUri = settingsService.getBaseUri();
+            for (Category categoryRecord : categories) {
+                String externalId = categoryRecord.getId();
+                if (externalId != null && !externalId.isEmpty()) {
+                    String url = baseUri + categoryRecord.getUrl();
+                    if (!url.endsWith("/")) {
+                        url += "/";
+                    }
+                    CategoryEntity categoryEntity = categoryRepository.findByUrl(url);
+                    if (categoryEntity != null) {
+                        if (categoryEntity.getExternalId() == null || categoryEntity.getExternalId().isEmpty()) {
+                            categoryEntity.setExternalId(externalId);
+                            categoryRepository.save(categoryEntity);
+                        }
+                    }
+                }
             }
 
             List<Item> items = convertToEntities(goods);
@@ -109,7 +135,7 @@ public class ItemServiceImpl implements ItemService {
     private int getCount(CategoryEntity category) {
         Request request = Request.builder()
                 .uri(category.getUrl())
-                .quantity(1)
+                .quantity(20)
                 .s("new")
                 .city(0)
                 .category(category.getExternalId())

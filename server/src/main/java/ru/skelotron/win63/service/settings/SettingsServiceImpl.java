@@ -6,6 +6,8 @@ import ru.skelotron.win63.entity.Settings;
 import ru.skelotron.win63.repository.SettingsRepository;
 import ru.skelotron.win63.service.PropertiesHolder;
 
+import java.net.IDN;
+
 @Service
 public class SettingsServiceImpl implements SettingsService {
 
@@ -38,7 +40,7 @@ public class SettingsServiceImpl implements SettingsService {
 
     @Override
     public String getHostUrl() {
-        return getProtocol() + "://" + getHost();
+        return getProtocol() + "://" + IDN.toASCII(getHost());
     }
 
     @Override

@@ -40,13 +40,14 @@ public class Application {
     }
 
     @Bean
-    public CommandLineRunner demo(ItemService itemService, SettingsRepository settingsRepository, CategoryRepository categoryRepository, ItemRepository itemRepository) {
+    public CommandLineRunner demo(ItemService itemService, SettingsRepository settingsRepository, CategoryRepository categoryRepository, ItemRepository itemRepository, DemoData demoData) {
         return (args -> {
             settingsRepository.save( new Settings( "pageSize", 20 ) );
+            settingsRepository.save( new Settings( "target.url", "победа-63.рф" ) );
 
             FilterCheckerFactory.getInstance().register(Item.class, ItemFilterChecker::getInstance);
 
-//            loadCategoryService.load();
+            demoData.prepare();
 
             for (CategoryEntity category : categoryRepository.findAll()) {
                 log.info(category.toString());
@@ -55,8 +56,6 @@ public class Application {
             for (Item item : itemRepository.findAll()) {
                 log.info(item.toString());
             }
-
-//            itemService.load( categoryRepository.findByUrl("/catalog/telefony/") );
         });
     }
 }

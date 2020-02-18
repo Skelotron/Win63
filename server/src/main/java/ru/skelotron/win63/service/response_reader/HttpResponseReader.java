@@ -3,6 +3,7 @@ package ru.skelotron.win63.service.response_reader;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -16,6 +17,7 @@ import ru.skelotron.win63.service.settings.SettingsService;
 import java.io.IOException;
 
 @Component
+@Primary
 public class HttpResponseReader implements ResponseReader {
     private final SettingsService settingsService;
 
@@ -50,7 +52,7 @@ public class HttpResponseReader implements ResponseReader {
         if (!path.endsWith("/")) {
             path += "/";
         }
-        String uri = path + request.getCategory() + "/" + request.getPage() + "/";
+        String uri = path + request.getPage() + "/";
         String parameters = request.formatParameters();
         if (!parameters.isEmpty()) {
             return uri + "?" + parameters;

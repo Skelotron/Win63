@@ -27,7 +27,7 @@ public class ItemConverter implements Converter<GoodsEntry, Item> {
 
     @Override
     public Item convertToEntity(GoodsEntry record) {
-        CategoryEntity category = categoryRepository.findByUrl(record.getUrl());
+        CategoryEntity category = categoryRepository.findByExternalId(record.getFkCategory());
         Set<PhotoEntity> photos = new HashSet<>();
         for (Photo photo : record.getPhotos()) {
             photos.add(photoConverter.convertToEntity(photo));

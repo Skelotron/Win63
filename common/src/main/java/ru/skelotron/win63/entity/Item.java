@@ -46,7 +46,7 @@ public class Item extends AuditedEntity {
         this.url = url;
         this.title = title;
         this.amount = amount;
-        this.insertTime = insertTime;
+        this.insertTime = insertTime != null ? insertTime : new Date();
         this.category = category;
         this.photos = photos;
         for (PhotoEntity photo : photos) {

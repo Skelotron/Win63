@@ -27,8 +27,8 @@ public class Request {
         if ( category != null ) {
             sb.append("cg=").append(category);
         }
-        if (sb.charAt(sb.length()) == '&') {
-            sb.deleteCharAt(sb.length());
+        if (sb.charAt(sb.length() - 1) == '&') {
+            sb.deleteCharAt(sb.length() - 1);
         }
         return sb.toString();
     }

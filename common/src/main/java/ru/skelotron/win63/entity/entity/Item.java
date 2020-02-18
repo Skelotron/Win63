@@ -1,6 +1,9 @@
 package ru.skelotron.win63.entity.entity;
 
 import lombok.*;
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
@@ -14,6 +17,7 @@ import java.util.Set;
 @Setter
 @ToString
 @NoArgsConstructor
+@Audited
 public class Item extends AuditedEntity {
 
     @Column
@@ -30,9 +34,11 @@ public class Item extends AuditedEntity {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private CategoryEntity category;
 
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @NotAudited
     private Set<PhotoEntity> photos;
 
     public Item(String url, String title, BigDecimal amount, Date insertTime, CategoryEntity category, Set<PhotoEntity> photos) {

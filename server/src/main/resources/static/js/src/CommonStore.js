@@ -10,6 +10,7 @@ Ext.define('CommonStore', {
           rootProperty: 'categories'
         }
       },
+      autoLoad: true,
       fields: ['id', 'name']
     });
   },

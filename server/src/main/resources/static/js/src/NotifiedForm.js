@@ -88,7 +88,7 @@ Ext.define('NotifiedFormController', {
     }
   },
   onCancel: function() {
-    this.lookupReference('notifiedFormWindow').closeView();
+    this.closeView();
   },
   init: function(config) {
     if (config.initialConfig.data) {

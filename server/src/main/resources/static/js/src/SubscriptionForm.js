@@ -27,6 +27,7 @@ Ext.define('SubscriptionForm', {
         displayField: 'name',
         valueField: 'id',
         allowBlank: false,
+        editable: false,
         width: 500
       },
       Ext.create('NotifiedGrid', {reference: 'notifiedGrid'})]
@@ -38,6 +39,11 @@ Ext.define('SubscriptionForm', {
       xtype: 'button',
       text: Localization.get('button.apply'),
       handler: 'onApply'
+    },
+    {
+      xtype: 'button',
+      text: Localization.get('button.cancel'),
+      handler: 'onCancel'
     }];
 
     this.callParent(arguments);
@@ -72,6 +78,15 @@ Ext.define('SubscriptionFormController', {
           var text = response.responseText;
         }
       });
+    }
+  },
+  onCancel: function() {
+    this.closeView();
+  },
+  init: function(config) {
+    if (config.initialConfig.data) {
+      var record = config.initialConfig.data;
+      this.lookupReference('category').setValue(record.get('category').id);
     }
   }
 });

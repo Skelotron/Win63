@@ -1,9 +1,10 @@
 package ru.skelotron.win63.service.item;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.skelotron.win63.converer.ItemConverter;
+import ru.skelotron.win63.converter.ItemConverter;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.PhotoEntity;
@@ -59,14 +60,14 @@ public class ItemServiceImpl implements ItemService {
             String baseUri = settingsService.getBaseUri();
             for (Category categoryRecord : categories) {
                 String externalId = categoryRecord.getId();
-                if (externalId != null && !externalId.isEmpty()) {
+                if (!StringUtils.isBlank(externalId)) {
                     String url = baseUri + categoryRecord.getUrl();
                     if (!url.endsWith("/")) {
                         url += "/";
                     }
                     CategoryEntity categoryEntity = categoryRepository.findByUrl(url);
                     if (categoryEntity != null) {
-                        if (categoryEntity.getExternalId() == null || categoryEntity.getExternalId().isEmpty()) {
+                        if (StringUtils.isBlank(categoryEntity.getExternalId())) {
                             categoryEntity.setExternalId(externalId);
                             categoryRepository.save(categoryEntity);
                         }

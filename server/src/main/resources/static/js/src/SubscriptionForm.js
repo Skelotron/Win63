@@ -3,6 +3,7 @@ Ext.define('SubscriptionForm', {
   height: 500,
   width: 600,
   layout: 'fit',
+  controller: 'subscriptionFormCtrl',
   modal: true,
   addTag: function (input, tag) {
     var component = Ext.getCmp(input);
@@ -25,45 +26,52 @@ Ext.define('SubscriptionForm', {
         queryMode: 'remote',
         displayField: 'name',
         valueField: 'id',
+        allowBlank: false,
         width: 500
       },
-      Ext.create('NotifiedGrid', {data: config.data})]
+      Ext.create('NotifiedGrid', {reference: 'notifiedGrid'})]
     }));
 
     this.bbar = [
     { xtype: 'tbfill' },
     {
       xtype: 'button',
-      text: Localization.get('subscription.form.add_subscription.button.apply'),
-      handler: function() {
-        var email = Ext.getCmp('email').getValue();
-        var category = self.subscriptionForm.category.getValue();
-        var subject = self.subscriptionForm.subject.getValue();
-        var message = self.subscriptionForm.message.getValue();
-        Ext.Ajax.request({
-            url: '/subscription/add',
-            method: 'POST',
-            params: Ext.util.JSON.encode({
-               address: email,
-               category: category,
-               type: 'EMAIL',
-               subjectTemplate: subject,
-               textTemplate: message,
-               filters: []
-            }),
-            success: function(response) {
-                var text = response.responseText;
-                // process server response here
-            }
-        });
-      }
+      text: Localization.get('button.apply'),
+      handler: 'onApply'
     }];
 
     this.callParent(arguments);
 
     self = this;
   },
-  init: function(record) {
-    Ext.getCmp('category').setValue(record.get('category'));
+  listeners: {
+    onApply: {
+      fn: 'onApply',
+      scope: 'controller'
+    }
+  }
+});
+Ext.define('SubscriptionFormController', {
+  extend: 'Ext.app.ViewController',
+  alias: 'controller.subscriptionFormCtrl',
+
+  onApply: function() {
+    if (this.lookupReference('subscriptionForm').isValid()) {
+      var subscription = {};
+      subscription.category = {};
+      subscription.category.id = this.lookupReference('category').getValue();
+      subscription.category.name = this.lookupReference('category').getStore().getById(subscription.category.id).get('name');
+      subscription.notified = this.lookupReference('notifiedGrid').populateNotified();
+      console.log(subscription);
+      return;
+      Ext.Ajax.request({
+        url: '/subscription/add',
+        method: 'POST',
+        params: Ext.util.JSON.encode(subscription),
+        success: function(response) {
+          var text = response.responseText;
+        }
+      });
+    }
   }
 });

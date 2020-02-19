@@ -12,7 +12,7 @@ Localization.keys = {
   'subscription.form.add_subscription.field.category': 'Категория',
   'subscription.form.add_subscription.field.subject': 'Заголовок',
   'subscription.form.add_subscription.field.message': 'Сообщение',
-  'subscription.form.add_subscription.button.apply': 'Добавить',
+  'button.apply': 'Добавить',
   'subscription.form.edit_subscription.title': 'Редактировать Подписку',
   'notified.grid.title': 'Уведомления',
   'notified.grid.column.edit': 'Редактировать',
@@ -22,8 +22,12 @@ Localization.keys = {
   'notified.grid.column.subject': 'Заголовок',
   'notified.grid.column.message': 'Сообщение',
   'notified.form.add_notified.title': 'Добавить Получателя',
-  'notified.form.add_subscription.field.recipient': 'Получатель',
+  'notified.form.edit_notified.title': 'Редактировать Получателя',
+  'notified.form.add_notified.field.recipient': 'Получатель',
   'notified.form.add_notified.field.subject': 'Заголовок',
   'notified.form.add_notified.field.message': 'Сообщение',
-  'notified.form.add_notified.button.apply': 'Добавить'
+  'button.apply': 'Сохранить',
+  'button.cancel': 'Отмена',
+  'menu.title': 'Меню',
+  'menu.add_tag': 'Добавить Тег'
 };

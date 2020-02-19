@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skelotron.win63.controller.converter.CategoryModelConverter;
 import ru.skelotron.win63.controller.model.CategoryModel;
 import ru.skelotron.win63.entity.CategoryEntity;
-import ru.skelotron.win63.record.Categories;
+import ru.skelotron.win63.controller.model.Categories;
 import ru.skelotron.win63.repository.CategoryRepository;
 
 import java.util.ArrayList;
@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/category")
 public class CategoriesController {
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
     private final CategoryModelConverter categoryModelConverter;
 
     @Autowired

@@ -9,8 +9,9 @@ import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
+import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.record.SubscriptionRecord;
-import ru.skelotron.win63.record.Subscriptions;
+import ru.skelotron.win63.controller.model.Subscriptions;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
@@ -35,7 +36,7 @@ public class SubscriptionController {
         Subscription subscription = subscriptionModelConverter.convertToEntity(model);
         subscriptionRepository.save(subscription);
 
-        Subscription entity = subscriptionRepository.findById(subscription.getId()).orElseThrow(() -> new IllegalArgumentException("Can't find Subscription with id = " + subscription.getId()));
+        Subscription entity = subscriptionRepository.findById(subscription.getId()).orElseThrow(() -> new EntityNotFoundException(Subscription.class, subscription.getId()));
         SubscriptionModel savedModel = subscriptionModelConverter.convertToModel(entity);
 
         return ResponseEntity.ok(savedModel);

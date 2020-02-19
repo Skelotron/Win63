@@ -7,6 +7,7 @@ import ru.skelotron.win63.controller.model.NotifiedModel;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.Notified;
+import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.NotifiedRepository;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class NotifiedModelConverter implements ModelConverter<Notified, Notified
     public Notified convertToEntity(NotifiedModel model) {
         EmailNotified notified;
         if (model.getId() != null) {
-            notified = notifiedRepository.findById(model.getId()).orElseThrow(() -> new IllegalArgumentException("Can't find Notified with id = " + model.getId()));
+            notified = notifiedRepository.findById(model.getId()).orElseThrow(() -> new EntityNotFoundException(Notified.class, model.getId()));
         } else {
             notified = new EmailNotified();
         }

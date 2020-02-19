@@ -6,6 +6,7 @@ import ru.skelotron.win63.controller.model.NotifiedModel;
 import ru.skelotron.win63.controller.model.SubscriptionModel;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
+import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.util.ArrayList;
@@ -41,7 +42,7 @@ public class SubscriptionModelConverter implements ModelConverter<Subscription, 
     public Subscription convertToEntity(SubscriptionModel model) {
         Subscription subscription;
         if (model.getId() != null) {
-            subscription = subscriptionRepository.findById(model.getId()).orElseThrow(() -> new IllegalArgumentException("Can't find Subscription with id = " + model.getId()));
+            subscription = subscriptionRepository.findById(model.getId()).orElseThrow(() -> new EntityNotFoundException(Subscription.class, model.getId()));
         } else {
             subscription = new Subscription();
         }

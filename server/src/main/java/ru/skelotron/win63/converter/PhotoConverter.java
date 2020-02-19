@@ -1,4 +1,4 @@
-package ru.skelotron.win63.converer;
+package ru.skelotron.win63.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -8,7 +8,7 @@ import ru.skelotron.win63.http_entities.Photo;
 import ru.skelotron.win63.service.photo_loader.PhotoLoader;
 
 @Component
-public class PhotoConverter implements Converter<Photo, PhotoEntity> {
+public class PhotoConverter implements RecordConverter<Photo, PhotoEntity> {
     private final PhotoLoader photoLoader;
 
     @Autowired

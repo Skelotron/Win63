@@ -23,6 +23,7 @@ import ru.skelotron.win63.service.subscription.filter.checker.ItemFilterChecker;
 @SpringBootApplication
 @Configuration
 @EnableScheduling
+@SuppressWarnings("MethodMayBeStatic")
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
@@ -50,11 +51,11 @@ public class Application {
             demoData.prepare();
 
             for (CategoryEntity category : categoryRepository.findAll()) {
-                log.info(category.toString());
+                log.debug(category.toString());
             }
 
             for (Item item : itemRepository.findAll()) {
-                log.info(item.toString());
+                log.debug(item.toString());
             }
         });
     }

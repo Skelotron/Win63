@@ -1,5 +1,6 @@
 package ru.skelotron.win63;
 
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.*;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.HashSet;
 
 @Component
+@Log
 public class DemoData {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
@@ -28,9 +30,11 @@ public class DemoData {
     }
 
     public void prepare() {
+        log.info("Start Data Preparing");
         prepareCategories();
         prepareItems();
         prepareSubscriptions();
+        log.info("End Data Preparing");
     }
 
     public void prepareCategories() {
@@ -165,6 +169,7 @@ public class DemoData {
         categoryRepository.save(children);
     }
 
+    @SuppressWarnings("MagicNumber")
     public void prepareItems() {
         itemRepository.save( new Item( "https://xn--80adxhks.xn---63-5cdesg4ei.xn--p1ai/catalog/telefony/sotovye-telefony/oppo-reno-z-4-128-2064000548151/", "Oppo Reno Z 4/128", BigDecimal.valueOf(14900.00), getDate("18/02/2020 18:53"), categoryRepository.findByExternalId( "143" ), Collections.emptySet() ) );
         itemRepository.save( new Item( "https://xn--80adxhks.xn---63-5cdesg4ei.xn--p1ai/catalog/telefony/sotovye-telefony/samsung-galaxy-a70-2014900365044/", "Samsung Galaxy A70", BigDecimal.valueOf(15900.00), getDate("18/02/2020 18:53"), categoryRepository.findByExternalId( "143" ), Collections.emptySet() ) );

@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import ru.skelotron.win63.controller.model.FilterModel;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.Item;
+import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.FilterRepository;
 
 @Component
@@ -30,7 +31,7 @@ public class FilterModelConverter implements ModelConverter<Filter, FilterModel>
     public Filter convertToEntity(FilterModel model) {
         Filter filter;
         if (model.getId() != null) {
-            filter = filterRepository.findById(model.getId()).orElseThrow(() -> new IllegalArgumentException("Can't find Filter with id = " + model.getId()));
+            filter = filterRepository.findById(model.getId()).orElseThrow(() -> new EntityNotFoundException(Filter.class, model.getId()));
         } else {
             filter = new Filter();
         }

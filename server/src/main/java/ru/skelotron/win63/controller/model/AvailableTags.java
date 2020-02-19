@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CategoryModel extends AbstractModel {
-    private Long id;
-    private String name;
+public class AvailableTags {
+    private List<String> tags = new ArrayList<>();
 }

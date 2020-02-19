@@ -5,13 +5,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubscriptionModel {
+public class SubscriptionModel extends AbstractModel {
     private Long id;
-    private String category;
-    private String recipient;
-    private String message;
+    private CategoryModel category;
+    private List<NotifiedModel> notifiedList;
 }

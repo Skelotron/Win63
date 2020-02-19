@@ -2,30 +2,35 @@ package ru.skelotron.win63;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.entity.CategoryEntity;
-import ru.skelotron.win63.entity.Item;
+import ru.skelotron.win63.entity.*;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
+import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 
 @Component
 public class DemoData {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
+    private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
-    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository) {
+    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository, SubscriptionRepository subscriptionRepository) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
+        this.subscriptionRepository = subscriptionRepository;
     }
 
     public void prepare() {
         prepareCategories();
         prepareItems();
+        prepareSubscriptions();
     }
 
     public void prepareCategories() {
@@ -349,6 +354,11 @@ public class DemoData {
         itemRepository.save( new Item( "https://xn--80adxhks.xn---63-5cdesg4ei.xn--p1ai/catalog/telefony/sotovye-telefony/honor-8a-32gb-(jatlx1)-2070000637894/", "Honor 8A 32GB", BigDecimal.valueOf(5500.00), getDate("18/07/2024 16:00"), categoryRepository.findByExternalId( "143" ), Collections.emptySet() ) );
         itemRepository.save( new Item( "https://xn--80acgga2aurlbcpcr.xn---63-5cdesg4ei.xn--p1ai/catalog/telefony/aksessuary-dlya-telefonov/fleshka-samsung-micro-sd64-2026800073097/", "Флешка Samsung Micro SD64", BigDecimal.valueOf(690.00), getDate("18/05/2024 16:00"), categoryRepository.findByExternalId( "146" ), Collections.emptySet() ) );
         itemRepository.save( new Item( "https://xn--80adxhks.xn---63-5cdesg4ei.xn--p1ai/catalog/telefony/sotovye-telefony/honor-8s-32gb-2070000637030/", "Honor 8S 32GB", BigDecimal.valueOf(4900.00), getDate("18/05/2024 16:00"), categoryRepository.findByExternalId( "143" ), Collections.emptySet() ) );
+    }
+
+    private void prepareSubscriptions() {
+        subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "143" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) ) ) ) ) );
+        subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "84" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.CONTAINS, Item.ENTITY_NAME, "title", "New" ) ) ) ) ) ) ) );
     }
 
     private Date getDate(String value) {

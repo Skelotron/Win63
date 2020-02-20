@@ -19,7 +19,6 @@ import ru.skelotron.win63.service.item.ItemService;
 import ru.skelotron.win63.service.subscription.filter.checker.FilterCheckerFactory;
 import ru.skelotron.win63.service.subscription.filter.checker.ItemFilterChecker;
 
-
 @SpringBootApplication
 @Configuration
 @EnableScheduling

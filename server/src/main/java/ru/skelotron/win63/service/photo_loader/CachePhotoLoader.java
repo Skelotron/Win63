@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.http_entities.Photo;
 
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -15,12 +16,15 @@ import java.nio.file.Paths;
 public class CachePhotoLoader implements PhotoLoader {
     @Override
     public Photo load(Photo photo) {
-
-        String filename = photo.getImageUrl().substring(photo.getImageUrl().lastIndexOf("/") + 1);
+        String imageUrl = photo.getImageUrl();
+        String filename = imageUrl.contains("/") ? imageUrl.substring(imageUrl.lastIndexOf("/") + 1) : imageUrl;
         try {
-            Path path = Paths.get(getClass().getResource("/images/" + filename).toURI());
-            byte[] content = Files.readAllBytes(path);
-            photo.setContent(content);
+            URL resourceUrl = getClass().getResource("/images/" + filename);
+            if (resourceUrl != null) {
+                Path path = Paths.get(resourceUrl.toURI());
+                byte[] content = Files.readAllBytes(path);
+                photo.setContent(content);
+            }
         } catch (Exception e) {
             log.throwing("CachePhotoLoader", "load", e);
         }

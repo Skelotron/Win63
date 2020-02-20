@@ -101,7 +101,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void merge(Item existingItem, Item item) {
-        if ( !Objects.equals( existingItem.getAmount(), item.getAmount() ) ) {
+        if ( !( existingItem.getAmount() != null && existingItem.getAmount().compareTo(item.getAmount()) == 0 ) ) {
             existingItem.setAmount( item.getAmount() );
         }
 

@@ -362,7 +362,13 @@ public class DemoData {
     }
 
     private void prepareSubscriptions() {
-        subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "143" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) ) ) ) ) );
+        subscriptionRepository.save(
+                new Subscription(
+                        categoryRepository.findByExternalId( "143" ),
+                        new HashSet<>(Arrays.asList(
+                                new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) ),
+                                new EmailNotified( "khaliulin.r.r@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) )
+                        ) ) ) );
         subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "84" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.CONTAINS, Item.ENTITY_NAME, "title", "New" ) ) ) ) ) ) ) );
     }
 

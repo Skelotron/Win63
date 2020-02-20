@@ -77,6 +77,10 @@ Ext.define('NotifiedGrid', {
       });
     });
     return notifiedList;
+  },
+  setNotified: function(records) {
+    var store = this.controller.lookupReference('notifiedGrid').getStore();
+    store.loadData(records, false);
   }
 });
 Ext.define('NotifiedGridController', {

@@ -87,6 +87,7 @@ Ext.define('SubscriptionFormController', {
     if (config.initialConfig.data) {
       var record = config.initialConfig.data;
       this.lookupReference('category').setValue(record.get('category').id);
+      this.lookupReference('notifiedGrid').setNotified(record.get('notifiedList'));
     }
   }
 });

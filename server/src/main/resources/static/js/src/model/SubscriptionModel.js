@@ -1,4 +1,4 @@
-Ext.define('Subscription', {
+Ext.define('Data.Model.Subscription', {
   extend: 'Ext.data.Model',
   fields: [
     { name: 'id', type: 'int' },

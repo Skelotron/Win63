@@ -1,5 +1,9 @@
 Ext.onReady(function () {
   Ext.create('Ext.container.Viewport', {
-    items: [Ext.create('SubscriptionGrid', {})]
+    layout: {
+      type: 'vbox',
+      align: 'middle'
+    },
+    items: [new SubscriptionGrid({})]
   });
 });

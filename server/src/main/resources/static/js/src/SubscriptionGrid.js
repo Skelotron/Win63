@@ -21,22 +21,10 @@ Ext.define('SubscriptionGrid', {
       reference: 'subscriptionGrid',
       store: new CommonStore().createSubscriptionStore(),
       columns: [
-        {
-          xtype: 'actioncolumn',
-          tooltip: Localization.get('subscription.grid.column.edit'),
-          icon: 'images/edit.png',
-          width: 20,
-          handler: 'onEditClickGrid'
-        },
+        { xtype: 'editactioncolumn' },
         { text: Localization.get('subscription.grid.column.category'), dataIndex: 'category', renderer: function(value) { return value.name; } },
         { text: Localization.get('subscription.grid.column.message'), dataIndex: 'notifiedList', renderer: function(value) { return value.length; } },
-        {
-          xtype: 'actioncolumn',
-          tooltip: Localization.get('subscription.grid.column.delete'),
-          icon: 'images/delete.png',
-          width: 20,
-          handler: 'onDeleteClick'
-        }
+        { xtype: 'deleteactioncolumn' }
       ],
       height: 500,
       width: 600
@@ -44,28 +32,18 @@ Ext.define('SubscriptionGrid', {
 });
 
 Ext.define('SubscriptionGridController', {
-  extend: 'Ext.app.ViewController',
+  extend: 'BaseCrudController',
   alias: 'controller.subscriptionGridCtrl',
 
-  onAddClick: function() {
-    new SubscriptionForm({title: Localization.get('subscription.form.add_subscription.title')}).show();
+  openAddScreen: function() {
+    var addSubscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.add_subscription.title')});
+    addSubscriptionForm.show();
   },
-  onEditClick: function() {
-    var grid = this.lookupReference('subscriptionGrid');
-    var selections = grid.getSelection();
-    if (Ext.isArray(selections) && selections.length > 0) {
-      this.doEdit(selections[0]);
-    }
-  },
-  onEditClickGrid: function(grid, rowIndex) {
-    var record = grid.getStore().getAt(rowIndex);
-    this.doEdit(record);
-  },
-  doEdit: function(record) {
-    var editSubscriptionForm = Ext.create('SubscriptionForm', {title: Localization.get('subscription.form.edit_subscription.title'), data: record});
+  openEditScreen: function(record) {
+    var editSubscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.edit_subscription.title'), data: record});
     editSubscriptionForm.show();
   },
-  onDeleteClick: function(grid, rowIndex) {
-    grid.getStore().removeAt(rowIndex);
+  getGrid: function() {
+    return this.lookupReference('subscriptionGrid');
   }
 });

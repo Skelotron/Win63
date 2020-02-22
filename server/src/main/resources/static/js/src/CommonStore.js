@@ -26,8 +26,19 @@ Ext.define('CommonStore', {
         }
       },
       autoLoad: true,
-      model: 'Subscription'
-      //fields: ['id', 'category', 'notifiedList']
+      model: 'Data.Model.Subscription'
+    });
+  },
+  createNotifiedStore: function() {
+    return new Ext.data.Store({
+      storeId: 'notifiedStore',
+      model: 'Data.Model.Notified'
+    });
+  },
+  createFilterStore: function() {
+    return new Ext.data.Store({
+      storeId: 'filterStore',
+      model: 'Data.Model.Filter'
     });
   }
 });

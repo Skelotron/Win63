@@ -10,7 +10,6 @@ Ext.define('SubscriptionForm', {
     component.setValue(component.getValue() + '<' + tag + '>');
   },
   constructor: function (config) {
-    var self = this;
     this.items = [];
     this.items.push(new Ext.form.FormPanel({
       reference: 'subscriptionForm',
@@ -30,7 +29,7 @@ Ext.define('SubscriptionForm', {
         editable: false,
         width: 500
       },
-      Ext.create('NotifiedGrid', {reference: 'notifiedGrid'})]
+      new NotifiedGrid({reference: 'notifiedGrid'})]
     }));
 
     this.bbar = [
@@ -47,8 +46,6 @@ Ext.define('SubscriptionForm', {
     }];
 
     this.callParent(arguments);
-
-    self = this;
   },
   listeners: {
     onApply: {

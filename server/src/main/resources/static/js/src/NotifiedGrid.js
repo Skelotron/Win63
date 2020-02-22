@@ -6,56 +6,29 @@ Ext.define('NotifiedGrid', {
     {
       xtype: 'button',
       text: Localization.get('notified.grid.button.add'),
-      handler: function() {
-        var notifiedForm = Ext.create({
-          xtype: 'notifiedform',
-          title: Localization.get('notified.form.add_notified.title')
-        });
-        this.relayEvents(notifiedForm, ['add-notified']);
-        notifiedForm.show();
-      },
+      handler: 'onAddClick',
       listeners: {'add-notified': 'onAddNotified', 'scope': 'controller'}
     },
     {
       xtype: 'button',
-      text: Localization.get('notified.grid.button.edit')
+      text: Localization.get('notified.grid.button.edit'),
+      handler: 'onEditClick',
+      listeners: {'add-notified': 'onAddNotified', 'scope': 'controller'}
     }
   ],
   items: [{
     xtype: 'grid',
     reference: 'notifiedGrid',
-    store: Ext.create('Ext.data.Store', {
-      storeId: 'notifiedStore',
-      fields: ['recipient', 'subject', 'message']
-    }),
+    store: new CommonStore().createNotifiedStore(),
     columns: [
       {
-        xtype: 'actioncolumn',
-        tooltip: Localization.get('notified.grid.column.edit'),
-        icon: 'images/edit.png',
-        width: 20,
-        handler: function(grid, rowIndex, colIndex) {
-        var record = grid.getStore().getAt(rowIndex);
-          var notifiedForm = Ext.create({
-            xtype: 'notifiedform',
-            title: Localization.get('notified.form.edit_notified.title'),
-            data: record
-          });
-          this.relayEvents(notifiedForm, ['add-notified']);
-          notifiedForm.show();
-        },
+        xtype: 'editactioncolumn',
         listeners: {'add-notified': 'onEditNotified', 'scope': 'controller'}
       },
       { text: Localization.get('notified.grid.column.recipient'), dataIndex: 'recipient' },
       { text: Localization.get('notified.grid.column.subject'), dataIndex: 'subject', renderer: Ext.util.Format.htmlEncode, flex: 1 },
       { text: Localization.get('notified.grid.column.message'), dataIndex: 'message', renderer: Ext.util.Format.htmlEncode },
-      {
-        xtype: 'actioncolumn',
-        tooltip: Localization.get('notified.grid.column.delete'),
-        icon: 'images/delete.png',
-        width: 20,
-        handler: 'onDeleteNotified'
-      }
+      { xtype: 'deleteactioncolumn' }
     ],
     height: 200,
     width: 500
@@ -84,9 +57,22 @@ Ext.define('NotifiedGrid', {
   }
 });
 Ext.define('NotifiedGridController', {
-  extend: 'Ext.app.ViewController',
+  extend: 'BaseCrudController',
   alias: 'controller.notifiedGridCtrl',
 
+  openAddScreen: function() {
+    var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.add_notified.title')});
+    this.relayEvents(notifiedForm, ['add-notified']);
+    notifiedForm.show();
+  },
+  openEditScreen: function(record) {
+    var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.edit_notified.title'), data: record});
+    this.relayEvents(notifiedForm, ['add-notified']);
+    notifiedForm.show();
+  },
+  getGrid: function() {
+    return this.lookupReference('notifiedGrid');
+  },
   onAddNotified: function(form, record) {
     var grid = this.lookupReference('notifiedGrid');
     grid.getStore().add(record);
@@ -103,8 +89,5 @@ Ext.define('NotifiedGridController', {
       });
     }
     form.closeView();
-  },
-  onDeleteNotified: function(grid, rowIndex) {
-    grid.getStore().removeAt(rowIndex);
   }
 });

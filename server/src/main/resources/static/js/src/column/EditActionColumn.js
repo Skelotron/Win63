@@ -4,5 +4,6 @@ Ext.define('Grid.column.EditAction', {
   tooltip: Localization.get('column.edit'),
   icon: 'images/edit.png',
   width: 20,
-  handler: 'onEditClickGrid'
+  handler: 'onEditClickGrid',
+  listeners: {'add-record': 'onEditRecord', 'scope': 'controller'}
 });

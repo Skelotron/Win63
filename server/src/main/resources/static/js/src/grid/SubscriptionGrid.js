@@ -1,37 +1,24 @@
 Ext.define('SubscriptionGrid', {
-  extend: 'Ext.Panel',
-  region: 'center',
+  extend: 'BaseCrudGrid',
   controller: 'subscriptionGridCtrl',
   title: Localization.get('subscription.grid.title'),
-    width: 800,
-    tbar: [
-      {
-        xtype: 'button',
-        text: Localization.get('subscription.grid.button.add'),
-        handler: 'onAddClick'
-      },
-      {
-        xtype: 'button',
-        text: Localization.get('subscription.grid.button.edit'),
-        handler: 'onEditClick'
-      }
+  width: 800,
+  items: [{
+    xtype: 'grid',
+    reference: 'subscriptionGrid',
+    store: new CommonStore().createSubscriptionStore(),
+    columns: [
+      { xtype: 'editactioncolumn' },
+      { text: Localization.get('subscription.grid.column.category'), dataIndex: 'category', renderer: function(value) { return value.name; }, flex: 1 },
+      { text: Localization.get('subscription.grid.column.notified_count'), dataIndex: 'notifiedList', renderer: Renderers.column.CountRenderer },
+      { xtype: 'deleteactioncolumn' }
     ],
-    items: [{
-      xtype: 'grid',
-      reference: 'subscriptionGrid',
-      store: new CommonStore().createSubscriptionStore(),
-      columns: [
-        { xtype: 'editactioncolumn' },
-        { text: Localization.get('subscription.grid.column.category'), dataIndex: 'category', renderer: function(value) { return value.name; }, flex: 1 },
-        { text: Localization.get('subscription.grid.column.notified_count'), dataIndex: 'notifiedList', renderer: function(value) { return value.length; } },
-        { xtype: 'deleteactioncolumn' }
-      ],
-      listeners: {
-        rowdblclick: 'onEditDoubleClick'
-      },
-      height: 500,
-      width: 600
-    }]
+    listeners: {
+      rowdblclick: 'onEditDoubleClick'
+    },
+    height: 500,
+    width: 600
+  }]
 });
 
 Ext.define('SubscriptionGridController', {

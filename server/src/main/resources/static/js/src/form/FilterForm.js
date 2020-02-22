@@ -1,14 +1,10 @@
 Ext.define('FilterForm', {
-  extend: 'Ext.Window',
+  extend: 'BaseEditFormWindow',
   height: 300,
   width: 600,
-  layout: 'fit',
-  reference: 'filterFormWindow',
-  modal: true,
   controller: 'filterFormCtrl',
-  constructor: function (config) {
-    this.items = [];
-    this.items.push(new Ext.form.FormPanel({
+  createEditFormPanel: function () {
+    return new Ext.form.FormPanel({
       reference: 'filterForm',
       bodyPadding: '10',
       border: false,
@@ -59,29 +55,12 @@ Ext.define('FilterForm', {
         hidden: true,
         width: 500
       }]
-    }));
-
-    this.bbar = [
-    { xtype: 'tbfill' },
-    {
-      xtype: 'button',
-      text: Localization.get('button.apply'),
-      handler: 'onApply'
-    },
-    { xtype: 'button', text: Localization.get('button.cancel'), handler: 'onCancel' }];
-
-    this.callParent(arguments);
-  },
-  listeners: {
-    onApply: {
-      fn: 'onApply',
-      scope: 'controller'
-    }
+    });
   }
 });
 
 Ext.define('FilterFormController', {
-  extend: 'Ext.app.ViewController',
+  extend: 'BaseEditWindowController',
   alias: 'controller.filterFormCtrl',
 
   relations: {
@@ -126,11 +105,8 @@ Ext.define('FilterFormController', {
         value: field === 'CATEGORY' ? categoryValue : value
       };
 
-      this.fireViewEvent('add-filter', this, record);
+      this.fireViewEvent('add-record', this, record);
     }
-  },
-  onCancel: function() {
-    this.closeView();
   },
   init: function(config) {
     if (config.initialConfig.data) {

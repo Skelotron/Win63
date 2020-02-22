@@ -1,17 +1,13 @@
 Ext.define('NotifiedForm', {
-  extend: 'Ext.Window',
+  extend: 'BaseEditFormWindow',
   height: 600,
   width: 600,
-  layout: 'fit',
-  reference: 'notifiedFormWindow',
-  modal: true,
   controller: 'notifiedFormCtrl',
   addTag: function (component, tag) {
     component.setValue(component.getValue() + '<' + tag + '>');
   },
-  constructor: function (config) {
-    this.items = [];
-    this.items.push(new Ext.form.FormPanel({
+  createEditFormPanel: function () {
+    return new Ext.form.FormPanel({
       reference: 'notifiedForm',
       bodyPadding: '10',
       border: false,
@@ -21,7 +17,7 @@ Ext.define('NotifiedForm', {
         reference: 'recipient',
         xtype: 'textfield',
         name: 'email',
-        fieldLabel: Localization.get('notified.form.add_notified.field.recipient'),
+        fieldLabel: Localization.get('notified.form.notified.field.recipient'),
         allowBlank: false,
         width: 500
       },
@@ -29,7 +25,7 @@ Ext.define('NotifiedForm', {
         reference: 'subject',
         xtype: 'textfield',
         name: 'subject',
-        fieldLabel: Localization.get('notified.form.add_notified.field.subject'),
+        fieldLabel: Localization.get('notified.form.notified.field.subject'),
         width: 500
       },
       {
@@ -38,35 +34,21 @@ Ext.define('NotifiedForm', {
         grow: true,
         name: 'message',
         allowBlank: false,
-        fieldLabel: Localization.get('notified.form.add_notified.field.message'),
+        fieldLabel: Localization.get('notified.form.notified.field.message'),
         width: 500
       },
       new FilterGrid({reference: 'filterGrid'})
       ]
-    }));
-
-    this.bbar = [
-    { xtype: 'tbfill' },
-    {
-      xtype: 'button',
-      text: Localization.get('button.apply'),
-      handler: 'onApply'
-    },
-    { xtype: 'button', text: Localization.get('button.cancel'), handler: 'onCancel' }];
-
-    this.callParent(arguments);
+    });
   },
   listeners: {
     afterrender: 'onAfterRender',
-    onApply: {
-      fn: 'onApply',
-      scope: 'controller'
-    }
+    onApply: { fn: 'onApply', scope: 'controller' }
   }
 });
 
 Ext.define('NotifiedFormController', {
-  extend: 'Ext.app.ViewController',
+  extend: 'BaseEditWindowController',
   alias: 'controller.notifiedFormCtrl',
 
   onApply: function() {
@@ -74,7 +56,7 @@ Ext.define('NotifiedFormController', {
       var recipient = this.lookupReference('recipient').getValue();
       var subject = this.lookupReference('subject').getValue();
       var message = this.lookupReference('message').getValue();
-      var filters = this.lookupReference('filterGrid').populateFilters();
+      var filters = this.lookupReference('filterGrid').getFilterRecords();
 
       var record = {
         recipient: recipient,
@@ -83,11 +65,8 @@ Ext.define('NotifiedFormController', {
         filters: filters
       };
 
-      this.fireViewEvent('add-notified', this, record);
+      this.fireViewEvent('add-record', this, record);
     }
-  },
-  onCancel: function() {
-    this.closeView();
   },
   init: function(config) {
     if (config.initialConfig.data) {
@@ -96,6 +75,8 @@ Ext.define('NotifiedFormController', {
       this.lookupReference('subject').setValue(config.initialConfig.data.get('subject'));
       this.lookupReference('message').setValue(config.initialConfig.data.get('message'));
       this.lookupReference('filterGrid').setFilters(config.initialConfig.data.get('filters'));
+    } else {
+      this.lookupReference('filterGrid').setFilters([]);
     }
   },
   onAfterRender: function(form) {

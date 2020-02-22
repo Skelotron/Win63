@@ -34,16 +34,8 @@ Ext.define('SubscriptionForm', {
 
     this.bbar = [
     { xtype: 'tbfill' },
-    {
-      xtype: 'button',
-      text: Localization.get('button.apply'),
-      handler: 'onApply'
-    },
-    {
-      xtype: 'button',
-      text: Localization.get('button.cancel'),
-      handler: 'onCancel'
-    }];
+    { xtype: 'button', text: Localization.get('button.apply'), handler: 'onApply' },
+    { xtype: 'button', text: Localization.get('button.cancel'), handler: 'onCancel' }];
 
     this.callParent(arguments);
   },
@@ -66,7 +58,8 @@ Ext.define('SubscriptionFormController', {
       subscription.category.name = this.lookupReference('category').getStore().getById(subscription.category.id).get('name');
       subscription.notified = this.lookupReference('notifiedGrid').populateNotified();
       console.log(subscription);
-      return;
+      this.closeView();
+      return; // TODO:
       Ext.Ajax.request({
         url: '/subscription/add',
         method: 'POST',

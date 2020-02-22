@@ -2,6 +2,7 @@ Ext.define('NotifiedGrid', {
   extend: 'Ext.Panel',
   controller: 'notifiedGridCtrl',
   title: Localization.get('notified.grid.title'),
+  width: 500,
   tbar: [
     {
       xtype: 'button',
@@ -13,7 +14,7 @@ Ext.define('NotifiedGrid', {
       xtype: 'button',
       text: Localization.get('notified.grid.button.edit'),
       handler: 'onEditClick',
-      listeners: {'add-notified': 'onAddNotified', 'scope': 'controller'}
+      listeners: {'add-notified': 'onEditNotified', 'scope': 'controller'}
     }
   ],
   items: [{
@@ -26,19 +27,18 @@ Ext.define('NotifiedGrid', {
         listeners: {'add-notified': 'onEditNotified', 'scope': 'controller'}
       },
       { text: Localization.get('notified.grid.column.recipient'), dataIndex: 'recipient' },
-      { text: Localization.get('notified.grid.column.subject'), dataIndex: 'subject', renderer: Ext.util.Format.htmlEncode, flex: 1 },
-      { text: Localization.get('notified.grid.column.message'), dataIndex: 'message', renderer: Ext.util.Format.htmlEncode },
+      { text: Localization.get('notified.grid.column.subject'), dataIndex: 'subject', renderer: Ext.util.Format.htmlEncode },
+      { text: Localization.get('notified.grid.column.message'), dataIndex: 'message', renderer: function(value) { return Ext.util.Format.htmlEncode(value).replace(/\n/g, '<br>'); }, flex: 1 },
       { xtype: 'deleteactioncolumn' }
     ],
-    height: 200,
-    width: 500
+    listeners: {
+      rowdblclick: 'onEditDoubleClick',
+      'add-notified': { fn: 'onAddNotified', scope: 'controller' }
+    },
+    height: 200
   }],
   listeners: {
-    'add-notified': 'onAddNotified',
-    populateNotified: {
-      fn: 'onPopulateNotified',
-      scope: 'controller'
-    }
+    'add-notified': { fn: 'onAddNotified', scope: 'controller' }
   },
   populateNotified: function() {
     var notifiedList = [];
@@ -46,7 +46,8 @@ Ext.define('NotifiedGrid', {
       notifiedList.push({
         recipient: record.get('recipient'),
         subject: record.get('subject'),
-        message: record.get('message')
+        message: record.get('message'),
+        filters: record.get('filters')
       });
     });
     return notifiedList;
@@ -60,14 +61,14 @@ Ext.define('NotifiedGridController', {
   extend: 'BaseCrudController',
   alias: 'controller.notifiedGridCtrl',
 
-  openAddScreen: function() {
+  openAddScreen: function(component) {
     var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.add_notified.title')});
-    this.relayEvents(notifiedForm, ['add-notified']);
+    component.relayEvents(notifiedForm, ['add-notified']);
     notifiedForm.show();
   },
-  openEditScreen: function(record) {
+  openEditScreen: function(record, component) {
     var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.edit_notified.title'), data: record});
-    this.relayEvents(notifiedForm, ['add-notified']);
+    component.relayEvents(notifiedForm, ['add-notified']);
     notifiedForm.show();
   },
   getGrid: function() {

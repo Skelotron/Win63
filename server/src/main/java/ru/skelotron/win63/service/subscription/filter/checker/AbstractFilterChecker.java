@@ -35,6 +35,7 @@ public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
                     List filterList = (List) filterValue;
                     return itemList.containsAll(filterList) && filterList.containsAll(itemList);
                 }
+                return false;
 
             case LESSER:
                 return getDouble(itemValue) < getDouble(filterValue);
@@ -46,10 +47,11 @@ public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
                 return getDouble(itemValue) <= getDouble(filterValue);
 
             case CONTAINS:
-                return StringUtils.containsIgnoreCase(String.valueOf(itemValue), String.valueOf(filterValue));
-
-            case IN:
-                return ((List) itemValue).containsAll((List) filterValue);
+                if (filterValue instanceof List) {
+                    return ((List) itemValue).containsAll((List) filterValue);
+                } else {
+                    return StringUtils.containsIgnoreCase(String.valueOf(itemValue), String.valueOf(filterValue));
+                }
             default:
                 throw new IllegalArgumentException("Unsupported RelationType: " + relationType);
         }

@@ -4,7 +4,7 @@ Localization.keys = {
   'subscription.grid.button.edit': 'Редактировать подписку',
   'subscription.grid.column.category': 'Категория',
   'subscription.grid.column.email': 'Email',
-  'subscription.grid.column.message': 'Сообщение',
+  'subscription.grid.column.notified_count': 'Кол-во подписчиков',
   'subscription.form.add_subscription.title': 'Добавить Подписку',
   'subscription.form.add_subscription.field.email': 'Email',
   'subscription.form.add_subscription.field.category': 'Категория',
@@ -41,5 +41,13 @@ Localization.keys = {
   'filter.grid.column.relation.GREATER_OR_EQUALS': '>=',
   'filter.grid.column.relation.LESSER': '<',
   'filter.grid.column.relation.LESSER_OR_EQUALS': '<=',
-  'filter.grid.column.relation.IN': 'Содержит'
+  'filter.grid.column.field.TITLE': 'Название',
+  'filter.grid.column.field.DESCRIPTION': 'Описание',
+  'filter.grid.column.field.PRICE': 'Цена',
+  'filter.grid.column.field.CATEGORY': 'Категория',
+  'filter.form.add_filter.field.field': 'Поле',
+  'filter.form.add_filter.field.relation': 'Сравнение',
+  'filter.form.add_filter.field.value': 'Значение',
+  'filter.form.add_filter.title': 'Добавить Фильтр',
+  'filter.form.edit_filter.title': 'Редактировать Фильтр'
 };

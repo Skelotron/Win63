@@ -4,6 +4,6 @@ Ext.define('Data.Model.Filter', {
     { name: 'id', type: 'int' },
     { name: 'field', type: 'string' },
     { name: 'relation', type: 'string' },
-    { name: 'value', type: 'string' }
+    { name: 'value', type: 'auto' }
   ]
 });

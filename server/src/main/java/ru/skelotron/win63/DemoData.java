@@ -7,6 +7,7 @@ import ru.skelotron.win63.entity.*;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
+import ru.skelotron.win63.service.subscription.filter.field.ItemFilterField;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -366,10 +367,10 @@ public class DemoData {
                 new Subscription(
                         categoryRepository.findByExternalId( "143" ),
                         new HashSet<>(Arrays.asList(
-                                new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) ),
-                                new EmailNotified( "khaliulin.r.r@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, "amount", "500.0" ) ) ) )
+                                new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, ItemFilterField.PRICE.name(), "500.0" ) ) ) ),
+                                new EmailNotified( "khaliulin.r.r@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, ItemFilterField.PRICE.name(), "500.0" ) ) ) )
                         ) ) ) );
-        subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "84" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.CONTAINS, Item.ENTITY_NAME, "title", "New" ) ) ) ) ) ) ) );
+        subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "84" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.CONTAINS, Item.ENTITY_NAME, ItemFilterField.TITLE.name(), "New" ) ) ) ) ) ) ) );
     }
 
     private Date getDate(String value) {

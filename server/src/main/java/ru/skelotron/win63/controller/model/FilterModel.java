@@ -14,5 +14,5 @@ public class FilterModel extends AbstractModel {
     private Long id;
     private String field;
     private FilterRelationType relation;
-    private String value;
+    private Object value;
 }

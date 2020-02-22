@@ -74,11 +74,13 @@ Ext.define('NotifiedFormController', {
       var recipient = this.lookupReference('recipient').getValue();
       var subject = this.lookupReference('subject').getValue();
       var message = this.lookupReference('message').getValue();
+      var filters = this.lookupReference('filterGrid').populateFilters();
 
       var record = {
         recipient: recipient,
         subject: subject,
-        message: message
+        message: message,
+        filters: filters
       };
 
       this.fireViewEvent('add-notified', this, record);

@@ -6,6 +6,5 @@ public enum FilterRelationType {
     GREATER,
     GREATER_OR_EQUALS,
     LESSER,
-    LESSER_OR_EQUALS,
-    IN
+    LESSER_OR_EQUALS
 }

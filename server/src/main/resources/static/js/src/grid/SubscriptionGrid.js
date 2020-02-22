@@ -22,10 +22,13 @@ Ext.define('SubscriptionGrid', {
       store: new CommonStore().createSubscriptionStore(),
       columns: [
         { xtype: 'editactioncolumn' },
-        { text: Localization.get('subscription.grid.column.category'), dataIndex: 'category', renderer: function(value) { return value.name; } },
-        { text: Localization.get('subscription.grid.column.message'), dataIndex: 'notifiedList', renderer: function(value) { return value.length; } },
+        { text: Localization.get('subscription.grid.column.category'), dataIndex: 'category', renderer: function(value) { return value.name; }, flex: 1 },
+        { text: Localization.get('subscription.grid.column.notified_count'), dataIndex: 'notifiedList', renderer: function(value) { return value.length; } },
         { xtype: 'deleteactioncolumn' }
       ],
+      listeners: {
+        rowdblclick: 'onEditDoubleClick'
+      },
       height: 500,
       width: 600
     }]

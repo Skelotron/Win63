@@ -6,7 +6,7 @@ var Localization = {
     'subscription.grid.column.edit': 'Edit',
     'subscription.grid.column.category': 'Category',
     'subscription.grid.column.email': 'Email',
-    'subscription.grid.column.message': 'Text',
+    'subscription.grid.column.message': 'Notified Count',
     'subscription.grid.column.delete': 'Delete',
     'subscription.form.add_subscription.title': 'Add Subscription',
     'subscription.form.add_subscription.field.email': 'Email',

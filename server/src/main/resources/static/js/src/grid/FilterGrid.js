@@ -15,7 +15,8 @@ Ext.define('FilterGrid', {
     ],
     listeners: {
       rowdblclick: 'onEditDoubleClick',
-      'add-record': { fn: 'onAddRecord', scope: 'controller' }
+      'add-record': { fn: 'onAddRecord', scope: 'controller' },
+      select: 'onRowSelected'
     },
     height: 200
   }],
@@ -23,6 +24,7 @@ Ext.define('FilterGrid', {
     var filterList = [];
     Ext.each(this.controller.lookupReference('filterGrid').getStore().getRange(), function(record) {
       filterList.push({
+        id: record.get('id'),
         field: record.get('field'),
         relation: record.get('relation'),
         value: record.get('value')
@@ -61,13 +63,13 @@ Ext.define('FilterGridController', {
   onEditRecord: function(form, record) {
     var grid = this.lookupReference('filterGrid');
     var store = grid.getStore();
-    //var recordIndex = grid.getStore().findBy(function(rec) { return rec.get('recipient') === record.recipient; });
-    //  if (recordIndex >= 0) {
-    //    var existingRecord = store.getAt(recordIndex);
-    //    Ext.each(Object.keys(record), function(key) {
-    //      existingRecord.set(key, record[key]);
-    //    });
-    //  }
+    var recordIndex = grid.getStore().findBy(function(rec) { return rec.get('id') === record.id; });
+    if (recordIndex >= 0) {
+      var existingRecord = store.getAt(recordIndex);
+      Ext.each(Object.keys(record), function(key) {
+        existingRecord.set(key, record[key]);
+      });
+    }
     form.closeView();
   }
 });

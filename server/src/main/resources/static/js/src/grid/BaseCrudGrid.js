@@ -11,8 +11,10 @@ Ext.define('BaseCrudGrid', {
     },
     {
       xtype: 'button',
+      reference: 'editRecordButton',
       text: Localization.get('grid.button.edit'),
       handler: 'onEditClick',
+      disabled: true,
       listeners: {'add-record': 'onEditRecord', 'scope': 'controller'}
     }
   ],

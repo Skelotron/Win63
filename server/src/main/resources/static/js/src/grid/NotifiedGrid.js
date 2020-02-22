@@ -15,7 +15,8 @@ Ext.define('NotifiedGrid', {
     ],
     listeners: {
       rowdblclick: 'onEditDoubleClick',
-      'add-record': { fn: 'onAddRecord', scope: 'controller' }
+      'add-record': { fn: 'onAddRecord', scope: 'controller' },
+      select: 'onRowSelected'
     },
     height: 200
   }],
@@ -23,6 +24,7 @@ Ext.define('NotifiedGrid', {
     var notifiedList = [];
     Ext.each(this.controller.lookupReference('notifiedGrid').getStore().getRange(), function(record) {
       notifiedList.push({
+        id: record.get('id'),
         recipient: record.get('recipient'),
         subject: record.get('subject'),
         message: record.get('message'),

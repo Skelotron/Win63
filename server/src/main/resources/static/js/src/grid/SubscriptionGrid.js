@@ -14,7 +14,8 @@ Ext.define('SubscriptionGrid', {
       { xtype: 'deleteactioncolumn' }
     ],
     listeners: {
-      rowdblclick: 'onEditDoubleClick'
+      rowdblclick: 'onEditDoubleClick',
+      select: 'onRowSelected'
     },
     height: 500,
     width: 600

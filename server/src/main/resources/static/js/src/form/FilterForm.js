@@ -63,11 +63,14 @@ Ext.define('FilterFormController', {
   extend: 'BaseEditWindowController',
   alias: 'controller.filterFormCtrl',
 
-  relations: {
-    'TITLE': ['EQUALS', 'CONTAINS'],
-    'DESCRIPTION': ['EQUALS', 'CONTAINS'],
-    'PRICE': ['EQUALS', 'GREATER', 'GREATER_OR_EQUALS', 'LESSER', 'LESSER_OR_EQUALS'],
-    'CATEGORY': ['EQUALS', 'CONTAINS']
+  constructor: function(config) {
+    this.relations = {};
+    this.relations[Enums.ItemField.TITLE] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
+    this.relations[Enums.ItemField.DESCRIPTION] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
+    this.relations[Enums.ItemField.PRICE] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.GREATER, Enums.ItemRelation.GREATER_OR_EQUALS, Enums.ItemRelation.LESSER, Enums.ItemRelation.LESSER_OR_EQUALS];
+    this.relations[Enums.ItemField.CATEGORY] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
+
+    this.callParent(arguments);
   },
 
   getRelationFilter: function(field) {
@@ -86,7 +89,7 @@ Ext.define('FilterFormController', {
     if (relationComboBox.getStore().findBy(function(record) { return record.get('value') == relationComboBox.getValue(); }) < 0) {
       relationComboBox.setValue(null);
     }
-    var isCategoryField = field === 'CATEGORY';
+    var isCategoryField = field === Enums.ItemField.CATEGORY;
     this.lookupReference('value').setHidden(isCategoryField);
     this.lookupReference('value').allowBlank = isCategoryField;
     this.lookupReference('categoryValue').setHidden(!isCategoryField);
@@ -100,9 +103,10 @@ Ext.define('FilterFormController', {
       var categoryValue = this.lookupReference('categoryValue').getValue();
 
       var record = {
+        id: this.recordId,
         field: field,
         relation: relation,
-        value: field === 'CATEGORY' ? categoryValue : value
+        value: field === Enums.ItemField.CATEGORY ? categoryValue : value
       };
 
       this.fireViewEvent('add-record', this, record);
@@ -111,9 +115,10 @@ Ext.define('FilterFormController', {
   init: function(config) {
     if (config.initialConfig.data) {
       var record = config.initialConfig.data;
+      this.recordId = record.get('id');
       this.lookupReference('field').setValue(record.get('field'));
       this.lookupReference('relation').setValue(record.get('relation'));
-      if (record.get('field') !== 'CATEGORY') {
+      if (record.get('field') !== Enums.ItemField.CATEGORY) {
         this.lookupReference('value').setValue(record.get('value'));
       } else {
         this.lookupReference('categoryValue').setValue(record.get('value'));

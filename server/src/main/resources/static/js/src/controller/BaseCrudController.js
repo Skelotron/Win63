@@ -21,5 +21,8 @@ Ext.define('BaseCrudController', {
   },
   onDeleteClick: function(grid, rowIndex) {
     grid.getStore().removeAt(rowIndex);
+  },
+  onRowSelected: function() {
+    this.lookupReference('editRecordButton').setDisabled(false);
   }
 });

@@ -42,25 +42,25 @@ Ext.define('NotifiedGridController', {
   extend: 'BaseCrudController',
   alias: 'controller.notifiedGridCtrl',
 
-  openAddScreen: function(component) {
+  openAddScreen: function() {
     var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.add_notified.title')});
-    component.relayEvents(notifiedForm, ['add-record']);
     notifiedForm.show();
+    return notifiedForm;
   },
-  openEditScreen: function(record, component) {
+  openEditScreen: function(record) {
     var notifiedForm = new NotifiedForm({title: Localization.get('notified.form.edit_notified.title'), data: record});
-    component.relayEvents(notifiedForm, ['add-record']);
     notifiedForm.show();
+    return notifiedForm;
   },
   getGrid: function() {
     return this.lookupReference('notifiedGrid');
   },
-  onAddRecord: function(form, record) {
+  onAddRecord: function(formController, record) {
     var grid = this.lookupReference('notifiedGrid');
     grid.getStore().add(record);
-    form.closeView();
+    formController.closeView();
   },
-  onEditRecord: function(form, record) {
+  onEditRecord: function(formController, record) {
     var grid = this.lookupReference('notifiedGrid');
     var store = grid.getStore();
     var recordIndex = grid.getStore().findBy(function(rec) { return rec.get('recipient') === record.recipient; });
@@ -70,6 +70,6 @@ Ext.define('NotifiedGridController', {
         existingRecord.set(key, record[key]);
       });
     }
-    form.closeView();
+    formController.closeView();
   }
 });

@@ -42,25 +42,25 @@ Ext.define('FilterGridController', {
   extend: 'BaseCrudController',
   alias: 'controller.filterGridCtrl',
 
-  openAddScreen: function(component) {
+  openAddScreen: function() {
     var filterForm = new FilterForm({title: Localization.get('filter.form.add_filter.title')});
-    component.relayEvents(filterForm, ['add-record']);
     filterForm.show();
+    return filterForm;
   },
-  openEditScreen: function(record, component) {
-    var editFilterForm = new FilterForm({title: Localization.get('filter.form.edit_filter.title'), data: record});
-    component.relayEvents(editFilterForm, ['add-record']);
-    editFilterForm.show();
+  openEditScreen: function(record) {
+    var filterForm = new FilterForm({title: Localization.get('filter.form.edit_filter.title'), data: record});
+    filterForm.show();
+    return filterForm;
   },
   getGrid: function() {
     return this.lookupReference('filterGrid');
   },
-  onAddRecord: function(form, record) {
+  onAddRecord: function(formController, record) {
     var grid = this.lookupReference('filterGrid');
     grid.getStore().add(record);
-    form.closeView();
+    formController.closeView();
   },
-  onEditRecord: function(form, record) {
+  onEditRecord: function(formController, record) {
     var grid = this.lookupReference('filterGrid');
     var store = grid.getStore();
     var recordIndex = grid.getStore().findBy(function(rec) { return rec.get('id') === record.id; });
@@ -70,6 +70,6 @@ Ext.define('FilterGridController', {
         existingRecord.set(key, record[key]);
       });
     }
-    form.closeView();
+    formController.closeView();
   }
 });

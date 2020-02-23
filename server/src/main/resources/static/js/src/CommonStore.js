@@ -68,7 +68,7 @@ Ext.define('CommonStore', {
     });
     return new Ext.data.Store({
       storeId: 'relationStore',
-      fields: ['value', 'name'],
+      model: 'Data.Model.FieldRelation',
       data: data
     });
   },
@@ -82,7 +82,7 @@ Ext.define('CommonStore', {
     });
     return new Ext.data.Store({
       storeId: 'itemFilterFieldStore',
-      fields: ['value', 'name'],
+      model: 'Data.Model.FilterField',
       data: data
     });
   }

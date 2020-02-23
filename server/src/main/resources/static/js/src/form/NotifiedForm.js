@@ -59,6 +59,7 @@ Ext.define('NotifiedFormController', {
       var filters = this.lookupReference('filterGrid').getFilterRecords();
 
       var record = {
+        id: this.recordId,
         recipient: recipient,
         subject: subject,
         message: message,
@@ -70,13 +71,16 @@ Ext.define('NotifiedFormController', {
   },
   init: function(config) {
     if (config.initialConfig.data) {
-      this.lookupReference('recipient').setValue(config.initialConfig.data.get('recipient'));
+      var record = config.initialConfig.data;
+      this.recordId = record.get('id');
+      this.lookupReference('recipient').setValue(record.get('recipient'));
       this.lookupReference('recipient').setEditable(false);
-      this.lookupReference('subject').setValue(config.initialConfig.data.get('subject'));
-      this.lookupReference('message').setValue(config.initialConfig.data.get('message'));
-      this.lookupReference('filterGrid').setFilters(config.initialConfig.data.get('filters'));
+      this.lookupReference('subject').setValue(record.get('subject'));
+      this.lookupReference('message').setValue(record.get('message'));
+      this.lookupReference('filterGrid').setFilters(record.get('filters'));
     } else {
       this.lookupReference('filterGrid').setFilters([]);
+      delete this.recordId;
     }
   },
   onAfterRender: function(form) {

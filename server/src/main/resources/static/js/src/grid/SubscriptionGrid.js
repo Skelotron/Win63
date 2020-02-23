@@ -27,12 +27,14 @@ Ext.define('SubscriptionGridController', {
   alias: 'controller.subscriptionGridCtrl',
 
   openAddScreen: function() {
-    var addSubscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.add_subscription.title')});
-    addSubscriptionForm.show();
+    var subscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.add_subscription.title')});
+    subscriptionForm.show();
+    return subscriptionForm;
   },
   openEditScreen: function(record) {
-    var editSubscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.edit_subscription.title'), data: record});
-    editSubscriptionForm.show();
+    var subscriptionForm = new SubscriptionForm({title: Localization.get('subscription.form.edit_subscription.title'), data: record});
+    subscriptionForm.show();
+    return subscriptionForm;
   },
   getGrid: function() {
     return this.lookupReference('subscriptionGrid');

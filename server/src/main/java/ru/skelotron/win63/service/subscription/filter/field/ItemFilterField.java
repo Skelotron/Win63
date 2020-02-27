@@ -30,9 +30,13 @@ public enum ItemFilterField implements FilterField<Item> {
             NumberDeserializer::new,
             Item::getAmount),
     CATEGORY(
-            Arrays.asList(FilterRelationType.EQUALS, FilterRelationType.CONTAINS),
+            Arrays.asList(FilterRelationType.CONTAINS, FilterRelationType.NOT_CONTAINS),
             PrimaryKeyDeserializer::new,
-            item -> Collections.singletonList(item.getCategory().getId()));
+            item -> Collections.singletonList(item.getCategory().getId())),
+    CITY(
+            Arrays.asList(FilterRelationType.CONTAINS, FilterRelationType.NOT_CONTAINS),
+            PrimaryKeyDeserializer::new,
+            item -> Collections.singletonList(item.getCity().getId()));
 
     private final List<FilterRelationType> supportedRelations;
     private final Supplier<Deserializer<?>> deserializer;

@@ -16,12 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/category")
-public class CategoriesController {
+public class CategoryController {
     private final CategoryRepository categoryRepository;
     private final CategoryModelConverter categoryModelConverter;
 
     @Autowired
-    public CategoriesController(CategoryRepository categoryRepository, CategoryModelConverter categoryModelConverter) {
+    public CategoryController(CategoryRepository categoryRepository, CategoryModelConverter categoryModelConverter) {
         this.categoryRepository = categoryRepository;
         this.categoryModelConverter = categoryModelConverter;
     }

@@ -38,16 +38,26 @@ public class Item extends AuditedEntity {
     @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
     private CategoryEntity category;
 
+    @ManyToOne
+    @JoinColumn(name = "city_id")
+    @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+    private CityEntity city;
+
     @OneToMany(mappedBy = "item", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @NotAudited
     private Set<PhotoEntity> photos;
 
     public Item(String url, String title, BigDecimal amount, Date insertTime, CategoryEntity category, Set<PhotoEntity> photos) {
+        this(url, title, amount, insertTime, category, photos, null);
+    }
+
+    public Item(String url, String title, BigDecimal amount, Date insertTime, CategoryEntity category, Set<PhotoEntity> photos, CityEntity city) {
         this.url = url;
         this.title = title;
         this.amount = amount;
         this.insertTime = insertTime != null ? insertTime : new Date();
         this.category = category;
+        this.city = city;
         this.photos = photos;
         for (PhotoEntity photo : photos) {
             photo.setItem(this);

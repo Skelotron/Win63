@@ -3,11 +3,13 @@ Enums.ItemField = Enums.ItemField || {
   TITLE: 'TITLE',
   DESCRIPTION: 'DESCRIPTION',
   PRICE: 'PRICE',
-  CATEGORY: 'CATEGORY'
+  CATEGORY: 'CATEGORY',
+  CITY: 'CITY'
 };
 Enums.ItemRelation = Enums.ItemRelation || {
   EQUALS: 'EQUALS',
   CONTAINS: 'CONTAINS',
+  NOT_CONTAINS: 'NOT_CONTAINS',
   GREATER: 'GREATER',
   GREATER_OR_EQUALS: 'GREATER_OR_EQUALS',
   LESSER: 'LESSER',
@@ -25,6 +27,21 @@ Ext.define('CommonStore', {
         reader: {
           type: 'json',
           rootProperty: 'categories'
+        }
+      },
+      autoLoad: true,
+      fields: ['id', 'name']
+    });
+  },
+  createCityStore: function() {
+    return new Ext.data.JsonStore({
+      storeId: 'cityStore',
+      proxy: {
+        type: 'ajax',
+        url: '/city/',
+        reader: {
+          type: 'json',
+          rootProperty: 'cities'
         }
       },
       autoLoad: true,
@@ -120,3 +137,4 @@ Ext.define('CommonStore', {
 
 var Store = {};
 Store.Category = new CommonStore().createCategoryStore();
+Store.City = new CommonStore().createCityStore();

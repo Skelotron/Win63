@@ -1,12 +1,18 @@
 var Renderers = Renderers || {};
 Renderers.column = Renderers.column || {};
 Renderers.column.FilterValueRenderer = Renderers.FilterValueRenderer ||
-  function(value) {
+  function(value, cell, record) {
     if (Ext.isArray(value)) {
       var names = [];
-      Ext.each(value, function(id) {
-        names.push(Store.Category.getById(id).get('name'));
-      });
+      if (record.get('field') === Enums.ItemField.CITY) {
+        Ext.each(value, function(id) {
+          names.push(Store.City.getById(id).get('name'));
+        });
+      } else {
+        Ext.each(value, function(id) {
+          names.push(Store.Category.getById(id).get('name'));
+        });
+      }
       return names.join('<br>');
     } else {
       return value;

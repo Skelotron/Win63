@@ -52,6 +52,20 @@ public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
                 } else {
                     return StringUtils.containsIgnoreCase(String.valueOf(itemValue), String.valueOf(filterValue));
                 }
+
+            case NOT_CONTAINS:
+                if (filterValue instanceof List) {
+                    List filterValues = (List) filterValue;
+                    List itemValues = (List) itemValue;
+                    for (Object value : itemValues) {
+                        if (filterValues.contains(value)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                } else {
+                    return !StringUtils.containsIgnoreCase(String.valueOf(itemValue), String.valueOf(filterValue));
+                }
             default:
                 throw new IllegalArgumentException("Unsupported RelationType: " + relationType);
         }

@@ -56,6 +56,17 @@ Ext.define('FilterForm', {
         valueField: 'id',
         hidden: true,
         width: 500
+      },
+      {
+        reference: 'cityValue',
+        xtype: 'tagfield',
+        fieldLabel: Localization.get('filter.form.add_filter.field.value'),
+        store: new CommonStore().createCityStore(),
+        queryMode: 'remote',
+        displayField: 'name',
+        valueField: 'id',
+        hidden: true,
+        width: 500
       }]
     });
   }
@@ -70,7 +81,8 @@ Ext.define('FilterFormController', {
     this.relations[Enums.ItemField.TITLE] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
     this.relations[Enums.ItemField.DESCRIPTION] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
     this.relations[Enums.ItemField.PRICE] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.GREATER, Enums.ItemRelation.GREATER_OR_EQUALS, Enums.ItemRelation.LESSER, Enums.ItemRelation.LESSER_OR_EQUALS];
-    this.relations[Enums.ItemField.CATEGORY] = [Enums.ItemRelation.EQUALS, Enums.ItemRelation.CONTAINS];
+    this.relations[Enums.ItemField.CATEGORY] = [Enums.ItemRelation.CONTAINS, Enums.ItemRelation.NOT_CONTAINS];
+    this.relations[Enums.ItemField.CITY] = [Enums.ItemRelation.CONTAINS, Enums.ItemRelation.NOT_CONTAINS];
 
     this.callParent(arguments);
   },
@@ -92,10 +104,13 @@ Ext.define('FilterFormController', {
       relationComboBox.setValue(null);
     }
     var isCategoryField = field === Enums.ItemField.CATEGORY;
-    this.lookupReference('value').setHidden(isCategoryField);
-    this.lookupReference('value').allowBlank = isCategoryField;
+    var isCityField = field === Enums.ItemField.CITY;
+    this.lookupReference('value').setHidden(isCategoryField || isCityField);
+    this.lookupReference('value').allowBlank = isCategoryField || isCityField;
     this.lookupReference('categoryValue').setHidden(!isCategoryField);
     this.lookupReference('categoryValue').allowBlank = !isCategoryField;
+    this.lookupReference('cityValue').setHidden(!isCityField);
+    this.lookupReference('cityValue').allowBlank = !isCityField;
   },
   onApply: function() {
     if (this.lookupReference('filterForm').isValid()) {
@@ -103,12 +118,22 @@ Ext.define('FilterFormController', {
       var relation = this.lookupReference('relation').getValue();
       var value = this.lookupReference('value').getValue();
       var categoryValue = this.lookupReference('categoryValue').getValue();
+      var cityValue = this.lookupReference('cityValue').getValue();
+
+      var recordValue;
+      if (field === Enums.ItemField.CATEGORY) {
+        recordValue = categoryValue;
+      } else if (field === Enums.ItemField.CITY) {
+        recordValue = cityValue;
+      } else {
+        recordValue = value;
+      }
 
       var record = {
         id: this.recordId,
         field: field,
         relation: relation,
-        value: field === Enums.ItemField.CATEGORY ? categoryValue : value
+        value: recordValue
       };
 
       this.fireViewEvent('add-record', this, record);
@@ -120,10 +145,12 @@ Ext.define('FilterFormController', {
       this.recordId = record.get('id');
       this.lookupReference('field').setValue(record.get('field'));
       this.lookupReference('relation').setValue(record.get('relation'));
-      if (record.get('field') !== Enums.ItemField.CATEGORY) {
-        this.lookupReference('value').setValue(record.get('value'));
-      } else {
+      if (record.get('field') === Enums.ItemField.CATEGORY) {
         this.lookupReference('categoryValue').setValue(record.get('value'));
+      } else if (record.get('field') === Enums.ItemField.CITY) {
+        this.lookupReference('cityValue').setValue(record.get('value'));
+      } else {
+        this.lookupReference('value').setValue(record.get('value'));
       }
     }
   }

@@ -4,10 +4,7 @@ import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.*;
-import ru.skelotron.win63.repository.CategoryRepository;
-import ru.skelotron.win63.repository.ItemRepository;
-import ru.skelotron.win63.repository.ItemSynchronizationRepository;
-import ru.skelotron.win63.repository.SubscriptionRepository;
+import ru.skelotron.win63.repository.*;
 import ru.skelotron.win63.service.subscription.filter.field.ItemFilterField;
 
 import java.math.BigDecimal;
@@ -21,13 +18,15 @@ public class DemoData {
     private final ItemRepository itemRepository;
     private final SubscriptionRepository subscriptionRepository;
     private final ItemSynchronizationRepository itemSynchronizationRepository;
+    private final CityRepository cityRepository;
 
     @Autowired
-    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository, SubscriptionRepository subscriptionRepository, ItemSynchronizationRepository itemSynchronizationRepository) {
+    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository, SubscriptionRepository subscriptionRepository, ItemSynchronizationRepository itemSynchronizationRepository, CityRepository cityRepository) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.itemSynchronizationRepository = itemSynchronizationRepository;
+        this.cityRepository = cityRepository;
     }
 
     public void prepare() {
@@ -36,6 +35,7 @@ public class DemoData {
         prepareItems();
         prepareSubscriptions();
         prepareItemSynchronization();
+        prepareCities();
         log.info("End Data Preparing");
     }
 
@@ -423,6 +423,35 @@ public class DemoData {
             entity.setManual( true );
             itemSynchronizationRepository.save(entity);
         }
+    }
+
+    private void prepareCities() {
+        cityRepository.save( new CityEntity( "5", "Москва и область", true ) );
+        cityRepository.save( new CityEntity( "10", "Санкт-Петербург", true ) );
+        cityRepository.save( new CityEntity( "1", "Екатеринбург", true ) );
+        cityRepository.save( new CityEntity( "2", "Казань", true ) );
+        cityRepository.save( new CityEntity( "3", "Кострома", true ) );
+        cityRepository.save( new CityEntity( "4", "Краснодар", true ) );
+        cityRepository.save( new CityEntity( "65", "Копейск", true ) );
+        cityRepository.save( new CityEntity( "54", "Красноярск", true ) );
+        cityRepository.save( new CityEntity( "62", "Курган", true ) );
+        cityRepository.save( new CityEntity( "61", "Магнитогорск", true ) );
+        cityRepository.save( new CityEntity( "6", "Набережные Челны", true ) );
+        cityRepository.save( new CityEntity( "7", "Нижний Новгород", true ) );
+        cityRepository.save( new CityEntity( "53", "Нижнекамск", true ) );
+        cityRepository.save( new CityEntity( "8", "Новокуйбышевск", true ) );
+        cityRepository.save( new CityEntity( "59", "Пермь", true ) );
+        cityRepository.save( new CityEntity( "56", "Рязань", true ) );
+        cityRepository.save( new CityEntity( "9", "Самара", true ) );
+        cityRepository.save( new CityEntity( "11", "Саратов", true ) );
+        cityRepository.save( new CityEntity( "12", "Симферополь", true ) );
+        cityRepository.save( new CityEntity( "13", "Сызрань", true ) );
+        cityRepository.save( new CityEntity( "14", "Тольятти", true ) );
+        cityRepository.save( new CityEntity( "58", "Тюмень", true ) );
+        cityRepository.save( new CityEntity( "15", "Уфа", true ) );
+        cityRepository.save( new CityEntity( "64", "Чапаевск", true ) );
+        cityRepository.save( new CityEntity( "16", "Челябинск", true ) );
+        cityRepository.save( new CityEntity( "57", "Энгельс", true ) );
     }
 
     private Date getDate(String value) {

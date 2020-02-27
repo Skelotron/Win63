@@ -64,7 +64,15 @@ public class HttpCategoryReader implements CategoryReader {
                 if ( existingCategoriesList.contains(categoryEntity) ) {
                     CategoryEntity existingCategory = existingCategoriesList.get( existingCategoriesList.indexOf(categoryEntity) );
                     existingCategory.setExternalId(categoryEntity.getExternalId());
-                    existingCategory.setSubCategories(categoryEntity.getSubCategories());
+                    for (CategoryEntity subCategory : categoryEntity.getSubCategories()) {
+                        if (existingCategory.getSubCategories().contains(subCategory)) {
+                            for (CategoryEntity existingSubCategory : existingCategory.getSubCategories()) {
+                                if (existingSubCategory.equals(subCategory)) {
+                                    existingSubCategory.setExternalId(subCategory.getExternalId());
+                                }
+                            }
+                        }
+                    }
                     categoryEntity = existingCategory;
                 }
 

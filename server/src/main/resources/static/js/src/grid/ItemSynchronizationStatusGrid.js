@@ -1,6 +1,7 @@
 Ext.define('ItemSynchronizationStatusGrid', {
   extend: 'Ext.Panel',
   region: 'center',
+  controller: 'ItemSyncStatusCtrl',
   height: 700,
   title: Localization.get('itemSynchronizationStatus.grid.title'),
   items: [{
@@ -15,4 +16,22 @@ Ext.define('ItemSynchronizationStatusGrid', {
       { xtype: 'syncactioncolumn' }
     ]
   }]
+});
+
+Ext.define('ItemSynchronizationStatusController', {
+  extend: 'Ext.app.ViewController',
+  alias: 'controller.ItemSyncStatusCtrl',
+
+  onSyncClickGrid: function(grid, rowIndex, columnIndex, column, event, record) {
+    var categoryId = record.get('category')['id'];
+    Ext.Ajax.request({
+      url: '/synchronization/item/category/' + categoryId,
+      method: 'POST',
+      loadMask: true,
+      params: Ext.util.JSON.encode({}),
+      success: function(response) {
+        grid.getStore().reload();
+      }
+    });
+  }
 });

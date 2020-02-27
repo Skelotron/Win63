@@ -8,8 +8,10 @@ import ru.skelotron.win63.controller.model.ItemSynchronizationModel;
 import ru.skelotron.win63.controller.model.Synchronizations;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
+import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemSynchronizationRepository;
+import ru.skelotron.win63.service.item.ItemSynchronizationService;
 
 import java.util.*;
 
@@ -19,12 +21,14 @@ public class SynchronizationController {
     private final ItemSynchronizationRepository itemSynchronizationRepository;
     private final ItemSynchronizationModelConverter itemSynchronizationModelConverter;
     private final CategoryRepository categoryRepository;
+    private final ItemSynchronizationService itemSynchronizationService;
 
     @Autowired
-    public SynchronizationController(ItemSynchronizationRepository itemSynchronizationRepository, ItemSynchronizationModelConverter itemSynchronizationModelConverter, CategoryRepository categoryRepository) {
+    public SynchronizationController(ItemSynchronizationRepository itemSynchronizationRepository, ItemSynchronizationModelConverter itemSynchronizationModelConverter, CategoryRepository categoryRepository, ItemSynchronizationService itemSynchronizationService) {
         this.itemSynchronizationRepository = itemSynchronizationRepository;
         this.itemSynchronizationModelConverter = itemSynchronizationModelConverter;
         this.categoryRepository = categoryRepository;
+        this.itemSynchronizationService = itemSynchronizationService;
     }
 
     @GetMapping("/{entityName}")
@@ -55,5 +59,12 @@ public class SynchronizationController {
         }
 
         return ResponseEntity.ok( new Synchronizations(synchronizationHistoryModels) );
+    }
+
+    @PostMapping("/{entityName}/category/{categoryId}")
+    public ResponseEntity<Void> synchronize(@PathVariable String entityName, @PathVariable Long categoryId) {
+        CategoryEntity category = categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException(CategoryEntity.class, categoryId));
+        itemSynchronizationService.synchronize(category, true);
+        return ResponseEntity.ok().build();
     }
 }

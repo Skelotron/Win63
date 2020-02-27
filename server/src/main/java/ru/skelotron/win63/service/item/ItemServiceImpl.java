@@ -1,8 +1,8 @@
 package ru.skelotron.win63.service.item;
 
+import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.skelotron.win63.converter.ItemConverter;
 import ru.skelotron.win63.entity.CategoryEntity;
@@ -23,6 +23,7 @@ import ru.skelotron.win63.util.CollectionUtil;
 import java.util.*;
 
 @Service
+@Log
 public class ItemServiceImpl implements ItemService {
 
     private final SettingsRepository settingsRepository;
@@ -33,7 +34,7 @@ public class ItemServiceImpl implements ItemService {
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServiceImpl(SettingsRepository settingsRepository, @Qualifier("DummyResponseReader") ResponseReader responseReader, ItemConverter itemConverter, ItemRepository itemRepository, SettingsService settingsService, CategoryRepository categoryRepository) {
+    public ItemServiceImpl(SettingsRepository settingsRepository, ResponseReader responseReader, ItemConverter itemConverter, ItemRepository itemRepository, SettingsService settingsService, CategoryRepository categoryRepository) {
         this.settingsRepository = settingsRepository;
         this.responseReader = responseReader;
         this.itemConverter = itemConverter;
@@ -46,8 +47,10 @@ public class ItemServiceImpl implements ItemService {
     public ItemsChangeData load(CategoryEntity category) {
         int quantity = Integer.parseInt(settingsRepository.findByName("pageSize").getValue());
         int count = getCount(category);
+        log.info("Found " + count + " items of category " + category.getName());
         if (count > 0) {
             int batchesCount = (count / quantity) + (((count % quantity) == 0) ? 0 : 1);
+            log.info("Start load " + batchesCount + " pages of items with category " + category.getName());
 
             Collection<GoodsEntry> goods = new ArrayList<>();
             Collection<Category> categories = new ArrayList<>();

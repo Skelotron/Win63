@@ -47,6 +47,9 @@ public class DemoData {
         phones.getSubCategories().add( new CategoryEntity( "Зарядные устройства", "/catalog/telefony/zaryadnye-ustroistva/", "253" ) );
         phones.getSubCategories().add( new CategoryEntity( "Телефоны для дома и офиса", "/catalog/telefony/telefony-dlya-doma-i-ofisa/", "144" ) );
         phones.getSubCategories().add( new CategoryEntity( "Сотовые телефоны", "/catalog/telefony/sotovye-telefony/", "143" ) );
+        for (CategoryEntity categoryEntity : phones.getSubCategories()) {
+            categoryEntity.setParentCategory(phones);
+        }
         categoryRepository.save( phones );
 
         CategoryEntity computers = new CategoryEntity("Компьютерная техника", "/catalog/kompyuternaya-tehnika/", "99");
@@ -63,6 +66,9 @@ public class DemoData {
         computers.getSubCategories().add( new CategoryEntity( "Планшетные пк", "/catalog/kompyuternaya-tehnika/planshetnye-pk/" ) );
         computers.getSubCategories().add( new CategoryEntity( "Жесткие диски", "/catalog/kompyuternaya-tehnika/jestkie-diski/" ) );
         computers.getSubCategories().add( new CategoryEntity( "Принтеры и МФУ", "/catalog/kompyuternaya-tehnika/printery-i-mfu/" ) );
+        for (CategoryEntity categoryEntity : computers.getSubCategories()) {
+            categoryEntity.setParentCategory(computers);
+        }
         categoryRepository.save(computers);
 
         CategoryEntity tools = new CategoryEntity("Инструмент", "/catalog/instrument/", "84");
@@ -73,6 +79,9 @@ public class DemoData {
         tools.getSubCategories().add( new CategoryEntity( "Сварочное оборудование", "/catalog/instrument/svarochnoe-oborudovanie/" ) );
         tools.getSubCategories().add( new CategoryEntity( "Светотехника", "/catalog/instrument/svetotehnika/" ) );
         tools.getSubCategories().add( new CategoryEntity( "Ручной инструмент", "/catalog/instrument/ruchnoi-instrument/" ) );
+        for (CategoryEntity categoryEntity : tools.getSubCategories()) {
+            categoryEntity.setParentCategory(tools);
+        }
         categoryRepository.save(tools);
 
         CategoryEntity games = new CategoryEntity("Игры и приставки", "/catalog/igry-i-pristavki/", "83");
@@ -80,6 +89,9 @@ public class DemoData {
         games.getSubCategories().add( new CategoryEntity( "Аксессуары для игровых приставок", "/catalog/igry-i-pristavki/aksessuary-dlya-igrovyh-pristavok/" ) );
         games.getSubCategories().add( new CategoryEntity( "Настольные игры", "/catalog/igry-i-pristavki/nastolnye-igry/" ) );
         games.getSubCategories().add( new CategoryEntity( "Игровые приставки", "/catalog/igry-i-pristavki/igrovye-pristavki/" ) );
+        for (CategoryEntity categoryEntity : games.getSubCategories()) {
+            categoryEntity.setParentCategory(games);
+        }
         categoryRepository.save(games);
 
         CategoryEntity home = new CategoryEntity("Товары для дома", "/catalog/tovary-dlya-doma/", "114");
@@ -99,6 +111,9 @@ public class DemoData {
         home.getSubCategories().add( new CategoryEntity( "Электрические плиты", "/catalog/tovary-dlya-doma/elektricheskie-plity/" ) );
         home.getSubCategories().add( new CategoryEntity( "Чайники и кофеварки", "/catalog/tovary-dlya-doma/chainiki-i-kofevarki/" ) );
         home.getSubCategories().add( new CategoryEntity( "Товары для красоты и здоровья", "/catalog/tovary-dlya-doma/tovary-dlya-krasoty-i-zdorovya/" ) );
+        for (CategoryEntity categoryEntity : home.getSubCategories()) {
+            categoryEntity.setParentCategory(home);
+        }
         categoryRepository.save(home);
 
         CategoryEntity auto = new CategoryEntity("Авто", "/catalog/avto/", "132");
@@ -112,6 +127,9 @@ public class DemoData {
         auto.getSubCategories().add( new CategoryEntity( "Автомобильные усилители", "/catalog/avto/avtomobilnye-usiliteli/" ) );
         auto.getSubCategories().add( new CategoryEntity( "Навигаторы", "/catalog/avto/navigatory/" ) );
         auto.getSubCategories().add( new CategoryEntity( "Автомагнитолы", "/catalog/avto/avtomagnitoly/" ) );
+        for (CategoryEntity categoryEntity : auto.getSubCategories()) {
+            categoryEntity.setParentCategory(auto);
+        }
         categoryRepository.save(auto);
 
         CategoryEntity photo = new CategoryEntity("Фото и видеотехника", "/catalog/foto-i-videotehnika/", "125");
@@ -119,6 +137,9 @@ public class DemoData {
         photo.getSubCategories().add( new CategoryEntity( "Фоторамки", "/catalog/foto-i-videotehnika/fotoramki/" ) );
         photo.getSubCategories().add( new CategoryEntity( "Фотоаппараты", "/catalog/foto-i-videotehnika/fotoapparaty/" ) );
         photo.getSubCategories().add( new CategoryEntity( "Видеокамеры", "/catalog/foto-i-videotehnika/videokamery/" ) );
+        for (CategoryEntity categoryEntity : photo.getSubCategories()) {
+            categoryEntity.setParentCategory(photo);
+        }
         categoryRepository.save(photo);
 
         CategoryEntity personal = new CategoryEntity("Личные вещи", "/catalog/lichnye-vecshi/", "157");
@@ -127,6 +148,9 @@ public class DemoData {
         personal.getSubCategories().add( new CategoryEntity( "Часы", "/catalog/lichnye-vecshi/chasy/" ) );
         personal.getSubCategories().add( new CategoryEntity( "Канцтовары", "/catalog/lichnye-vecshi/kanctovary/" ) );
         personal.getSubCategories().add( new CategoryEntity( "Кошельки и сумки", "/catalog/lichnye-vecshi/koshelki-i-sumki/" ) );
+        for (CategoryEntity categoryEntity : personal.getSubCategories()) {
+            categoryEntity.setParentCategory(personal);
+        }
         categoryRepository.save(personal);
 
         CategoryEntity hobby = new CategoryEntity("Хобби и отдых", "/catalog/hobbi-i-otdyh/", "148");
@@ -142,6 +166,9 @@ public class DemoData {
         hobby.getSubCategories().add( new CategoryEntity( "Коллекционирование", "/catalog/hobbi-i-otdyh/kollekcionirovanie/" ) );
         hobby.getSubCategories().add( new CategoryEntity( "Музыкальные инструменты", "/catalog/hobbi-i-otdyh/muzykalnye-instrumenty/" ) );
         hobby.getSubCategories().add( new CategoryEntity( "Тату-машинки", "/catalog/hobbi-i-otdyh/tatumashinki/" ) );
+        for (CategoryEntity categoryEntity : hobby.getSubCategories()) {
+            categoryEntity.setParentCategory(hobby);
+        }
         categoryRepository.save(hobby);
 
         CategoryEntity audio = new CategoryEntity("Аудиотехника", "/catalog/audiotehnika/", "91");
@@ -151,6 +178,9 @@ public class DemoData {
         audio.getSubCategories().add( new CategoryEntity( "MP3 плееры", "/catalog/audiotehnika/mp3-pleery/" ) );
         audio.getSubCategories().add( new CategoryEntity( "Домашние кинотеатры", "/catalog/audiotehnika/domashnie-kinoteatry/" ) );
         audio.getSubCategories().add( new CategoryEntity( "Колонки", "/catalog/audiotehnika/kolonki/" ) );
+        for (CategoryEntity categoryEntity : audio.getSubCategories()) {
+            categoryEntity.setParentCategory(audio);
+        }
         categoryRepository.save(audio);
 
         CategoryEntity video = new CategoryEntity("ТВ и Видео", "/catalog/tv-i-video/", "108");
@@ -159,6 +189,9 @@ public class DemoData {
         video.getSubCategories().add( new CategoryEntity( "Телевизоры", "/catalog/tv-i-video/televizory/" ) );
         video.getSubCategories().add( new CategoryEntity( "Аксессуары для ТВ и видео", "/catalog/tv-i-video/aksessuary-dlya-tv-i-video/" ) );
         video.getSubCategories().add( new CategoryEntity( "Проекторы", "/catalog/tv-i-video/proektory/" ) );
+        for (CategoryEntity categoryEntity : video.getSubCategories()) {
+            categoryEntity.setParentCategory(video);
+        }
         categoryRepository.save(video);
 
         CategoryEntity children = new CategoryEntity("Товары для детей", "/catalog/tovary-dlya-detei/", "147");
@@ -167,7 +200,9 @@ public class DemoData {
         children.getSubCategories().add( new CategoryEntity( "Товары для младенцев", "/catalog/tovary-dlya-detei/tovary-dlya-mladencev/" ) );
         children.getSubCategories().add( new CategoryEntity( "Детские коляски", "/catalog/tovary-dlya-detei/detskie-kolyaski/" ) );
         children.getSubCategories().add( new CategoryEntity( "Радио и видео няни", "/catalog/tovary-dlya-detei/radio-i-video-nyani/" ) );
-
+        for (CategoryEntity categoryEntity : children.getSubCategories()) {
+            categoryEntity.setParentCategory(children);
+        }
         categoryRepository.save(children);
     }
 

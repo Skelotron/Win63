@@ -85,6 +85,36 @@ Ext.define('CommonStore', {
       model: 'Data.Model.FilterField',
       data: data
     });
+  },
+  createItemSynchronizationStore: function() {
+    return new Ext.data.JsonStore({
+      storeId: 'itemSynchronizationStore',
+      proxy: {
+        type: 'ajax',
+        url: '/synchronization/Item',
+        reader: {
+          type: 'json',
+          rootProperty: 'synchronizations'
+        }
+      },
+      autoLoad: true,
+      model: 'Data.Model.ItemSynchronization'
+    });
+  },
+  createItemSynchronizationStatusStore: function() {
+    return new Ext.data.JsonStore({
+      storeId: 'itemSynchronizationStatusStore',
+      proxy: {
+        type: 'ajax',
+        url: '/synchronization/Item?last=true',
+        reader: {
+          type: 'json',
+          rootProperty: 'synchronizations'
+        }
+      },
+      autoLoad: true,
+      model: 'Data.Model.ItemSynchronization'
+    });
   }
 });
 

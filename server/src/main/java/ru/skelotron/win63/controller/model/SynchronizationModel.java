@@ -10,6 +10,6 @@ import java.util.Date;
 public abstract class SynchronizationModel extends AbstractModel {
     private Long id;
     private Date syncDate;
-    private int newItemsCount;
-    private boolean manual;
+    private long newItemsCount;
+    private Boolean manual;
 }

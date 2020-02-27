@@ -22,3 +22,10 @@ Renderers.column.FilterFieldRenderer = Renderers.column.FilterFieldRenderer ||
   function(value) {
     return Localization.get('filter.grid.column.field.' + value);
   };
+Renderers.column.BooleanRenderer = Renderers.column.BooleanRenderer ||
+  function(value) {
+    if (Ext.isBoolean(value)) {
+      return value === true ? Localization.get('boolean.true') : Localization.get('boolean.false');
+    }
+    return '';
+  };

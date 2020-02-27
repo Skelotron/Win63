@@ -6,15 +6,13 @@ import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.*;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
+import ru.skelotron.win63.repository.ItemSynchronizationRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 import ru.skelotron.win63.service.subscription.filter.field.ItemFilterField;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashSet;
+import java.util.*;
 
 @Component
 @Log
@@ -22,12 +20,14 @@ public class DemoData {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;
     private final SubscriptionRepository subscriptionRepository;
+    private final ItemSynchronizationRepository itemSynchronizationRepository;
 
     @Autowired
-    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository, SubscriptionRepository subscriptionRepository) {
+    public DemoData(CategoryRepository categoryRepository, ItemRepository itemRepository, SubscriptionRepository subscriptionRepository, ItemSynchronizationRepository itemSynchronizationRepository) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.subscriptionRepository = subscriptionRepository;
+        this.itemSynchronizationRepository = itemSynchronizationRepository;
     }
 
     public void prepare() {
@@ -35,6 +35,7 @@ public class DemoData {
         prepareCategories();
         prepareItems();
         prepareSubscriptions();
+        prepareItemSynchronization();
         log.info("End Data Preparing");
     }
 
@@ -371,6 +372,22 @@ public class DemoData {
                                 new EmailNotified( "khaliulin.r.r@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.GREATER, Item.ENTITY_NAME, ItemFilterField.PRICE.name(), "500.0" ) ) ) )
                         ) ) ) );
         subscriptionRepository.save( new Subscription( categoryRepository.findByExternalId( "84" ), new HashSet<>(Arrays.asList( new EmailNotified( "skelotron@gmail.com", "New Item: <ItemName>", "New Item: <ItemName>\n <ItemDescription>\n Price: <ItemCost>", new HashSet<>( Arrays.asList( new Filter( FilterRelationType.CONTAINS, Item.ENTITY_NAME, ItemFilterField.TITLE.name(), "New" ) ) ) ) ) ) ) );
+    }
+
+    private void prepareItemSynchronization() {
+        Map<CategoryEntity, Set<Item>> groupedItems = new HashMap<>();
+        for (Item item : itemRepository.findAll()) {
+            groupedItems.computeIfAbsent(item.getCategory(), a -> new HashSet<>()).add(item);
+        }
+
+        for (Map.Entry<CategoryEntity, Set<Item>> entry : groupedItems.entrySet()) {
+            ItemSynchronizationEntity entity = new ItemSynchronizationEntity();
+            entity.setSyncDate(new Date());
+            entity.setNewEntitiesCount( entry.getValue().size() );
+            entity.setCategory( entry.getKey() );
+            entity.setManual( true );
+            itemSynchronizationRepository.save(entity);
+        }
     }
 
     private Date getDate(String value) {

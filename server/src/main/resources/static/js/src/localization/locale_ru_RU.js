@@ -22,6 +22,7 @@ Localization.keys = {
   'menu.add_tag': 'Добавить Тег',
   'column.edit': 'Редактировать',
   'column.delete': 'Удалить',
+  'column.sync': 'Синхронизировать',
   'filter.grid.title': 'Фильтры',
   'grid.button.add': 'Добавить',
   'grid.button.edit': 'Редактировать',
@@ -42,5 +43,14 @@ Localization.keys = {
   'filter.form.add_filter.field.relation': 'Сравнение',
   'filter.form.add_filter.field.value': 'Значение',
   'filter.form.add_filter.title': 'Добавить Фильтр',
-  'filter.form.edit_filter.title': 'Редактировать Фильтр'
+  'filter.form.edit_filter.title': 'Редактировать Фильтр',
+  'itemSynchronization.grid.title': 'История синхронизации товаров',
+  'itemSynchronization.grid.column.category': 'Категория',
+  'itemSynchronization.grid.column.new_items_count': 'Добавлено товаров',
+  'itemSynchronization.grid.column.manual': 'Ручной запуск',
+  'itemSynchronization.grid.column.sync_date': 'Дата синхронизации',
+  'itemSynchronization.grid.column.last_sync_date': 'Дата последней синхронизации',
+  'itemSynchronizationStatus.grid.title': 'Последняя синхронизация товаров',
+  'boolean.true': 'Да',
+  'boolean.false': 'Нет'
 };

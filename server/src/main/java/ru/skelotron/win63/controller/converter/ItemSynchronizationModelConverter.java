@@ -23,7 +23,7 @@ public class ItemSynchronizationModelConverter implements ModelConverter<ItemSyn
         ItemSynchronizationModel model = new ItemSynchronizationModel();
         model.setId(entity.getId());
         model.setCategory( categoryModelConverter.convertToModel( entity.getCategory() ) );
-        model.setManual( entity.isManual() );
+        model.setManual( entity.getManual() );
         model.setNewItemsCount( entity.getNewEntitiesCount() );
         model.setSyncDate( entity.getSyncDate() );
         return model;
@@ -39,7 +39,7 @@ public class ItemSynchronizationModelConverter implements ModelConverter<ItemSyn
             entity = new ItemSynchronizationEntity();
         }
         entity.setCategory( categoryModelConverter.convertToEntity(model.getCategory()) );
-        entity.setManual( model.isManual() );
+        entity.setManual( model.getManual() );
         entity.setNewEntitiesCount( model.getNewItemsCount() );
         entity.setSyncDate( model.getSyncDate() );
         return entity;

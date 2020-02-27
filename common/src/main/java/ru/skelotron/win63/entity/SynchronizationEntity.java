@@ -18,11 +18,11 @@ public abstract class SynchronizationEntity extends AuditedEntity {
     private String type;
 
     @Column
-    private boolean manual;
+    private Boolean manual;
 
     @Column
     private Date syncDate;
 
     @Column
-    private int newEntitiesCount;
+    private long newEntitiesCount;
 }

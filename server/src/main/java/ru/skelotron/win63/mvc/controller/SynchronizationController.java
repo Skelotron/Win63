@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skelotron.win63.mvc.converter.ItemSynchronizationModelConverter;
 import ru.skelotron.win63.mvc.model.ItemSynchronizationModel;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.mvc.model.Synchronizations;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
@@ -17,25 +18,22 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/synchronization")
-public class SynchronizationController {
-    private final ItemSynchronizationRepository itemSynchronizationRepository;
-    private final ItemSynchronizationModelConverter itemSynchronizationModelConverter;
+public class SynchronizationController extends AbstractController<ItemSynchronizationModelConverter, ItemSynchronizationRepository, ItemSynchronizationEntity, ItemSynchronizationModel> {
     private final CategoryRepository categoryRepository;
     private final ItemSynchronizationService itemSynchronizationService;
 
     @Autowired
     public SynchronizationController(ItemSynchronizationRepository itemSynchronizationRepository, ItemSynchronizationModelConverter itemSynchronizationModelConverter, CategoryRepository categoryRepository, ItemSynchronizationService itemSynchronizationService) {
-        this.itemSynchronizationRepository = itemSynchronizationRepository;
-        this.itemSynchronizationModelConverter = itemSynchronizationModelConverter;
+        super(itemSynchronizationModelConverter, itemSynchronizationRepository);
         this.categoryRepository = categoryRepository;
         this.itemSynchronizationService = itemSynchronizationService;
     }
 
     @GetMapping("/{entityName}")
-    public ResponseEntity<Synchronizations> getSynchronizations(@PathVariable String entityName, @RequestParam(name = "last", required = false, defaultValue = "false") boolean onlyLast) {
+    public ResponseEntity<ModelListHolder<ItemSynchronizationModel>> getSynchronizations(@PathVariable String entityName, @RequestParam(name = "last", required = false, defaultValue = "false") boolean onlyLast) {
         List<ItemSynchronizationEntity> synchronizationHistory;
         if (onlyLast) {
-            synchronizationHistory = itemSynchronizationRepository.findLastByTypeOrderBySyncDate(entityName);
+            synchronizationHistory = getRepository().findLastByTypeOrderBySyncDate(entityName);
 
             Set<CategoryEntity> categories = new HashSet<>();
             for (ItemSynchronizationEntity item : synchronizationHistory) {
@@ -50,15 +48,10 @@ public class SynchronizationController {
                 }
             }
         } else {
-           synchronizationHistory = itemSynchronizationRepository.findByTypeOrderBySyncDate(entityName);
+           synchronizationHistory = getRepository().findByTypeOrderBySyncDate(entityName);
         }
 
-        List<ItemSynchronizationModel> synchronizationHistoryModels = new ArrayList<>();
-        for (ItemSynchronizationEntity entity : synchronizationHistory) {
-            synchronizationHistoryModels.add( itemSynchronizationModelConverter.convertToModel(entity) );
-        }
-
-        return ResponseEntity.ok( new Synchronizations(synchronizationHistoryModels) );
+        return ResponseEntity.ok( convertToHolder(synchronizationHistory) );
     }
 
     @PostMapping("/{entityName}/category/{categoryId}")
@@ -66,5 +59,10 @@ public class SynchronizationController {
         CategoryEntity category = categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException(CategoryEntity.class, categoryId));
         itemSynchronizationService.synchronize(category, true);
         return ResponseEntity.ok().build();
+    }
+
+    @Override
+    protected ModelListHolder<ItemSynchronizationModel> createModelListHolder() {
+        return new Synchronizations<>();
     }
 }

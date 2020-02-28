@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skelotron.win63.mvc.converter.SubscriptionModelConverter;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.EmailNotified;
@@ -80,7 +81,12 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
 
     // todo: paging
     @GetMapping("/")
-    public ResponseEntity<Subscriptions> getAll() {
-        return ResponseEntity.ok(new Subscriptions(getAllRecords()));
+    public ResponseEntity<ModelListHolder<SubscriptionModel>> getAll() {
+        return ResponseEntity.ok(getAllRecordsHolder());
+    }
+
+    @Override
+    protected ModelListHolder<SubscriptionModel> createModelListHolder() {
+        return new Subscriptions();
     }
 }

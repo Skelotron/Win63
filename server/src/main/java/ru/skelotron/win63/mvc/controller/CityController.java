@@ -9,6 +9,7 @@ import ru.skelotron.win63.entity.CityEntity;
 import ru.skelotron.win63.mvc.converter.CityModelConverter;
 import ru.skelotron.win63.mvc.model.Cities;
 import ru.skelotron.win63.mvc.model.CityModel;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.repository.CityRepository;
 
 @RestController
@@ -21,7 +22,12 @@ public class CityController extends AbstractController<CityModelConverter, CityR
     }
 
     @GetMapping("/")
-    public ResponseEntity<Cities> getAll() {
-        return ResponseEntity.ok(new Cities(getAllRecords()));
+    public ResponseEntity<ModelListHolder<CityModel>> getAll() {
+        return ResponseEntity.ok(getAllRecordsHolder());
+    }
+
+    @Override
+    protected ModelListHolder<CityModel> createModelListHolder() {
+        return new Cities();
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 import ru.skelotron.win63.entity.Entity;
 import ru.skelotron.win63.mvc.converter.ModelConverter;
 import ru.skelotron.win63.mvc.model.AbstractModel;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,15 +18,22 @@ public abstract class AbstractController<C extends ModelConverter<E, M>, R exten
         this.repository = repository;
     }
 
-    protected List<M> getAllRecords() {
-        Iterable<E> entities = getRepository().findAll();
+    protected ModelListHolder<M> getAllRecordsHolder() {
+        return convertToHolder(getRepository().findAll());
+    }
 
+    protected ModelListHolder<M> convertToHolder(Iterable<E> entities) {
+        List<M> modelList = convert(entities);
+        ModelListHolder<M> modelListHolder = createModelListHolder();
+        modelListHolder.setModels(modelList);
+        return modelListHolder;
+    }
+
+    protected List<M> convert(Iterable<E> entities) {
         List<M> models = new ArrayList<>();
-
         for (E entity : entities) {
             models.add( getConverter().convertToModel(entity) );
         }
-
         return models;
     }
 
@@ -36,4 +44,6 @@ public abstract class AbstractController<C extends ModelConverter<E, M>, R exten
     protected R getRepository() {
         return repository;
     }
+
+    protected abstract ModelListHolder<M> createModelListHolder();
 }

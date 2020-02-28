@@ -9,6 +9,7 @@ import ru.skelotron.win63.mvc.converter.CategoryModelConverter;
 import ru.skelotron.win63.mvc.model.CategoryModel;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.mvc.model.Categories;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.repository.CategoryRepository;
 
 @RestController
@@ -21,7 +22,12 @@ public class CategoryController extends AbstractController<CategoryModelConverte
     }
 
     @GetMapping("/")
-    public ResponseEntity<Categories> getAll() {
-        return ResponseEntity.ok(new Categories(getAllRecords()));
+    public ResponseEntity<ModelListHolder<CategoryModel>> getAll() {
+        return ResponseEntity.ok(getAllRecordsHolder());
+    }
+
+    @Override
+    protected ModelListHolder<CategoryModel> createModelListHolder() {
+        return new Categories();
     }
 }

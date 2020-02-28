@@ -5,14 +5,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Subscriptions implements Serializable {
-    private List<SubscriptionModel> subscriptions = new ArrayList<>();
+public class Subscriptions implements ModelListHolder<SubscriptionModel> {
+    private List<SubscriptionModel> subscriptions;
+
+    @Override
+    public List<SubscriptionModel> getModels() {
+        return subscriptions;
+    }
+
+    @Override
+    public void setModels(List<SubscriptionModel> models) {
+        this.subscriptions = models;
+    }
 }

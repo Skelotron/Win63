@@ -25,7 +25,6 @@ public class NotifiedModelConverter implements ModelConverter<Notified, Notified
         this.notifiedRepository = notifiedRepository;
     }
 
-
     @Override
     public NotifiedModel convertToModel(Notified entity) {
         NotifiedModel notified = new NotifiedModel();

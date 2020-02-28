@@ -15,13 +15,18 @@ import java.util.Arrays;
 public class TagController {
 
     @GetMapping("/available/{type}")
-    public ResponseEntity<AvailableTags> getAvailableTags(@PathVariable String type) {
+    public ResponseEntity<AvailableTags> getAvailableTags(@PathVariable TagType type) {
         switch (type) {
-            case "MESSAGE":
-            case "SUBJECT":
+            case MESSAGE:
+            case SUBJECT:
                 return ResponseEntity.ok(new AvailableTags(Arrays.asList(Tag.ITEM_COST.getName(), Tag.ITEM_TITLE.getName(), Tag.ITEM_DESCRIPTION.getName(), Tag.ITEM_URL.getName())));
             default:
                 return ResponseEntity.ok(new AvailableTags());
         }
+    }
+
+    enum TagType {
+        MESSAGE,
+        SUBJECT
     }
 }

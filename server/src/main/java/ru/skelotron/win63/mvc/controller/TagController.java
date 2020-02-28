@@ -1,4 +1,4 @@
-package ru.skelotron.win63.controller;
+package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skelotron.win63.common.Tag;
-import ru.skelotron.win63.controller.model.AvailableTags;
+import ru.skelotron.win63.mvc.model.AvailableTags;
 
 import java.util.Arrays;
 

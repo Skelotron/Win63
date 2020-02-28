@@ -1,17 +1,17 @@
-package ru.skelotron.win63.controller;
+package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skelotron.win63.controller.converter.SubscriptionModelConverter;
-import ru.skelotron.win63.controller.model.SubscriptionModel;
+import ru.skelotron.win63.mvc.converter.SubscriptionModelConverter;
+import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.record.SubscriptionRecord;
-import ru.skelotron.win63.controller.model.Subscriptions;
+import ru.skelotron.win63.mvc.model.Subscriptions;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 

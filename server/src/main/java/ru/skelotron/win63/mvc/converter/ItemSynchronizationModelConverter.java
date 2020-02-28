@@ -1,8 +1,8 @@
-package ru.skelotron.win63.controller.converter;
+package ru.skelotron.win63.mvc.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.controller.model.ItemSynchronizationModel;
+import ru.skelotron.win63.mvc.model.ItemSynchronizationModel;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
 import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.ItemSynchronizationRepository;

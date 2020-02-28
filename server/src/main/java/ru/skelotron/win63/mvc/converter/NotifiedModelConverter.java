@@ -1,9 +1,9 @@
-package ru.skelotron.win63.controller.converter;
+package ru.skelotron.win63.mvc.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.controller.model.FilterModel;
-import ru.skelotron.win63.controller.model.NotifiedModel;
+import ru.skelotron.win63.mvc.model.FilterModel;
+import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.Notified;

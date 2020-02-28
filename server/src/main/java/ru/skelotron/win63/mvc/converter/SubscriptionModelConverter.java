@@ -1,9 +1,9 @@
-package ru.skelotron.win63.controller.converter;
+package ru.skelotron.win63.mvc.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skelotron.win63.controller.model.NotifiedModel;
-import ru.skelotron.win63.controller.model.SubscriptionModel;
+import ru.skelotron.win63.mvc.model.NotifiedModel;
+import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;

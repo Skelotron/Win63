@@ -1,4 +1,4 @@
-package ru.skelotron.win63.controller.model;
+package ru.skelotron.win63.mvc.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class CityModel extends AbstractModel {
+public class SettingsModel extends AbstractModel {
     private Long id;
+
     private String name;
+
+    private String value;
 }

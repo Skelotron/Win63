@@ -1,4 +1,4 @@
-package ru.skelotron.win63.controller.model;
+package ru.skelotron.win63.mvc.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

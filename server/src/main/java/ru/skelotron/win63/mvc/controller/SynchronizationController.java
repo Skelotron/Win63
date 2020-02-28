@@ -1,11 +1,11 @@
-package ru.skelotron.win63.controller;
+package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skelotron.win63.controller.converter.ItemSynchronizationModelConverter;
-import ru.skelotron.win63.controller.model.ItemSynchronizationModel;
-import ru.skelotron.win63.controller.model.Synchronizations;
+import ru.skelotron.win63.mvc.converter.ItemSynchronizationModelConverter;
+import ru.skelotron.win63.mvc.model.ItemSynchronizationModel;
+import ru.skelotron.win63.mvc.model.Synchronizations;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
 import ru.skelotron.win63.exception.EntityNotFoundException;

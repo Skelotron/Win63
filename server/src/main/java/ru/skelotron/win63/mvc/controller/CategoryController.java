@@ -11,31 +11,17 @@ import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.mvc.model.Categories;
 import ru.skelotron.win63.repository.CategoryRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @RestController
 @RequestMapping("/category")
-public class CategoryController {
-    private final CategoryRepository categoryRepository;
-    private final CategoryModelConverter categoryModelConverter;
+public class CategoryController extends AbstractController<CategoryModelConverter, CategoryRepository, CategoryEntity, CategoryModel> {
 
     @Autowired
     public CategoryController(CategoryRepository categoryRepository, CategoryModelConverter categoryModelConverter) {
-        this.categoryRepository = categoryRepository;
-        this.categoryModelConverter = categoryModelConverter;
+        super(categoryModelConverter, categoryRepository);
     }
 
     @GetMapping("/")
     public ResponseEntity<Categories> getAll() {
-        Iterable<CategoryEntity> categories = categoryRepository.findAll();
-
-        List<CategoryModel> categoryModels = new ArrayList<>();
-
-        for (CategoryEntity category : categories) {
-            categoryModels.add( categoryModelConverter.convertToModel(category) );
-        }
-
-        return ResponseEntity.ok(new Categories(categoryModels));
+        return ResponseEntity.ok(new Categories(getAllRecords()));
     }
 }

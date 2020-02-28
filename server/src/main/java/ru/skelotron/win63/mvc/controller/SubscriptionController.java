@@ -19,25 +19,22 @@ import java.util.Iterator;
 
 @RestController
 @RequestMapping("/subscription")
-public class SubscriptionController {
-    private final SubscriptionRepository subscriptionRepository;
+public class SubscriptionController extends AbstractController<SubscriptionModelConverter, SubscriptionRepository, Subscription, SubscriptionModel> {
     private final CategoryRepository categoryRepository;
-    private final SubscriptionModelConverter subscriptionModelConverter;
 
     @Autowired
     public SubscriptionController(SubscriptionRepository subscriptionRepository, CategoryRepository categoryRepository, SubscriptionModelConverter subscriptionModelConverter) {
-        this.subscriptionRepository = subscriptionRepository;
+        super(subscriptionModelConverter, subscriptionRepository);
         this.categoryRepository = categoryRepository;
-        this.subscriptionModelConverter = subscriptionModelConverter;
     }
 
     @PostMapping("/add")
     public ResponseEntity<SubscriptionModel> subscribe(@RequestBody SubscriptionModel model) {
-        Subscription subscription = subscriptionModelConverter.convertToEntity(model);
-        subscriptionRepository.save(subscription);
+        Subscription subscription = getConverter().convertToEntity(model);
+        getRepository().save(subscription);
 
-        Subscription entity = subscriptionRepository.findById(subscription.getId()).orElseThrow(() -> new EntityNotFoundException(Subscription.class, subscription.getId()));
-        SubscriptionModel savedModel = subscriptionModelConverter.convertToModel(entity);
+        Subscription entity = getRepository().findById(subscription.getId()).orElseThrow(() -> new EntityNotFoundException(Subscription.class, subscription.getId()));
+        SubscriptionModel savedModel = getConverter().convertToModel(entity);
 
         return ResponseEntity.ok(savedModel);
     }
@@ -46,7 +43,7 @@ public class SubscriptionController {
     public ResponseEntity<SubscriptionRecord> unsubscribe(@RequestBody SubscriptionRecord record) {
         // todo: rewrite
         CategoryEntity category = categoryRepository.findByUrl(record.getCategoryUrl());
-        Subscription subscription = subscriptionRepository.findByCategory(category);
+        Subscription subscription = getRepository().findByCategory(category);
         if (subscription == null) {
             return ResponseEntity.ok().build();
         }
@@ -59,14 +56,14 @@ public class SubscriptionController {
                 }
             }
         }
-        subscriptionRepository.save(subscription);
+        getRepository().save(subscription);
 
         return ResponseEntity.ok(record);
     }
 
     @PostMapping("/{id}")
     public ResponseEntity<SubscriptionRecord> getSubscription(@PathVariable("id") Long id) {
-        Subscription subscription = subscriptionRepository.findById(id).orElse(null);
+        Subscription subscription = getRepository().findById(id).orElse(null);
         SubscriptionRecord record = new SubscriptionRecord();
         if (subscription != null) {
             Notified notified = subscription.getNotifiedEntities().iterator().next();
@@ -84,10 +81,6 @@ public class SubscriptionController {
     // todo: paging
     @GetMapping("/")
     public ResponseEntity<Subscriptions> getAll() {
-        Subscriptions subscriptions = new Subscriptions();
-        for (Subscription subscription : subscriptionRepository.findAll()) {
-            subscriptions.getSubscriptions().add(subscriptionModelConverter.convertToModel(subscription));
-        }
-        return ResponseEntity.ok(subscriptions);
+        return ResponseEntity.ok(new Subscriptions(getAllRecords()));
     }
 }

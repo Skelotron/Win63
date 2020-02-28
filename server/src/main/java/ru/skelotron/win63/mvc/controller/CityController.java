@@ -5,37 +5,23 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.skelotron.win63.entity.CityEntity;
 import ru.skelotron.win63.mvc.converter.CityModelConverter;
 import ru.skelotron.win63.mvc.model.Cities;
 import ru.skelotron.win63.mvc.model.CityModel;
-import ru.skelotron.win63.entity.CityEntity;
 import ru.skelotron.win63.repository.CityRepository;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @RestController
 @RequestMapping("/city")
-public class CityController {
-    private final CityRepository cityRepository;
-    private final CityModelConverter cityModelConverter;
+public class CityController extends AbstractController<CityModelConverter, CityRepository, CityEntity, CityModel> {
 
     @Autowired
     public CityController(CityRepository cityRepository, CityModelConverter cityModelConverter) {
-        this.cityRepository = cityRepository;
-        this.cityModelConverter = cityModelConverter;
+        super(cityModelConverter, cityRepository);
     }
 
     @GetMapping("/")
     public ResponseEntity<Cities> getAll() {
-        Iterable<CityEntity> cities = cityRepository.findAll();
-
-        List<CityModel> cityModels = new ArrayList<>();
-
-        for (CityEntity city : cities) {
-            cityModels.add( cityModelConverter.convertToModel(city) );
-        }
-
-        return ResponseEntity.ok(new Cities(cityModels));
+        return ResponseEntity.ok(new Cities(getAllRecords()));
     }
 }

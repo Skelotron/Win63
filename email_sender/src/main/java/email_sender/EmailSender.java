@@ -50,6 +50,7 @@ public class EmailSender implements NotificationSender {
     public Session createSession() {
         if (useAuth()) {
             Authenticator authenticator = new Authenticator() {
+                @Override
                 public PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(getUsername(), getPassword());
                 }

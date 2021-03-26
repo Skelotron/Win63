@@ -26,7 +26,7 @@ public class NotificationServiceImpl implements NotificationService {
         }
     }
 
-    private Iterable<Item> filterItems(Set<Filter> filters, List<Item> items) {
+    private Iterable<Item> filterItems(Collection<Filter> filters, List<Item> items) {
         FilterChecker<Item> filterChecker = FilterCheckerFactory.getInstance().get(Item.class);
         Set<Filter> itemFilters = getItemFilters(filters);
         Collection<Item> filteredItems = new HashSet<>();
@@ -45,7 +45,7 @@ public class NotificationServiceImpl implements NotificationService {
         return filteredItems;
     }
 
-    private Set<Filter> getItemFilters(Set<Filter> filters) {
+    private Set<Filter> getItemFilters(Collection<Filter> filters) {
         return filters.stream().filter(filter -> Item.ENTITY_NAME.equals(filter.getEntity())).collect(Collectors.toSet());
     }
 }

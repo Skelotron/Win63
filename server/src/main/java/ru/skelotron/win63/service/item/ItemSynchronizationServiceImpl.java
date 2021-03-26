@@ -6,7 +6,7 @@ import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
 import ru.skelotron.win63.entity.Subscription;
-import ru.skelotron.win63.model.ItemsChangeData;
+import ru.skelotron.win63.mvc.model.ItemsChangeData;
 import ru.skelotron.win63.repository.ItemSynchronizationRepository;
 import ru.skelotron.win63.service.subscription.SubscriptionService;
 

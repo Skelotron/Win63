@@ -4,7 +4,7 @@ import lombok.extern.java.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.skelotron.win63.converter.ItemConverter;
+import ru.skelotron.win63.converter.impl.Win63ItemConverter;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.PhotoEntity;
@@ -12,7 +12,7 @@ import ru.skelotron.win63.http_entities.Category;
 import ru.skelotron.win63.http_entities.GoodsEntry;
 import ru.skelotron.win63.http_entities.Request;
 import ru.skelotron.win63.http_entities.Response;
-import ru.skelotron.win63.model.ItemsChangeData;
+import ru.skelotron.win63.mvc.model.ItemsChangeData;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SettingsRepository;
@@ -28,13 +28,13 @@ public class ItemServiceImpl implements ItemService {
 
     private final SettingsRepository settingsRepository;
     private final ResponseReader responseReader;
-    private final ItemConverter itemConverter;
+    private final Win63ItemConverter itemConverter;
     private final ItemRepository itemRepository;
     private final SettingsService settingsService;
     private final CategoryRepository categoryRepository;
 
     @Autowired
-    public ItemServiceImpl(SettingsRepository settingsRepository, ResponseReader responseReader, ItemConverter itemConverter, ItemRepository itemRepository, SettingsService settingsService, CategoryRepository categoryRepository) {
+    public ItemServiceImpl(SettingsRepository settingsRepository, ResponseReader responseReader, Win63ItemConverter itemConverter, ItemRepository itemRepository, SettingsService settingsService, CategoryRepository categoryRepository) {
         this.settingsRepository = settingsRepository;
         this.responseReader = responseReader;
         this.itemConverter = itemConverter;

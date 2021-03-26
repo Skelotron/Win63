@@ -1,4 +1,4 @@
-package ru.skelotron.win63.model;
+package ru.skelotron.win63.mvc.model;
 
 import lombok.Getter;
 import ru.skelotron.win63.entity.Item;

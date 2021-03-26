@@ -6,7 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.Subscription;
-import ru.skelotron.win63.model.ItemsChangeData;
+import ru.skelotron.win63.mvc.model.ItemsChangeData;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.util.*;

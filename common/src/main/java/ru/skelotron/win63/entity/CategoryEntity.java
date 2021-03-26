@@ -47,10 +47,10 @@ public class CategoryEntity extends AuditedEntity {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        CategoryEntity that = (CategoryEntity) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        CategoryEntity that = (CategoryEntity) obj;
         return Objects.equals(name, that.name) &&
                 Objects.equals(url, that.url);
     }

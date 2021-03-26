@@ -3,8 +3,8 @@ package ru.skelotron.win63.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.skelotron.win63.converter.CategoryConverter;
-import ru.skelotron.win63.converter.ItemConverter;
+import ru.skelotron.win63.converter.impl.Win63CategoryConverter;
+import ru.skelotron.win63.converter.impl.Win63ItemConverter;
 import ru.skelotron.win63.http_entities.*;
 import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.ItemRepository;
@@ -18,13 +18,13 @@ public class LoadCategoryServiceImpl implements LoadCategoryService {
     private final ItemRepository itemRepository;
     private final SettingsRepository settingsRepository;
     private final ResponseReader responseReader;
-    private final ItemConverter itemConverter;
-    private final CategoryConverter categoryConverter;
+    private final Win63ItemConverter itemConverter;
+    private final Win63CategoryConverter categoryConverter;
 
     @Autowired
     public LoadCategoryServiceImpl(CategoryRepository categoryRepository, ItemRepository itemRepository,
                                    SettingsRepository settingsRepository, @Qualifier("DummyResponseReader") ResponseReader responseReader,
-                                   ItemConverter itemConverter, CategoryConverter categoryConverter) {
+                                   Win63ItemConverter itemConverter, Win63CategoryConverter categoryConverter) {
         this.categoryRepository = categoryRepository;
         this.itemRepository = itemRepository;
         this.settingsRepository = settingsRepository;

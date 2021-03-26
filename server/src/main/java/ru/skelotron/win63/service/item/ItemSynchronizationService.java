@@ -1,7 +1,7 @@
 package ru.skelotron.win63.service.item;
 
 import ru.skelotron.win63.entity.CategoryEntity;
-import ru.skelotron.win63.model.ItemsChangeData;
+import ru.skelotron.win63.mvc.model.ItemsChangeData;
 
 public interface ItemSynchronizationService {
     void synchronize();

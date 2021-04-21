@@ -18,6 +18,6 @@ public class ItemFilterChecker extends AbstractFilterChecker<Item> {
 
         Object valueFromItem = filteredField.getFieldRetriever().apply(item);
 
-        return compare(filteredField, filter.getType(), filter.getValue(), valueFromItem);
+        return check(filteredField, filter.getType(), filter.getValue(), valueFromItem);
     }
 }

@@ -1,4 +1,4 @@
-package email_sender;
+package ru.skelotron.win63.email_sender;
 
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;

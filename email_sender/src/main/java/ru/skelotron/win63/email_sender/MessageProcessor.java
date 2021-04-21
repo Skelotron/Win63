@@ -1,4 +1,4 @@
-package email_sender;
+package ru.skelotron.win63.email_sender;
 
 import ru.skelotron.win63.common.ItemTagProcessor;
 import ru.skelotron.win63.common.Tag;
@@ -15,9 +15,9 @@ public class MessageProcessor {
         String message = template;
         for (Tag tag : Tag.values()) {
             String tagValue = tag.getTagValue();
-            if (template.contains(tagValue)) {
+            if (message.contains(tagValue)) {
                 String value = ItemTagProcessor.get(tag, item);
-                message = template.replace(tagValue, value);
+                message = message.replace(tagValue, value);
             }
         }
         return message;

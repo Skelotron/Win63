@@ -18,9 +18,9 @@ import ru.skelotron.win63.repository.ItemRepository;
 import ru.skelotron.win63.repository.SettingsRepository;
 import ru.skelotron.win63.service.response_reader.ResponseReader;
 import ru.skelotron.win63.service.settings.SettingsService;
-import ru.skelotron.win63.util.CollectionUtil;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @Log
@@ -45,44 +45,48 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemsChangeData load(CategoryEntity category) {
-        int quantity = Integer.parseInt(settingsRepository.findByName("pageSize").getValue());
-        int count = getCount(category);
+        int pageSize = Integer.parseInt(settingsRepository.findByName("pageSize").getValue());
+        int count = getCount(category, pageSize);
         log.info("Found " + count + " items of category " + category.getName());
         if (count > 0) {
-            int batchesCount = (count / quantity) + (((count % quantity) == 0) ? 0 : 1);
-            log.info("Start load " + batchesCount + " pages of items with category " + category.getName());
+            return load(category, pageSize, count);
+        }
+        return ItemsChangeData.empty();
+    }
 
-            Collection<GoodsEntry> goods = new ArrayList<>();
-            Collection<Category> categories = new ArrayList<>();
-            for (int batch = 0; batch < batchesCount; batch++) {
-                Response response = getPage(category, batch + 1, quantity);
-                categories.addAll(response.getCategories());
-                goods.addAll(response.getGoods());
-            }
+    private ItemsChangeData load(CategoryEntity category, int pageSize, int count) {
+        int batchesCount = (count / pageSize) + (((count % pageSize) == 0) ? 0 : 1);
+        log.info("Start load " + batchesCount + " pages of items with category " + category.getName());
 
-            String baseUri = settingsService.getBaseUri();
-            for (Category categoryRecord : categories) {
-                String externalId = categoryRecord.getId();
-                if (!StringUtils.isBlank(externalId)) {
-                    String url = baseUri + categoryRecord.getUrl();
-                    if (!url.endsWith("/")) {
-                        url += "/";
-                    }
-                    CategoryEntity categoryEntity = categoryRepository.findByUrl(url);
-                    if (categoryEntity != null) {
-                        if (StringUtils.isBlank(categoryEntity.getExternalId())) {
-                            categoryEntity.setExternalId(externalId);
-                            categoryRepository.save(categoryEntity);
-                        }
+        Collection<GoodsEntry> goods = new ArrayList<>();
+        Collection<Category> categories = new ArrayList<>();
+        for (int batch = 0; batch < batchesCount; batch++) {
+            Response response = getPage(category, batch + 1, pageSize);
+            categories.addAll(response.getCategories());
+            goods.addAll(response.getGoods());
+        }
+
+        String baseUri = settingsService.getBaseUri();
+        for (Category categoryRecord : categories) {
+            String externalId = categoryRecord.getId();
+            if (!StringUtils.isBlank(externalId)) {
+                String url = baseUri + categoryRecord.getUrl();
+                if (!url.endsWith("/")) {
+                    url += "/";
+                }
+                CategoryEntity categoryEntity = categoryRepository.findByUrl(url);
+                if (categoryEntity != null) {
+                    if (StringUtils.isBlank(categoryEntity.getExternalId())) {
+                        categoryEntity.setExternalId(externalId);
+                        categoryRepository.save(categoryEntity);
                     }
                 }
             }
-
-            List<Item> items = convertToEntities(goods);
-            List<Item> newItems = mergeWithExisting(items);
-            return new ItemsChangeData(newItems);
         }
-        return new ItemsChangeData();
+
+        List<Item> items = convertToEntities(goods);
+        List<Item> newItems = mergeWithExisting(items);
+        return new ItemsChangeData(newItems);
     }
 
     private List<Item> mergeWithExisting(Iterable<Item> items) {
@@ -104,7 +108,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     private void merge(Item existingItem, Item item) {
-        if ( !( existingItem.getAmount() != null && existingItem.getAmount().compareTo(item.getAmount()) == 0 ) ) {
+        if ( existingItem.getAmount() == null || existingItem.getAmount().compareTo(item.getAmount()) != 0 ) {
             existingItem.setAmount( item.getAmount() );
         }
 
@@ -112,7 +116,7 @@ public class ItemServiceImpl implements ItemService {
             existingItem.setTitle( item.getTitle() );
         }
 
-        Map<String, PhotoEntity> existingPhotoMap = CollectionUtil.toMap(PhotoEntity::getUrl, existingItem.getPhotos());
+        Map<String, PhotoEntity> existingPhotoMap = existingItem.getPhotos().stream().collect(Collectors.toMap(PhotoEntity::getUrl, p -> p));
 
         Set<PhotoEntity> photos = new HashSet<>();
         for (PhotoEntity photo : item.getPhotos()) {
@@ -136,10 +140,10 @@ public class ItemServiceImpl implements ItemService {
         return items;
     }
 
-    private int getCount(CategoryEntity category) {
+    private int getCount(CategoryEntity category, int pageSize) {
         Request request = Request.builder()
                 .uri(category.getUrl())
-                .quantity(20)
+                .quantity(pageSize)
                 .s("new")
                 .city(0)
                 .category(category.getExternalId())

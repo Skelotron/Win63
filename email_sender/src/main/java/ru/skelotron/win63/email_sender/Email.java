@@ -1,8 +1,9 @@
-package email_sender;
+package ru.skelotron.win63.email_sender;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Email {
+public class Email implements Serializable {
     private String from;
     private List<String> to;
     private List<String> cc;

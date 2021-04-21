@@ -6,7 +6,7 @@ import ru.skelotron.win63.entity.FilterRelationType;
 import ru.skelotron.win63.service.subscription.filter.serial.Deserializer;
 import ru.skelotron.win63.service.subscription.filter.field.FilterField;
 
-import java.util.List;
+import java.util.Collection;
 
 public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
     protected  <T extends Entity> boolean compare(FilterField<T> field, FilterRelationType relationType, String value, Object itemValue) {
@@ -26,13 +26,15 @@ public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
                     } else {
                         return itemNumber.longValue() == filterNumber.longValue();
                     }
-                } else if (itemValue instanceof String) {
+                }
+                if (itemValue instanceof String) {
                     String itemString = String.valueOf(itemValue);
                     String filterString = String.valueOf(filterValue);
                     return (itemString == null && filterString == null) || itemString != null && itemString.equalsIgnoreCase(filterString);
-                } else if (itemValue instanceof List) {
-                    List itemList = (List) itemValue;
-                    List filterList = (List) filterValue;
+                }
+                if (itemValue instanceof Collection) {
+                    Collection<?> itemList = (Collection<?>) itemValue;
+                    Collection<?> filterList = (Collection<?>) filterValue;
                     return itemList.containsAll(filterList) && filterList.containsAll(itemList);
                 }
                 return false;
@@ -47,16 +49,16 @@ public abstract class AbstractFilterChecker<E> implements FilterChecker<E> {
                 return getDouble(itemValue) <= getDouble(filterValue);
 
             case CONTAINS:
-                if (filterValue instanceof List) {
-                    return ((List) itemValue).containsAll((List) filterValue);
+                if (filterValue instanceof Collection) {
+                    return ((Collection<?>) filterValue).containsAll((Collection<?>) itemValue);
                 } else {
                     return StringUtils.containsIgnoreCase(String.valueOf(itemValue), String.valueOf(filterValue));
                 }
 
             case NOT_CONTAINS:
-                if (filterValue instanceof List) {
-                    List filterValues = (List) filterValue;
-                    List itemValues = (List) itemValue;
+                if (filterValue instanceof Collection) {
+                    Collection<?> filterValues = (Collection<?>) filterValue;
+                    Collection<?> itemValues = (Collection<?>) itemValue;
                     for (Object value : itemValues) {
                         if (filterValues.contains(value)) {
                             return false;

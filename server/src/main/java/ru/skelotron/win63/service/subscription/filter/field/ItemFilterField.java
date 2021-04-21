@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 public enum ItemFilterField implements FilterField<Item> {
     TITLE(
-            Arrays.asList(FilterRelationType.EQUALS, FilterRelationType.CONTAINS),
+            Arrays.asList(FilterRelationType.EQUALS, FilterRelationType.CONTAINS, FilterRelationType.NOT_CONTAINS),
             StringDeserializer::new,
             Item::getTitle),
     DESCRIPTION(
@@ -57,6 +57,7 @@ public enum ItemFilterField implements FilterField<Item> {
         throw new IllegalArgumentException("Unknown filterField name");
     }
 
+    @Override
     public List<FilterRelationType> getSupportedRelations() {
         return supportedRelations;
     }
@@ -66,6 +67,7 @@ public enum ItemFilterField implements FilterField<Item> {
         return deserializer;
     }
 
+    @Override
     public Function<Item, Object> getFieldRetriever() {
         return fieldRetriever;
     }

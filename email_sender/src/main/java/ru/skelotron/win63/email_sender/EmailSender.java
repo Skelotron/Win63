@@ -1,25 +1,17 @@
-package email_sender;
+package ru.skelotron.win63.email_sender;
 
-import ru.skelotron.win63.common.NotificationSender;
-import ru.skelotron.win63.entity.EmailNotified;
-import ru.skelotron.win63.entity.Item;
-import ru.skelotron.win63.entity.Notified;
+import org.springframework.stereotype.Component;
 
 import javax.mail.*;
-import java.util.Collections;
 import java.util.Properties;
 
-public class EmailSender implements NotificationSender {
-    private static final EmailSender INSTANCE = new EmailSender();
+@Component
+public class EmailSender {
     private final Properties properties;
 
-    private EmailSender() {
+    public EmailSender() {
         this.properties = new Properties();
         initialize(new PropertiesSmtpSettings());
-    }
-
-    public static EmailSender getInstance() {
-        return INSTANCE;
     }
 
     public void initialize(SmtpSettings smtpSettings) {
@@ -61,31 +53,12 @@ public class EmailSender implements NotificationSender {
         }
     }
 
-    public void send(Email email) {
+    private void send(Email email) {
         Message message = EmailMessageFactory.getInstance().createMessage(email, createSession());
         try {
             Transport.send(message);
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
-    }
-
-    @Override
-    public void send(Notified notified, Iterable<Item> items) {
-        if (notified instanceof EmailNotified) {
-            for (Item item : items) {
-                Email email = convertToEmail((EmailNotified) notified, item);
-                send(email);
-            }
-        }
-    }
-
-    private Email convertToEmail(EmailNotified notified, Item item) {
-        Email email = new Email();
-        email.setTo(Collections.singletonList( notified.getRecipient() ) );
-        email.setSubject( new MessageProcessor(notified.getSubjectTemplate()).process(item) );
-        email.setMessage( new MessageProcessor(notified.getTextTemplate()).process(item) );
-
-        return email;
     }
 }

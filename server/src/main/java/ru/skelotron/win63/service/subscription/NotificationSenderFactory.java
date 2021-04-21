@@ -1,26 +1,30 @@
 package ru.skelotron.win63.service.subscription;
 
-import email_sender.EmailSender;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ru.skelotron.win63.common.NotificationSender;
 import ru.skelotron.win63.entity.NotificationType;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+@Service
 public class NotificationSenderFactory {
-    private static final NotificationSenderFactory INSTANCE = new NotificationSenderFactory();
+    private final Map<NotificationType, NotificationSender> notificationSenders = new HashMap<>();
 
-    private NotificationSenderFactory() {
-    }
-
-    public static NotificationSenderFactory getInstance() {
-        return INSTANCE;
+    @Autowired
+    public void setNotificationSenders(List<NotificationSender> notificationSenders) {
+        for (NotificationSender sender : notificationSenders) {
+            this.notificationSenders.put(sender.getType(), sender);
+        }
     }
 
     public NotificationSender get(NotificationType type) {
-        switch (type) {
-            case EMAIL:
-                return EmailSender.getInstance();
-
-            default:
-                throw new IllegalArgumentException("Unknown NotificationType");
+        NotificationSender notificationSender = notificationSenders.get(type);
+        if (notificationSender == null) {
+            throw new IllegalArgumentException("Unknown NotificationType");
         }
+        return notificationSender;
     }
 }

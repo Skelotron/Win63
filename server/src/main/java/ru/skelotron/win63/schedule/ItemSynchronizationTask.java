@@ -16,7 +16,7 @@ public class ItemSynchronizationTask {
         this.itemSynchronizationService = itemSynchronizationService;
     }
 
-//    @Scheduled(fixedRate = 5 * 60 * 1000) // 5 minutes
+    @Scheduled(fixedRate = 5 * 60 * 1000) // 5 minutes
     public void synchronizeItems() {
         itemSynchronizationService.synchronize();
     }

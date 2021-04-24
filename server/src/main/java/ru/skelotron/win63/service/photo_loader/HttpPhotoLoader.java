@@ -10,7 +10,7 @@ import ru.skelotron.win63.service.settings.SettingsService;
 @Component
 @Primary
 public class HttpPhotoLoader implements PhotoLoader {
-    private SettingsService settingsService;
+    private final SettingsService settingsService;
 
     @Autowired
     public HttpPhotoLoader(SettingsService settingsService) {

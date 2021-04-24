@@ -13,7 +13,7 @@ public class NotifiedModelConverterFactory {
     private final Map<NotificationType, NotifiedModelConverter> notifiedModelConverters = new HashMap<>();
 
     @Autowired
-    public void setNotifiedModelConverters(List<NotifiedModelConverter> notifiedModelConverters) {
+    public void setNotifiedModelConverters(@SuppressWarnings("TypeMayBeWeakened") List<NotifiedModelConverter> notifiedModelConverters) {
         for (NotifiedModelConverter converter : notifiedModelConverters) {
             this.notifiedModelConverters.put(converter.getType(), converter);
         }

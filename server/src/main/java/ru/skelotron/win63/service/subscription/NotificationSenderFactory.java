@@ -14,7 +14,7 @@ public class NotificationSenderFactory {
     private final Map<NotificationType, NotificationSender> notificationSenders = new HashMap<>();
 
     @Autowired
-    public void setNotificationSenders(List<NotificationSender> notificationSenders) {
+    public void setNotificationSenders(@SuppressWarnings("TypeMayBeWeakened") List<NotificationSender> notificationSenders) {
         for (NotificationSender sender : notificationSenders) {
             this.notificationSenders.put(sender.getType(), sender);
         }

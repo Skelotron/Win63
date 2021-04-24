@@ -1,7 +1,5 @@
 package ru.skelotron.win63.common;
 
-import ru.skelotron.win63.common.ItemTagProcessor;
-import ru.skelotron.win63.common.Tag;
 import ru.skelotron.win63.entity.Item;
 
 public class MessageProcessor {

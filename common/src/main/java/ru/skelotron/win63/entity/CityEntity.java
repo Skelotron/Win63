@@ -25,10 +25,10 @@ public class CityEntity extends AuditedEntity {
     private boolean active;
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CityEntity)) return false;
-        CityEntity that = (CityEntity) o;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof CityEntity)) return false;
+        CityEntity that = (CityEntity) obj;
         return externalId.equals(that.externalId);
     }
 

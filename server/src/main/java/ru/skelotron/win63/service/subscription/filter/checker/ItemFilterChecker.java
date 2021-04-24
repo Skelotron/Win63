@@ -20,4 +20,9 @@ public class ItemFilterChecker extends AbstractFilterChecker<Item> {
 
         return check(filteredField, filter.getType(), filter.getValue(), valueFromItem);
     }
+
+    @Override
+    public Class<Item> getCheckerClass() {
+        return Item.class;
+    }
 }

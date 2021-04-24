@@ -7,4 +7,5 @@ public interface SettingsService {
 
     String getHostUrl();
     String getCatalogUrl();
+    String getCitiesUrl();
 }

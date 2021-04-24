@@ -15,14 +15,17 @@ public class SettingsServiceImpl implements SettingsService {
 
     private final String protocol;
     private final String baseUrl;
+    private final String citiesUrl;
     private final String url;
 
     @Autowired
     public SettingsServiceImpl(SettingsRepository settingsRepository, @Value("${target.protocol}") String protocol,
-                               @Value("${target.base.url}") String baseUrl, @Value("${target.url}") String url) {
+                               @Value("${target.base.url}") String baseUrl, @Value("${target.cities.url}") String citiesUrl,
+                               @Value("${target.url}") String url) {
         this.settingsRepository = settingsRepository;
         this.protocol = protocol;
         this.baseUrl = baseUrl;
+        this.citiesUrl = citiesUrl;
         this.url = url;
     }
 
@@ -52,5 +55,11 @@ public class SettingsServiceImpl implements SettingsService {
     @Override
     public String getCatalogUrl() {
         return getHostUrl() + getBaseUri();
+    }
+
+    @Override
+    public String getCitiesUrl() {
+        Settings settings = settingsRepository.findByName("target.cities.url");
+        return (settings != null) ? (getHostUrl() + settings.getValue()) : (getHostUrl() + citiesUrl);
     }
 }

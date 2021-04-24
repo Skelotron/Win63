@@ -1,22 +1,27 @@
 package ru.skelotron.win63.service;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import ru.skelotron.win63.entity.CityEntity;
+import ru.skelotron.win63.http_entities.geo.GetCities;
+import ru.skelotron.win63.http_entities.geo.GetCity;
 import ru.skelotron.win63.repository.CityRepository;
 import ru.skelotron.win63.service.settings.SettingsService;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Component
+@Slf4j
 public class HttpCityReader implements CityReader {
     private final CityRepository cityRepository;
     private final SettingsService settingsService;
@@ -29,24 +34,18 @@ public class HttpCityReader implements CityReader {
 
     @Override
     public void read() {
-        String url = settingsService.getCatalogUrl();
-
         Iterable<CityEntity> existingCities = cityRepository.findAll();
-        List<CityEntity> existingCitiesList = new ArrayList<>();
+        Collection<CityEntity> existingCitiesList = new ArrayList<>();
         for (CityEntity cityEntity : existingCities) {
             existingCitiesList.add(cityEntity);
         }
 
-        RestTemplate restTemplate = new RestTemplate();
-        String htmlContent = restTemplate.getForObject(url, String.class);
-
-        Set<CityEntity> newCities = new HashSet<>();
-        if (htmlContent != null) {
-            Document document = Jsoup.parse(htmlContent);
-            Elements citiesElement = document.selectFirst("div[am-cities]").select("a");
-            for (Element city : citiesElement) {
-                String cityExternalId = city.attr("data-id");
-                String cityName = city.text();
+        GetCities cities = loadCities();
+        Collection<CityEntity> newCities = new HashSet<>();
+        if (cities != null) {
+            for (GetCity city : cities.getData()) {
+                String cityExternalId = city.getId();
+                String cityName = city.getTitle();
 
                 CityEntity cityEntity = new CityEntity(cityExternalId, cityName, true);
                 if (existingCitiesList.contains(cityEntity)) {
@@ -55,6 +54,29 @@ public class HttpCityReader implements CityReader {
                 newCities.add(cityEntity);
             }
         }
+
         cityRepository.saveAll(newCities);
+    }
+
+    private GetCities loadCities() {
+        String url = settingsService.getCitiesUrl();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("x-requested-with", "XMLHttpRequest");
+        headers.add(HttpHeaders.CONTENT_TYPE, "text/html; charset=UTF-8");
+        ResponseEntity<String> result = new RestTemplate().exchange(url, HttpMethod.GET, new HttpEntity<>(headers), String.class);
+        // we have to deserialize response manually because it is text/html request
+        return deserializeResponse(result.getBody());
+    }
+
+    private GetCities deserializeResponse(String response) {
+        try {
+            if (response != null) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                return objectMapper.readValue(response, GetCities.class);
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Can't parse response to GetCities", e);
+        }
+        return null;
     }
 }

@@ -1,13 +1,16 @@
 package ru.skelotron.win63.email_sender;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.mail.*;
+import java.io.IOException;
 import java.util.Properties;
 
 @Component
+@Slf4j
 public class EmailSender {
     private final Properties properties;
     private final PropertiesSmtpSettings smtpSettings;
@@ -32,16 +35,8 @@ public class EmailSender {
         return properties;
     }
 
-    private String getUsername() {
-        return getProperties().getProperty("mail.user");
-    }
-
-    private String getPassword() {
-        return getProperties().getProperty("mail.password");
-    }
-
     private boolean useAuth() {
-        return Boolean.TRUE.toString().equalsIgnoreCase(getProperties().getProperty("mail.smtp.auth"));
+        return smtpSettings.useAuth();
     }
 
     public Session createSession() {
@@ -49,7 +44,7 @@ public class EmailSender {
             Authenticator authenticator = new Authenticator() {
                 @Override
                 public PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(getUsername(), getPassword());
+                    return new PasswordAuthentication(smtpSettings.getUsername(), smtpSettings.getPassword());
                 }
             };
             return Session.getDefaultInstance(getProperties(), authenticator);
@@ -58,12 +53,13 @@ public class EmailSender {
         }
     }
 
+    @SuppressWarnings("unused") // used by message broker
     private void send(Email email) {
-        Message message = EmailMessageFactory.getInstance().createMessage(email, createSession());
         try {
+            Message message = EmailMessageFactory.getInstance().createMessage(email, createSession());
             Transport.send(message);
-        } catch (MessagingException e) {
-            throw new RuntimeException(e);
+        } catch (MessagingException | IOException e) {
+            log.error("Exception on trying to send email to " + email.getTo());
         }
     }
 }

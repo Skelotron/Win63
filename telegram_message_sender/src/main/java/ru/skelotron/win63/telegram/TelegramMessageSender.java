@@ -12,6 +12,7 @@ public class TelegramMessageSender {
         this.telegramBot = telegramBot;
     }
 
+    @SuppressWarnings("unused") // used by message broker
     public void send(TelegramMessage message) {
         telegramBot.sendMessage(message.getChatId(), message.getText());
     }

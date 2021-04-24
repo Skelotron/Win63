@@ -1,6 +1,6 @@
 package ru.skelotron.win63;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.*;
@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Component
-@Log
+@Slf4j
 public class DemoData {
     private final CategoryRepository categoryRepository;
     private final ItemRepository itemRepository;

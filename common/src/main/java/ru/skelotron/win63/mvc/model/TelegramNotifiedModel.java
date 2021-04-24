@@ -6,15 +6,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import ru.skelotron.win63.entity.NotificationType;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public abstract class NotifiedModel extends AbstractModel {
-    private Long id;
-    private List<FilterModel> filters;
+public class TelegramNotifiedModel extends NotifiedModel {
+    private String userName;
 
-    public abstract NotificationType getType();
+    @Override
+    public NotificationType getType() {
+        return NotificationType.TELEGRAM;
+    }
 }

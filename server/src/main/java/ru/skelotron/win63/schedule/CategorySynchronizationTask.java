@@ -1,13 +1,12 @@
 package ru.skelotron.win63.schedule;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.service.CategoryReader;
 
 @Component
-@Log
+@Slf4j
 public class CategorySynchronizationTask {
 
     private final CategoryReader categoryReader;

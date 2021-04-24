@@ -1,4 +1,4 @@
-package ru.skelotron.win63.email_sender;
+package ru.skelotron.win63.common;
 
 import ru.skelotron.win63.common.ItemTagProcessor;
 import ru.skelotron.win63.common.Tag;

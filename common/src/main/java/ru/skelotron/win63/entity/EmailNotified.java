@@ -21,22 +21,14 @@ public class EmailNotified extends Notified {
     @Column
     private String subjectTemplate;
 
-    @Column
-    private String textTemplate;
-
     public EmailNotified() {
         this(null, null, null, new HashSet<>());
     }
 
     public EmailNotified(String email, String subjectTemplate, String textTemplate, Set<Filter> filters) {
-        setNotificationType(NotificationType.EMAIL);
-        setFilters(filters);
-        for (Filter filter : filters) {
-            filter.setNotified(this);
-        }
+        super(NotificationType.EMAIL, filters, textTemplate);
         this.email = email;
         this.subjectTemplate = subjectTemplate;
-        this.textTemplate = textTemplate;
     }
 
     @Override

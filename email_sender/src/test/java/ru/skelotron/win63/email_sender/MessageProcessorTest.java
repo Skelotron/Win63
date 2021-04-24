@@ -2,6 +2,7 @@ package ru.skelotron.win63.email_sender;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.skelotron.win63.common.MessageProcessor;
 import ru.skelotron.win63.entity.CategoryEntity;
 import ru.skelotron.win63.entity.Item;
 

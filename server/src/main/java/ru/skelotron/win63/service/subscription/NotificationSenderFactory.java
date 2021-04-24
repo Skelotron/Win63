@@ -23,7 +23,7 @@ public class NotificationSenderFactory {
     public NotificationSender get(NotificationType type) {
         NotificationSender notificationSender = notificationSenders.get(type);
         if (notificationSender == null) {
-            throw new IllegalArgumentException("Unknown NotificationType");
+            throw new IllegalArgumentException("Unknown NotificationType: " + type);
         }
         return notificationSender;
     }

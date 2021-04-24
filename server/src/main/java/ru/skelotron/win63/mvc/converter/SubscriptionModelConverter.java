@@ -2,6 +2,7 @@ package ru.skelotron.win63.mvc.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.entity.Notified;
@@ -16,13 +17,13 @@ import java.util.Set;
 @Component
 public class SubscriptionModelConverter implements ModelConverter<Subscription, SubscriptionModel> {
     private final CategoryModelConverter categoryModelConverter;
-    private final NotifiedModelConverter notifiedModelConverter;
+    private final NotifiedModelConverterFactory notifiedModelConverterFactory;
     private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
-    public SubscriptionModelConverter(CategoryModelConverter categoryModelConverter, NotifiedModelConverter notifiedModelConverter, SubscriptionRepository subscriptionRepository) {
+    public SubscriptionModelConverter(CategoryModelConverter categoryModelConverter, NotifiedModelConverterFactory notifiedModelConverterFactory, SubscriptionRepository subscriptionRepository) {
         this.categoryModelConverter = categoryModelConverter;
-        this.notifiedModelConverter = notifiedModelConverter;
+        this.notifiedModelConverterFactory = notifiedModelConverterFactory;
         this.subscriptionRepository = subscriptionRepository;
     }
 
@@ -33,9 +34,17 @@ public class SubscriptionModelConverter implements ModelConverter<Subscription, 
         subscription.setCategory( categoryModelConverter.convertToModel(entity.getCategory()) );
         subscription.setNotifiedList(new ArrayList<>());
         for (Notified notified : entity.getNotifiedEntities()) {
-            subscription.getNotifiedList().add( notifiedModelConverter.convertToModel(notified) );
+            subscription.getNotifiedList().add( getNotifiedConverter(notified.getNotificationType()).convertToModel(notified) );
         }
         return subscription;
+    }
+
+    private NotifiedModelConverter getNotifiedConverter(NotificationType type) {
+        final NotifiedModelConverter converter = notifiedModelConverterFactory.get(type);
+        if (converter == null) {
+            throw new IllegalStateException("There is no ModelConverter for notificationType = " + type);
+        }
+        return converter;
     }
 
     @Override
@@ -50,7 +59,7 @@ public class SubscriptionModelConverter implements ModelConverter<Subscription, 
 
         Set<Notified> notifiedSet = new HashSet<>();
         for (NotifiedModel notifiedModel : model.getNotifiedList()) {
-            Notified notified = notifiedModelConverter.convertToEntity(notifiedModel);
+            Notified notified = getNotifiedConverter(notifiedModel.getType()).convertToEntity(notifiedModel);
             notified.getSubscriptions().add(subscription);
             notifiedSet.add(notified);
         }

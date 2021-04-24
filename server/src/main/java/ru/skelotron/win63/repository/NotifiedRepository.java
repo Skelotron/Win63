@@ -1,7 +1,7 @@
 package ru.skelotron.win63.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import ru.skelotron.win63.entity.EmailNotified;
+import ru.skelotron.win63.entity.Notified;
 
-public interface NotifiedRepository extends CrudRepository<EmailNotified, Long> {
+public interface NotifiedRepository<T extends Notified> extends CrudRepository<T, Long> {
 }

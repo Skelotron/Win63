@@ -24,5 +24,17 @@ public abstract class Notified extends AuditedEntity {
     @OneToMany(mappedBy = "notified", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<Filter> filters;
 
+    @Column
+    private String textTemplate;
+
+    protected Notified(NotificationType notificationType, Set<Filter> filters, String textTemplate) {
+        this.notificationType = notificationType;
+        this.filters = filters;
+        for (Filter filter : filters) {
+            filter.setNotified(this);
+        }
+        this.textTemplate = textTemplate;
+    }
+
     public abstract String getRecipient();
 }

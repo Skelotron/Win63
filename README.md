@@ -26,7 +26,7 @@ Filters:
 System will retrieve data for each category which have subscriptions.<br>
 After it new items will match with existing subscription.<br>
 In case of matched subscription system will construct message, populate values in tags and send it to notification service.<br>
-Notification Service will send it via specified transport (currently only Email)<br>
+Notification Service will send it via specified transport (currently Email or Telegram)<br>
 
 ## Main Code Points
 ItemSynchronizationTask - scheduled job to synchronize Items<br>

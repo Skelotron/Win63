@@ -1,20 +1,25 @@
 package ru.skelotron.win63.email_sender;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import javax.mail.*;
 import java.util.Properties;
 
 @Component
 public class EmailSender {
     private final Properties properties;
+    private final PropertiesSmtpSettings smtpSettings;
 
-    public EmailSender() {
+    @Autowired
+    public EmailSender(PropertiesSmtpSettings smtpSettings) {
         this.properties = new Properties();
-        initialize(new PropertiesSmtpSettings());
+        this.smtpSettings = smtpSettings;
     }
 
-    public void initialize(SmtpSettings smtpSettings) {
+    @PostConstruct
+    public void initialize() {
         properties.put("mail.smtp.host", smtpSettings.getHost());
         properties.put("mail.smtp.port", smtpSettings.getPort());
         properties.put("mail.smtp.auth", smtpSettings.useAuth());

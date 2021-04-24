@@ -1,10 +1,12 @@
 package ru.skelotron.win63.service.photo_loader;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.http_entities.Photo;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,7 +14,7 @@ import java.nio.file.Paths;
 
 @Component
 @Qualifier("CachePhotoLoader")
-@Log
+@Slf4j
 public class CachePhotoLoader implements PhotoLoader {
     @Override
     public Photo load(Photo photo) {
@@ -25,8 +27,8 @@ public class CachePhotoLoader implements PhotoLoader {
                 byte[] content = Files.readAllBytes(path);
                 photo.setContent(content);
             }
-        } catch (Exception e) {
-            log.throwing("CachePhotoLoader", "load", e);
+        } catch (IOException | URISyntaxException | RuntimeException e) {
+            log.error("Exception on trying to get image from filesystem", e);
         }
 
         return photo;

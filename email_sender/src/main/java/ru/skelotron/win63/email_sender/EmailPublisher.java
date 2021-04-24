@@ -3,6 +3,7 @@ package ru.skelotron.win63.email_sender;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ru.skelotron.win63.common.MessageProcessor;
 import ru.skelotron.win63.common.NotificationSender;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Item;

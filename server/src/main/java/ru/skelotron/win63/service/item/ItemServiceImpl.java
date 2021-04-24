@@ -1,6 +1,6 @@
 package ru.skelotron.win63.service.item;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
-@Log
+@Slf4j
 public class ItemServiceImpl implements ItemService {
 
     private final SettingsRepository settingsRepository;

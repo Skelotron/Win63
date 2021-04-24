@@ -2,7 +2,7 @@ package ru.skelotron.win63.service.response_reader;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.http_entities.Request;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @Qualifier("DummyResponseReader")
-@Log
+@Slf4j
 public class DummyResponseReader implements ResponseReader {
     @Override
     public Response read(Request request) {

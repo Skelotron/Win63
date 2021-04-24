@@ -1,6 +1,6 @@
 package ru.skelotron.win63.service.item;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.CategoryEntity;
@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-@Log
+@Slf4j
 public class ItemSynchronizationServiceImpl implements ItemSynchronizationService {
     private final SubscriptionService subscriptionService;
     private final ItemService itemService;

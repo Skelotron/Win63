@@ -1,13 +1,12 @@
 package ru.skelotron.win63.schedule;
 
-import lombok.extern.java.Log;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.service.CityReader;
 
 @Component
-@Log
+@Slf4j
 public class CitySynchronizationTask {
     private final CityReader cityReader;
 

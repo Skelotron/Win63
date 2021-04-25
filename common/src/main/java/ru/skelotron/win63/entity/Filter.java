@@ -1,5 +1,6 @@
 package ru.skelotron.win63.entity;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @javax.persistence.Entity
 @Table(name = "filter")
 @NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class Filter extends Entity {
     @Enumerated(EnumType.STRING)
     @Column

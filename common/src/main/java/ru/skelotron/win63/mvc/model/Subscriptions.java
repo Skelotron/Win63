@@ -1,5 +1,6 @@
 package ru.skelotron.win63.mvc.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,15 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Subscriptions implements ModelListHolder<SubscriptionModel> {
-    private List<SubscriptionModel> subscriptions;
+    @JsonProperty("subscriptions")
+    private List<SubscriptionModel> models;
 
     @Override
     public List<SubscriptionModel> getModels() {
-        return subscriptions;
+        return models;
     }
 
     @Override
     public void setModels(List<SubscriptionModel> models) {
-        this.subscriptions = models;
+        this.models = models;
     }
 }

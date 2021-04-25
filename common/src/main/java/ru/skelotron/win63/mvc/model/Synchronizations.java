@@ -1,5 +1,6 @@
 package ru.skelotron.win63.mvc.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,15 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Synchronizations<T extends SynchronizationModel> implements ModelListHolder<T> {
-    private List<T> synchronizations;
+    @JsonProperty("synchronizations")
+    private List<T> models;
 
     @Override
     public List<T> getModels() {
-        return synchronizations;
+        return models;
     }
 
     @Override
     public void setModels(List<T> models) {
-        this.synchronizations = models;
+        this.models = models;
     }
 }

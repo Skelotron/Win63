@@ -1,35 +1,31 @@
 package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.skelotron.win63.mvc.converter.SubscriptionModelConverter;
-import ru.skelotron.win63.mvc.model.ModelListHolder;
-import ru.skelotron.win63.mvc.model.SubscriptionModel;
-import ru.skelotron.win63.entity.CategoryEntity;
-import ru.skelotron.win63.entity.EmailNotified;
-import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;
-import ru.skelotron.win63.record.SubscriptionRecord;
+import ru.skelotron.win63.mvc.converter.SubscriptionModelConverter;
+import ru.skelotron.win63.mvc.model.ModelListHolder;
+import ru.skelotron.win63.mvc.model.NotifiedModel;
+import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.mvc.model.Subscriptions;
-import ru.skelotron.win63.repository.CategoryRepository;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
-import java.util.Iterator;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/subscription")
 public class SubscriptionController extends AbstractController<SubscriptionModelConverter, SubscriptionRepository, Subscription, SubscriptionModel> {
-    private final CategoryRepository categoryRepository;
 
     @Autowired
-    public SubscriptionController(SubscriptionRepository subscriptionRepository, CategoryRepository categoryRepository, SubscriptionModelConverter subscriptionModelConverter) {
+    public SubscriptionController(SubscriptionRepository subscriptionRepository, SubscriptionModelConverter subscriptionModelConverter) {
         super(subscriptionModelConverter, subscriptionRepository);
-        this.categoryRepository = categoryRepository;
     }
 
-    @PostMapping("/add")
+    @PostMapping("/")
     public ResponseEntity<SubscriptionModel> subscribe(@RequestBody SubscriptionModel model) {
         Subscription subscription = getConverter().convertToEntity(model);
         getRepository().save(subscription);
@@ -40,53 +36,38 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         return ResponseEntity.ok(savedModel);
     }
 
-    @PostMapping("/remove")
-    public ResponseEntity<SubscriptionRecord> unsubscribe(@RequestBody SubscriptionRecord record) {
-        // todo: rewrite
-        CategoryEntity category = categoryRepository.findByUrl(record.getCategoryUrl());
-        Subscription subscription = getRepository().findByCategory(category);
-        if (subscription == null) {
-            return ResponseEntity.ok().build();
-        }
+    @DeleteMapping("/")
+    public ResponseEntity<SubscriptionModel> unsubscribe(@RequestBody SubscriptionModel model) {
+        Subscription subscription = getRepository().getOne(model.getId());
 
-        for (Iterator<Notified> it = subscription.getNotifiedEntities().iterator(); it.hasNext(); ) {
-            Notified notified = it.next();
-            if (notified instanceof EmailNotified) {
-                if (((EmailNotified) notified).getEmail().endsWith(record.getAddress())) {
-                    it.remove();
-                }
-            }
-        }
+        Set<Long> notifiedIds = model.getNotifiedList().stream().map(NotifiedModel::getId).collect(Collectors.toSet());
+        subscription.getNotifiedEntities().removeIf(notified -> !notifiedIds.contains(notified.getId()));
         getRepository().save(subscription);
 
-        return ResponseEntity.ok(record);
+        return ResponseEntity.ok(model);
     }
 
-    @PostMapping("/{id}")
-    public ResponseEntity<SubscriptionRecord> getSubscription(@PathVariable("id") Long id) {
+    @GetMapping("/{id}")
+    public ResponseEntity<SubscriptionModel> getSubscription(@PathVariable("id") Long id) {
         Subscription subscription = getRepository().findById(id).orElse(null);
-        SubscriptionRecord record = new SubscriptionRecord();
         if (subscription != null) {
-            Notified notified = subscription.getNotifiedEntities().iterator().next();
-            record.setAddress(notified.getRecipient());
-            if (notified instanceof EmailNotified) {
-                EmailNotified emailNotified = (EmailNotified) notified;
-                record.setSubjectTemplate(emailNotified.getSubjectTemplate());
-                record.setTextTemplate(emailNotified.getTextTemplate());
-            }
-            record.setCategoryUrl(subscription.getCategory().getUrl());
+            SubscriptionModel model = getConverter().convertToModel(subscription);
+            return ResponseEntity.ok(model);
         }
-        return ResponseEntity.ok(record);
+        throw new EntityNotFoundException(Subscription.class, id);
     }
 
-    // todo: paging
     @GetMapping("/")
-    public ResponseEntity<ModelListHolder<SubscriptionModel>> getAll() {
-        return ResponseEntity.ok(getAllRecordsHolder());
+    public ResponseEntity<ModelListHolder<SubscriptionModel>> getAll(Pageable page) {
+        return ResponseEntity.ok(getAllRecordsHolder(page));
     }
 
     @Override
     protected ModelListHolder<SubscriptionModel> createModelListHolder() {
         return new Subscriptions();
+    }
+
+    protected ModelListHolder<SubscriptionModel> getAllRecordsHolder(Pageable pageable) {
+        return convertToHolder(getRepository().findAll(pageable).getContent());
     }
 }

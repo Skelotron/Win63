@@ -9,7 +9,6 @@ import ru.skelotron.win63.config.EmailConfig;
 import ru.skelotron.win63.config.TelegramConfig;
 
 @SpringBootApplication
-@Configuration
 @EnableScheduling
 @Import({TelegramConfig.class, EmailConfig.class})
 @SuppressWarnings("MethodMayBeStatic")

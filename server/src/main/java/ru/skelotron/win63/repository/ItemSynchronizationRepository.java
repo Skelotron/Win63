@@ -1,12 +1,12 @@
 package ru.skelotron.win63.repository;
 
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
 
 import java.util.List;
 
-public interface ItemSynchronizationRepository extends CrudRepository<ItemSynchronizationEntity, Long> {
+public interface ItemSynchronizationRepository extends JpaRepository<ItemSynchronizationEntity, Long> {
 
     List<ItemSynchronizationEntity> findByTypeOrderBySyncDate(String entityName);
 

@@ -35,7 +35,7 @@ public class SynchronizationController extends AbstractController<ItemSynchroniz
         if (onlyLast) {
             synchronizationHistory = getRepository().findLastByTypeOrderBySyncDate(entityName);
 
-            Set<CategoryEntity> categories = new HashSet<>();
+            Collection<CategoryEntity> categories = new HashSet<>();
             for (ItemSynchronizationEntity item : synchronizationHistory) {
                 categories.add(item.getCategory());
             }

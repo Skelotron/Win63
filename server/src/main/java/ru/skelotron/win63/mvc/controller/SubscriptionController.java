@@ -66,8 +66,4 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
     protected ModelListHolder<SubscriptionModel> createModelListHolder() {
         return new Subscriptions();
     }
-
-    protected ModelListHolder<SubscriptionModel> getAllRecordsHolder(Pageable pageable) {
-        return convertToHolder(getRepository().findAll(pageable).getContent());
-    }
 }

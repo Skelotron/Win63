@@ -7,6 +7,7 @@ import ru.skelotron.win63.mvc.model.FilterModel;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 public abstract class NotifiedModelConverter implements ModelConverter<Notified, NotifiedModel> {
@@ -44,7 +45,7 @@ public abstract class NotifiedModelConverter implements ModelConverter<Notified,
 
     private void mergeFilters(Notified notified, Collection<Filter> filters) {
         Iterator<Filter> filterIterator = notified.getFilters().iterator();
-        Map<Long, Filter> filtersByIds = filters.stream().filter(f -> f.getId() != null).collect(Collectors.toMap(Filter::getId, f -> f, (f1, f2) -> f1));
+        Map<Long, Filter> filtersByIds = filters.stream().filter(f -> f.getId() != null).collect(Collectors.toMap(Filter::getId, Function.identity(), (f1, f2) -> f1));
         while (filterIterator.hasNext()) {
             Filter existingFilter = filterIterator.next();
             if (filtersByIds.containsKey(existingFilter.getId())) {

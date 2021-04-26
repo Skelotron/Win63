@@ -20,6 +20,7 @@ import ru.skelotron.win63.service.response_reader.ResponseReader;
 import ru.skelotron.win63.service.settings.SettingsService;
 
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -116,7 +117,7 @@ public class ItemServiceImpl implements ItemService {
             existingItem.setTitle( item.getTitle() );
         }
 
-        Map<String, PhotoEntity> existingPhotoMap = existingItem.getPhotos().stream().collect(Collectors.toMap(PhotoEntity::getUrl, p -> p));
+        Map<String, PhotoEntity> existingPhotoMap = existingItem.getPhotos().stream().collect(Collectors.toMap(PhotoEntity::getUrl, Function.identity()));
 
         Set<PhotoEntity> photos = new HashSet<>();
         for (PhotoEntity photo : item.getPhotos()) {

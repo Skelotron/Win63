@@ -20,6 +20,10 @@ public class NotifiedModelConverterFactory {
     }
 
     public NotifiedModelConverter get(NotificationType type) {
-        return notifiedModelConverters.get(type);
+        NotifiedModelConverter converter = notifiedModelConverters.get(type);
+        if (converter == null) {
+            throw new IllegalStateException("There is no ModelConverter for notificationType = " + type);
+        }
+        return converter;
     }
 }

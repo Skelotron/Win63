@@ -3,11 +3,11 @@ package ru.skelotron.win63.mvc.converter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.NotificationType;
-import ru.skelotron.win63.mvc.model.NotifiedModel;
-import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;
+import ru.skelotron.win63.mvc.model.NotifiedModel;
+import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.util.ArrayList;
@@ -40,11 +40,7 @@ public class SubscriptionModelConverter implements ModelConverter<Subscription, 
     }
 
     private NotifiedModelConverter getNotifiedConverter(NotificationType type) {
-        final NotifiedModelConverter converter = notifiedModelConverterFactory.get(type);
-        if (converter == null) {
-            throw new IllegalStateException("There is no ModelConverter for notificationType = " + type);
-        }
-        return converter;
+        return notifiedModelConverterFactory.get(type);
     }
 
     @Override

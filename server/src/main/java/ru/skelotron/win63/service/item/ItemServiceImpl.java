@@ -48,7 +48,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemsChangeData load(CategoryEntity category) {
         int pageSize = Integer.parseInt(settingsRepository.findByName("pageSize").getValue());
         int count = getCount(category, pageSize);
-        log.info("Found " + count + " items of category " + category.getName());
+        log.info("Found {} items of category {}", count, category.getName());
         if (count > 0) {
             return load(category, pageSize, count);
         }
@@ -57,7 +57,7 @@ public class ItemServiceImpl implements ItemService {
 
     private ItemsChangeData load(CategoryEntity category, int pageSize, int count) {
         int batchesCount = (count / pageSize) + (((count % pageSize) == 0) ? 0 : 1);
-        log.info("Start load " + batchesCount + " pages of items with category " + category.getName());
+        log.info("Start load {} pages of items with category {}", batchesCount, category.getName());
 
         Collection<GoodsEntry> goods = new ArrayList<>();
         Collection<Category> categories = new ArrayList<>();

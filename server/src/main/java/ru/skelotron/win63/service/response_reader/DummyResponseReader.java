@@ -18,7 +18,7 @@ import java.util.List;
 public class DummyResponseReader implements ResponseReader {
     @Override
     public Response read(Request request) {
-        log.info("Request: " + request);
+        log.info("Request: {}", request);
         try {
             List<String> lines = Files.readAllLines(Paths.get(getClass().getResource("/sample.json").toURI()));
             String body = lines.stream().reduce("", (l1, l2) -> l1 + "\n" + l2);

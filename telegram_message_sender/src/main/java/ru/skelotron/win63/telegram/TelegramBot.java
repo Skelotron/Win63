@@ -44,7 +44,7 @@ public class TelegramBot extends TelegramLongPollingBot {
         if (user.getUserName() != null) { // support only users with username
             boolean newRegistration = registrationService.registerUser(user.getUserName(), user.getId(), message.getChatId());
             if (newRegistration) {
-                log.info(String.format("Registered User: %s, userId = %d, chatId = %d", user.getUserName(), user.getId(), message.getChatId()));
+                log.info("Registered User: {}, userId = {}, chatId = {}", user.getUserName(), user.getId(), message.getChatId());
                 responseNewRegistration(message);
             }
         }

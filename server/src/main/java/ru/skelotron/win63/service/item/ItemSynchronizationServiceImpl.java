@@ -31,11 +31,11 @@ public class ItemSynchronizationServiceImpl implements ItemSynchronizationServic
     @Override
     public void synchronize() {
         Map<CategoryEntity, List<Subscription>> categories = subscriptionService.findUniqueSubscribedCategories();
-        log.info("Found " + categories.size() + " subscribed categories");
+        log.info("Found {} subscribed categories", categories.size());
         for (Map.Entry<CategoryEntity, List<Subscription>> entry : categories.entrySet()) {
-            log.info("Start Process " + entry.getKey().getName() + " (" + entry.getKey().getUrl() + ") category");
+            log.info("Start Process {} ({}) category", entry.getKey().getName(), entry.getKey().getUrl());
             ItemsChangeData changeData = synchronize(entry.getKey(), false);
-            log.info("Found " + changeData.getNewItems().size() + " new Items for " + entry.getKey().getName() + " category");
+            log.info("Found {} new Items for {} category", changeData.getNewItems().size(), entry.getKey().getName());
             subscriptionService.fireItemsChangedEvent(changeData, entry.getValue());
         }
     }

@@ -4,12 +4,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.*;
 import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.hateoas.config.EnableHypermediaSupport;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import ru.skelotron.win63.config.EmailConfig;
 import ru.skelotron.win63.config.TelegramConfig;
 
 @SpringBootApplication
 @EnableScheduling
+@EnableHypermediaSupport(type = EnableHypermediaSupport.HypermediaType.HAL)
 @Import({TelegramConfig.class, EmailConfig.class})
 @SuppressWarnings("MethodMayBeStatic")
 @PropertySources({

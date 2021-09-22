@@ -1,15 +1,14 @@
 package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skelotron.win63.entity.CityEntity;
 import ru.skelotron.win63.mvc.converter.CityModelConverter;
-import ru.skelotron.win63.mvc.model.Cities;
 import ru.skelotron.win63.mvc.model.CityModel;
-import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.repository.CityRepository;
 
 @RestController
@@ -22,12 +21,7 @@ public class CityController extends AbstractController<CityModelConverter, CityR
     }
 
     @GetMapping("/")
-    public ResponseEntity<ModelListHolder<CityModel>> getAll() {
+    public ResponseEntity<CollectionModel<CityModel>> getAll() {
         return ResponseEntity.ok(getAllRecordsHolder());
-    }
-
-    @Override
-    protected ModelListHolder<CityModel> createModelListHolder() {
-        return new Cities();
     }
 }

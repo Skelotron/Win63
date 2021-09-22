@@ -1,6 +1,9 @@
 package ru.skelotron.win63.mvc.converter;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
@@ -15,31 +18,35 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Component
-public class SubscriptionModelConverter implements ModelConverter<Subscription, SubscriptionModel> {
+public class SubscriptionModelConverter extends RepresentationModelAssemblerSupport<Subscription, SubscriptionModel> implements ModelConverter<Subscription, SubscriptionModel> {
     private final CategoryModelConverter categoryModelConverter;
     private final NotifiedModelConverterFactory notifiedModelConverterFactory;
     private final SubscriptionRepository subscriptionRepository;
 
     @Autowired
     public SubscriptionModelConverter(CategoryModelConverter categoryModelConverter, NotifiedModelConverterFactory notifiedModelConverterFactory, SubscriptionRepository subscriptionRepository) {
+        super(Subscription.class, SubscriptionModel.class);
         this.categoryModelConverter = categoryModelConverter;
         this.notifiedModelConverterFactory = notifiedModelConverterFactory;
         this.subscriptionRepository = subscriptionRepository;
     }
 
     @Override
-    public SubscriptionModel convertToModel(Subscription entity) {
+    @NotNull
+    public SubscriptionModel toModel(Subscription entity) {
         SubscriptionModel subscription = new SubscriptionModel();
         subscription.setId(entity.getId());
-        subscription.setCategory( categoryModelConverter.convertToModel(entity.getCategory()) );
+        subscription.setCategory( categoryModelConverter.toModel(entity.getCategory()) );
         subscription.setNotifiedList(new ArrayList<>());
         for (Notified notified : entity.getNotifiedEntities()) {
             subscription.getNotifiedList().add( getNotifiedConverter(notified.getNotificationType()).convertToModel(notified) );
         }
+        subscription.add(WebMvcLinkBuilder.linkTo(getControllerClass()).slash(entity.getId()).withSelfRel());
         return subscription;
     }
 
-    private NotifiedModelConverter getNotifiedConverter(NotificationType type) {
+    @SuppressWarnings("unchecked")
+    private NotifiedModelConverter<? extends Notified, ? extends NotifiedModel<?>> getNotifiedConverter(NotificationType type) {
         return notifiedModelConverterFactory.get(type);
     }
 
@@ -54,7 +61,7 @@ public class SubscriptionModelConverter implements ModelConverter<Subscription, 
         subscription.setCategory( categoryModelConverter.convertToEntity( model.getCategory() ) );
 
         Set<Notified> notifiedSet = new HashSet<>();
-        for (NotifiedModel notifiedModel : model.getNotifiedList()) {
+        for (NotifiedModel<?> notifiedModel : model.getNotifiedList()) {
             Notified notified = getNotifiedConverter(notifiedModel.getType()).convertToEntity(notifiedModel);
             notified.getSubscriptions().add(subscription);
             notifiedSet.add(notified);

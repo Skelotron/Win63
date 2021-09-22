@@ -1,5 +1,7 @@
 package ru.skelotron.win63.mvc.converter;
 
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
@@ -10,22 +12,24 @@ import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-public abstract class NotifiedModelConverter implements ModelConverter<Notified, NotifiedModel> {
+public abstract class NotifiedModelConverter<E extends Notified, M extends NotifiedModel<?>> extends RepresentationModelAssemblerSupport<E, M> implements ModelConverter<Notified, NotifiedModel<?>> {
     private final FilterModelConverter filterModelConverter;
 
-    public NotifiedModelConverter(FilterModelConverter filterModelConverter) {
+    public NotifiedModelConverter(FilterModelConverter filterModelConverter, Class<?> controllerClass, Class<M> resourceType) {
+        super(controllerClass, resourceType);
         this.filterModelConverter = filterModelConverter;
     }
 
-    protected void convertToModel(NotifiedModel notified, Notified entity) {
+    protected void toModel(NotifiedModel<?> notified, Notified entity) {
         notified.setId(entity.getId());
         notified.setFilters(new ArrayList<>());
         for (Filter filter : entity.getFilters()) {
-            notified.getFilters().add( filterModelConverter.convertToModel(filter) );
+            notified.getFilters().add( filterModelConverter.toModel(filter) );
         }
+        notified.add(WebMvcLinkBuilder.linkTo(getControllerClass()).slash(entity.getId()).withSelfRel());
     }
 
-    protected void convertToEntity(NotifiedModel model, Notified notified) {
+    protected void convertToEntity(NotifiedModel<?> model, Notified notified) {
         Set<Filter> filters = new HashSet<>();
         for (FilterModel filterModel : model.getFilters()) {
             Filter filter = filterModelConverter.convertToEntity(filterModel);
@@ -66,4 +70,6 @@ public abstract class NotifiedModelConverter implements ModelConverter<Notified,
     }
 
     protected abstract NotificationType getType();
+
+    protected abstract M convertToModel(Notified entity);
 }

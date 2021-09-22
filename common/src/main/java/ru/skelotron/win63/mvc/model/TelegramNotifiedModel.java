@@ -12,7 +12,7 @@ import ru.skelotron.win63.entity.NotificationType;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeName("TELEGRAM")
-public class TelegramNotifiedModel extends NotifiedModel {
+public class TelegramNotifiedModel extends NotifiedModel<TelegramNotifiedModel> {
     private String userName;
 
     @Override

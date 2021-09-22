@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
@@ -11,8 +12,8 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SubscriptionModel extends AbstractModel {
+public class SubscriptionModel extends RepresentationModel<SubscriptionModel> {
     private Long id;
     private CategoryModel category;
-    private List<NotifiedModel> notifiedList;
+    private List<NotifiedModel<?>> notifiedList;
 }

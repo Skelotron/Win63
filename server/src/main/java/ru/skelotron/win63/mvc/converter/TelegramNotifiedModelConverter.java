@@ -1,5 +1,6 @@
 package ru.skelotron.win63.mvc.converter;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.entity.NotificationType;
@@ -11,26 +12,13 @@ import ru.skelotron.win63.mvc.model.TelegramNotifiedModel;
 import ru.skelotron.win63.repository.TelegramNotifiedRepository;
 
 @Component
-public class TelegramNotifiedModelConverter extends NotifiedModelConverter {
+public class TelegramNotifiedModelConverter extends NotifiedModelConverter<TelegramNotified, TelegramNotifiedModel> {
     private final TelegramNotifiedRepository telegramNotifiedRepository;
 
     @Autowired
     public TelegramNotifiedModelConverter(FilterModelConverter filterModelConverter, TelegramNotifiedRepository telegramNotifiedRepository) {
-        super(filterModelConverter);
+        super(filterModelConverter, TelegramNotified.class, TelegramNotifiedModel.class);
         this.telegramNotifiedRepository = telegramNotifiedRepository;
-    }
-
-    @Override
-    public TelegramNotifiedModel convertToModel(Notified entity) {
-        if (!(entity instanceof TelegramNotified)) {
-            throw new RuntimeException("Wrong Entity type: " + entity.getNotificationType());
-        }
-
-        TelegramNotified telegramNotified = (TelegramNotified) entity;
-        TelegramNotifiedModel notified = new TelegramNotifiedModel();
-        notified.setUserName(telegramNotified.getUserName());
-        convertToModel(notified, telegramNotified);
-        return notified;
     }
 
     @Override
@@ -54,5 +42,22 @@ public class TelegramNotifiedModelConverter extends NotifiedModelConverter {
     @Override
     protected NotificationType getType() {
         return NotificationType.TELEGRAM;
+    }
+
+    @Override
+    public TelegramNotifiedModel convertToModel(Notified entity) {
+        if (!(entity instanceof TelegramNotified)) {
+            throw new RuntimeException("Wrong Entity type: " + entity.getNotificationType());
+        }
+        return toModel((TelegramNotified) entity);
+    }
+
+    @Override
+    @NotNull
+    public TelegramNotifiedModel toModel(TelegramNotified entity) {
+        TelegramNotifiedModel notified = new TelegramNotifiedModel();
+        notified.setUserName(entity.getUserName());
+        toModel(notified, entity);
+        return notified;
     }
 }

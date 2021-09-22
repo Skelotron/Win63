@@ -1,6 +1,8 @@
 package ru.skelotron.win63.mvc.converter;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 import ru.skelotron.win63.mvc.model.ItemSynchronizationModel;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
@@ -8,21 +10,23 @@ import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.repository.ItemSynchronizationRepository;
 
 @Component
-public class ItemSynchronizationModelConverter implements ModelConverter<ItemSynchronizationEntity, ItemSynchronizationModel> {
+public class ItemSynchronizationModelConverter extends RepresentationModelAssemblerSupport<ItemSynchronizationEntity, ItemSynchronizationModel> implements ModelConverter<ItemSynchronizationEntity, ItemSynchronizationModel> {
     private final CategoryModelConverter categoryModelConverter;
     private final ItemSynchronizationRepository itemSynchronizationRepository;
 
     @Autowired
     public ItemSynchronizationModelConverter(CategoryModelConverter categoryModelConverter, ItemSynchronizationRepository itemSynchronizationRepository) {
+        super(ItemSynchronizationEntity.class, ItemSynchronizationModel.class);
         this.categoryModelConverter = categoryModelConverter;
         this.itemSynchronizationRepository = itemSynchronizationRepository;
     }
 
     @Override
-    public ItemSynchronizationModel convertToModel(ItemSynchronizationEntity entity) {
+    @NotNull
+    public ItemSynchronizationModel toModel(ItemSynchronizationEntity entity) {
         ItemSynchronizationModel model = new ItemSynchronizationModel();
         model.setId(entity.getId());
-        model.setCategory( categoryModelConverter.convertToModel( entity.getCategory() ) );
+        model.setCategory( categoryModelConverter.toModel( entity.getCategory() ) );
         model.setManual( entity.getManual() );
         model.setNewItemsCount( entity.getNewEntitiesCount() );
         model.setSyncDate( entity.getSyncDate() );

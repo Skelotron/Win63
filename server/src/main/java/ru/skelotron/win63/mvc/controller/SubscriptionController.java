@@ -2,15 +2,14 @@ package ru.skelotron.win63.mvc.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;
 import ru.skelotron.win63.mvc.converter.SubscriptionModelConverter;
-import ru.skelotron.win63.mvc.model.ModelListHolder;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.mvc.model.SubscriptionModel;
-import ru.skelotron.win63.mvc.model.Subscriptions;
 import ru.skelotron.win63.repository.SubscriptionRepository;
 
 import java.util.Set;
@@ -31,7 +30,7 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         getRepository().save(subscription);
 
         Subscription entity = getRepository().findById(subscription.getId()).orElseThrow(() -> new EntityNotFoundException(Subscription.class, subscription.getId()));
-        SubscriptionModel savedModel = getConverter().convertToModel(entity);
+        SubscriptionModel savedModel = getConverter().toModel(entity);
 
         return ResponseEntity.ok(savedModel);
     }
@@ -51,19 +50,14 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
     public ResponseEntity<SubscriptionModel> getSubscription(@PathVariable("id") Long id) {
         Subscription subscription = getRepository().findById(id).orElse(null);
         if (subscription != null) {
-            SubscriptionModel model = getConverter().convertToModel(subscription);
+            SubscriptionModel model = getConverter().toModel(subscription);
             return ResponseEntity.ok(model);
         }
         throw new EntityNotFoundException(Subscription.class, id);
     }
 
     @GetMapping("/")
-    public ResponseEntity<ModelListHolder<SubscriptionModel>> getAll(Pageable page) {
+    public ResponseEntity<CollectionModel<SubscriptionModel>> getAll(Pageable page) {
         return ResponseEntity.ok(getAllRecordsHolder(page));
-    }
-
-    @Override
-    protected ModelListHolder<SubscriptionModel> createModelListHolder() {
-        return new Subscriptions();
     }
 }

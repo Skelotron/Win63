@@ -12,7 +12,7 @@ import ru.skelotron.win63.entity.NotificationType;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonTypeName("EMAIL")
-public class EmailNotifiedModel extends NotifiedModel {
+public class EmailNotifiedModel extends NotifiedModel<EmailNotifiedModel> {
     private String recipient;
     private String subject;
     private String message;

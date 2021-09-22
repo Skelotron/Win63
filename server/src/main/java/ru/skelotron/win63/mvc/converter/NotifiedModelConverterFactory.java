@@ -10,17 +10,17 @@ import java.util.Map;
 
 @Service
 public class NotifiedModelConverterFactory {
-    private final Map<NotificationType, NotifiedModelConverter> notifiedModelConverters = new HashMap<>();
+    private final Map<NotificationType, NotifiedModelConverter<?, ?>> notifiedModelConverters = new HashMap<>();
 
     @Autowired
-    public void setNotifiedModelConverters(@SuppressWarnings("TypeMayBeWeakened") List<NotifiedModelConverter> notifiedModelConverters) {
-        for (NotifiedModelConverter converter : notifiedModelConverters) {
+    public void setNotifiedModelConverters(@SuppressWarnings("TypeMayBeWeakened") List<NotifiedModelConverter<?, ?>> notifiedModelConverters) {
+        for (NotifiedModelConverter<?, ?> converter : notifiedModelConverters) {
             this.notifiedModelConverters.put(converter.getType(), converter);
         }
     }
 
-    public NotifiedModelConverter get(NotificationType type) {
-        NotifiedModelConverter converter = notifiedModelConverters.get(type);
+    public NotifiedModelConverter<?, ?> get(NotificationType type) {
+        NotifiedModelConverter<?, ?> converter = notifiedModelConverters.get(type);
         if (converter == null) {
             throw new IllegalStateException("There is no ModelConverter for notificationType = " + type);
         }

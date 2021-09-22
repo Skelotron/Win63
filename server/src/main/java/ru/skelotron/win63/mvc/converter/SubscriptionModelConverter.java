@@ -9,6 +9,7 @@ import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.Subscription;
 import ru.skelotron.win63.exception.EntityNotFoundException;
+import ru.skelotron.win63.mvc.controller.SubscriptionController;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.mvc.model.SubscriptionModel;
 import ru.skelotron.win63.repository.SubscriptionRepository;
@@ -25,7 +26,7 @@ public class SubscriptionModelConverter extends RepresentationModelAssemblerSupp
 
     @Autowired
     public SubscriptionModelConverter(CategoryModelConverter categoryModelConverter, NotifiedModelConverterFactory notifiedModelConverterFactory, SubscriptionRepository subscriptionRepository) {
-        super(Subscription.class, SubscriptionModel.class);
+        super(SubscriptionController.class, SubscriptionModel.class);
         this.categoryModelConverter = categoryModelConverter;
         this.notifiedModelConverterFactory = notifiedModelConverterFactory;
         this.subscriptionRepository = subscriptionRepository;
@@ -45,7 +46,6 @@ public class SubscriptionModelConverter extends RepresentationModelAssemblerSupp
         return subscription;
     }
 
-    @SuppressWarnings("unchecked")
     private NotifiedModelConverter<? extends Notified, ? extends NotifiedModel<?>> getNotifiedConverter(NotificationType type) {
         return notifiedModelConverterFactory.get(type);
     }

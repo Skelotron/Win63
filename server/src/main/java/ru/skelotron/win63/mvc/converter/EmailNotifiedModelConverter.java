@@ -7,6 +7,7 @@ import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.exception.EntityNotFoundException;
+import ru.skelotron.win63.mvc.controller.AbstractController;
 import ru.skelotron.win63.mvc.model.EmailNotifiedModel;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.repository.EmailNotifiedRepository;
@@ -17,12 +18,12 @@ public class EmailNotifiedModelConverter extends NotifiedModelConverter<EmailNot
 
     @Autowired
     public EmailNotifiedModelConverter(FilterModelConverter filterModelConverter, EmailNotifiedRepository emailNotifiedRepository) {
-        super(filterModelConverter, EmailNotified.class, EmailNotifiedModel.class);
+        super(filterModelConverter, AbstractController.class, EmailNotifiedModel.class);
         this.emailNotifiedRepository = emailNotifiedRepository;
     }
 
     @Override
-    public EmailNotified convertToEntity(NotifiedModel model) {
+    public EmailNotified convertToEntity(NotifiedModel<?> model) {
         if (!(model instanceof EmailNotifiedModel)) {
             throw new RuntimeException("Wrong model type: " + model.getClass().getSimpleName());
         }

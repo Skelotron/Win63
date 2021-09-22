@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+import ru.skelotron.win63.mvc.controller.AbstractController;
 import ru.skelotron.win63.mvc.model.FilterModel;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.Item;
@@ -21,7 +22,7 @@ public class FilterModelConverter extends RepresentationModelAssemblerSupport<Fi
 
     @Autowired
     public FilterModelConverter(FilterRepository filterRepository) {
-        super(Filter.class, FilterModel.class);
+        super(AbstractController.class, FilterModel.class);
         this.filterRepository = filterRepository;
     }
 

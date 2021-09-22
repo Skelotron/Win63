@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+import ru.skelotron.win63.mvc.controller.ItemSynchronizationController;
 import ru.skelotron.win63.mvc.model.ItemSynchronizationModel;
 import ru.skelotron.win63.entity.ItemSynchronizationEntity;
 import ru.skelotron.win63.exception.EntityNotFoundException;
@@ -16,7 +17,7 @@ public class ItemSynchronizationModelConverter extends RepresentationModelAssemb
 
     @Autowired
     public ItemSynchronizationModelConverter(CategoryModelConverter categoryModelConverter, ItemSynchronizationRepository itemSynchronizationRepository) {
-        super(ItemSynchronizationEntity.class, ItemSynchronizationModel.class);
+        super(ItemSynchronizationController.class, ItemSynchronizationModel.class);
         this.categoryModelConverter = categoryModelConverter;
         this.itemSynchronizationRepository = itemSynchronizationRepository;
     }

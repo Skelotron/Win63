@@ -7,6 +7,7 @@ import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.TelegramNotified;
 import ru.skelotron.win63.exception.EntityNotFoundException;
+import ru.skelotron.win63.mvc.controller.AbstractController;
 import ru.skelotron.win63.mvc.model.NotifiedModel;
 import ru.skelotron.win63.mvc.model.TelegramNotifiedModel;
 import ru.skelotron.win63.repository.TelegramNotifiedRepository;
@@ -17,12 +18,12 @@ public class TelegramNotifiedModelConverter extends NotifiedModelConverter<Teleg
 
     @Autowired
     public TelegramNotifiedModelConverter(FilterModelConverter filterModelConverter, TelegramNotifiedRepository telegramNotifiedRepository) {
-        super(filterModelConverter, TelegramNotified.class, TelegramNotifiedModel.class);
+        super(filterModelConverter, AbstractController.class, TelegramNotifiedModel.class);
         this.telegramNotifiedRepository = telegramNotifiedRepository;
     }
 
     @Override
-    public TelegramNotified convertToEntity(NotifiedModel model) {
+    public TelegramNotified convertToEntity(NotifiedModel<?> model) {
         if (!(model instanceof TelegramNotifiedModel)) {
             throw new RuntimeException("Wrong model type: " + model.getClass().getSimpleName());
         }

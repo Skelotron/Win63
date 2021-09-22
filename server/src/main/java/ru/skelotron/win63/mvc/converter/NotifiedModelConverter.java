@@ -1,7 +1,6 @@
 package ru.skelotron.win63.mvc.converter;
 
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import ru.skelotron.win63.entity.Filter;
 import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
@@ -26,7 +25,6 @@ public abstract class NotifiedModelConverter<E extends Notified, M extends Notif
         for (Filter filter : entity.getFilters()) {
             notified.getFilters().add( filterModelConverter.toModel(filter) );
         }
-        notified.add(WebMvcLinkBuilder.linkTo(getControllerClass()).slash(entity.getId()).withSelfRel());
     }
 
     protected void convertToEntity(NotifiedModel<?> model, Notified notified) {

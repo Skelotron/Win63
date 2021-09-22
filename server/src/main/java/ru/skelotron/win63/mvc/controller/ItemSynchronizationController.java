@@ -17,12 +17,12 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/synchronization/item")
-public class SynchronizationController extends AbstractController<ItemSynchronizationModelConverter, ItemSynchronizationRepository, ItemSynchronizationEntity, ItemSynchronizationModel> {
+public class ItemSynchronizationController extends AbstractController<ItemSynchronizationModelConverter, ItemSynchronizationRepository, ItemSynchronizationEntity, ItemSynchronizationModel> {
     private final CategoryRepository categoryRepository;
     private final ItemSynchronizationService itemSynchronizationService;
 
     @Autowired
-    public SynchronizationController(ItemSynchronizationRepository itemSynchronizationRepository, ItemSynchronizationModelConverter itemSynchronizationModelConverter, CategoryRepository categoryRepository, ItemSynchronizationService itemSynchronizationService) {
+    public ItemSynchronizationController(ItemSynchronizationRepository itemSynchronizationRepository, ItemSynchronizationModelConverter itemSynchronizationModelConverter, CategoryRepository categoryRepository, ItemSynchronizationService itemSynchronizationService) {
         super(itemSynchronizationModelConverter, itemSynchronizationRepository);
         this.categoryRepository = categoryRepository;
         this.itemSynchronizationService = itemSynchronizationService;

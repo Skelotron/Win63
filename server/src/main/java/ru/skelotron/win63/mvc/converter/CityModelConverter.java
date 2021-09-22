@@ -4,6 +4,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+import ru.skelotron.win63.mvc.controller.CityController;
 import ru.skelotron.win63.mvc.model.CityModel;
 import ru.skelotron.win63.entity.CityEntity;
 import ru.skelotron.win63.exception.EntityNotFoundException;
@@ -15,7 +16,7 @@ public class CityModelConverter extends RepresentationModelAssemblerSupport<City
 
     @Autowired
     public CityModelConverter(CityRepository cityRepository) {
-        super(CityEntity.class, CityModel.class);
+        super(CityController.class, CityModel.class);
         this.cityRepository = cityRepository;
     }
 

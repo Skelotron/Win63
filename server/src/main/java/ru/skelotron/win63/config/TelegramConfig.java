@@ -9,32 +9,37 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.skelotron.win63.telegram.TelegramMessagePublisher;
 import ru.skelotron.win63.telegram.TelegramMessageSender;
 
 @Configuration
 @SuppressWarnings("MethodMayBeStatic")
 public class TelegramConfig {
+    private final RabbitQueueConfig telegramProperties;
+
+    public TelegramConfig(RabbitQueueConfig telegramProperties) {
+        this.telegramProperties = telegramProperties;
+    }
+
     @Bean
     public Queue telegramQueue() {
-        return new Queue(TelegramMessagePublisher.QUEUE_NAME, false);
+        return new Queue(telegramProperties.getQueue());
     }
 
     @Bean
     public TopicExchange telegramTopicExchange() {
-        return new TopicExchange("telegram-exchange");
+        return new TopicExchange(telegramProperties.getExchange());
     }
 
     @Bean
     public Binding telegramBinding(Queue telegramQueue, TopicExchange telegramTopicExchange) {
-        return BindingBuilder.bind(telegramQueue).to(telegramTopicExchange).with("");
+        return BindingBuilder.bind(telegramQueue).to(telegramTopicExchange).with(telegramProperties.getKey());
     }
 
     @Bean
     public SimpleMessageListenerContainer telegramContainer(ConnectionFactory connectionFactory, MessageListenerAdapter telegramListenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(TelegramMessagePublisher.QUEUE_NAME);
+        container.setQueueNames(telegramProperties.getQueue());
         container.setMessageListener(telegramListenerAdapter);
         return container;
     }

@@ -9,16 +9,17 @@ import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.NotificationType;
 import ru.skelotron.win63.entity.Notified;
 import ru.skelotron.win63.entity.TelegramNotified;
+import ru.skelotron.win63.telegram.config.properties.TelegramProperties;
 
 @Service
 public class TelegramMessagePublisher implements NotificationSender {
-    public static final String QUEUE_NAME = "TELEGRAM_QUEUE";
-
     private final RabbitTemplate rabbitTemplate;
+    private final TelegramProperties telegramProperties;
 
     @Autowired
-    public TelegramMessagePublisher(RabbitTemplate rabbitTemplate) {
+    public TelegramMessagePublisher(RabbitTemplate rabbitTemplate, TelegramProperties telegramProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.telegramProperties = telegramProperties;
     }
 
     @Override
@@ -39,7 +40,7 @@ public class TelegramMessagePublisher implements NotificationSender {
     }
 
     public void send(TelegramMessage message) {
-        rabbitTemplate.convertAndSend("telegram-exchange", "", message);
+        rabbitTemplate.convertAndSend(telegramProperties.getExchange(), telegramProperties.getKey(), message);
     }
 
     private TelegramMessage convertToMessage(TelegramNotified notified, Item item) {

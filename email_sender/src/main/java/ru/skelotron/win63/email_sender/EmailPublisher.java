@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.skelotron.win63.common.MessageProcessor;
 import ru.skelotron.win63.common.NotificationSender;
+import ru.skelotron.win63.config.RabbitQueueConfig;
 import ru.skelotron.win63.entity.EmailNotified;
 import ru.skelotron.win63.entity.Item;
 import ru.skelotron.win63.entity.NotificationType;
@@ -14,13 +15,13 @@ import java.util.Collections;
 
 @Service
 public class EmailPublisher implements NotificationSender {
-    public static final String QUEUE_NAME = "EMAIL_QUEUE";
-
     private final RabbitTemplate rabbitTemplate;
+    private final RabbitQueueConfig emailProperties;
 
     @Autowired
-    public EmailPublisher(RabbitTemplate rabbitTemplate) {
+    public EmailPublisher(RabbitTemplate rabbitTemplate, RabbitQueueConfig emailProperties) {
         this.rabbitTemplate = rabbitTemplate;
+        this.emailProperties = emailProperties;
     }
 
     @Override
@@ -34,7 +35,7 @@ public class EmailPublisher implements NotificationSender {
     }
 
     public void send(Email email) {
-        rabbitTemplate.convertAndSend("email-exchange", "", email);
+        rabbitTemplate.convertAndSend(emailProperties.getExchange(), emailProperties.getKey(), email);
     }
 
     private Email convertToEmail(EmailNotified notified, Item item) {

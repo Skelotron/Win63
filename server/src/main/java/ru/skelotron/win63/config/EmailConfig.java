@@ -9,32 +9,38 @@ import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import ru.skelotron.win63.email_sender.EmailPublisher;
 import ru.skelotron.win63.email_sender.EmailSender;
+import ru.skelotron.win63.email_sender.config.properties.EmailProperties;
 
 @Configuration
-@SuppressWarnings("MethodMayBeStatic")
 public class EmailConfig {
+
+    private final EmailProperties emailProperties;
+
+    public EmailConfig(EmailProperties emailProperties) {
+        this.emailProperties = emailProperties;
+    }
+
     @Bean
     public Queue emailQueue() {
-        return new Queue(EmailPublisher.QUEUE_NAME, false);
+        return new Queue(emailProperties.getQueue());
     }
 
     @Bean
     public TopicExchange emailTopicExchange() {
-        return new TopicExchange("email-exchange");
+        return new TopicExchange(emailProperties.getExchange());
     }
 
     @Bean
     public Binding emailBinding(Queue emailQueue, TopicExchange emailTopicExchange) {
-        return BindingBuilder.bind(emailQueue).to(emailTopicExchange).with("");
+        return BindingBuilder.bind(emailQueue).to(emailTopicExchange).with(emailProperties.getKey());
     }
 
     @Bean
     public SimpleMessageListenerContainer emailContainer(ConnectionFactory connectionFactory, MessageListenerAdapter emailListenerAdapter) {
         SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
-        container.setQueueNames(EmailPublisher.QUEUE_NAME);
+        container.setQueueNames(emailProperties.getQueue());
         container.setMessageListener(emailListenerAdapter);
         return container;
     }

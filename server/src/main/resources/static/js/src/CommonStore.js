@@ -23,7 +23,7 @@ Ext.define('CommonStore', {
       storeId: 'categoryStore',
       proxy: {
         type: 'ajax',
-        url: '/category/',
+        url: '/category',
         reader: {
           type: 'json',
           rootProperty: 'categories'
@@ -38,7 +38,7 @@ Ext.define('CommonStore', {
       storeId: 'cityStore',
       proxy: {
         type: 'ajax',
-        url: '/city/',
+        url: '/city',
         reader: {
           type: 'json',
           rootProperty: 'cities'
@@ -53,7 +53,7 @@ Ext.define('CommonStore', {
       storeId: 'subscriptionStore',
       proxy: {
         type: 'ajax',
-        url: '/subscription/',
+        url: '/subscription',
         reader: {
           type: 'json',
           rootProperty: 'subscriptions'
@@ -108,7 +108,7 @@ Ext.define('CommonStore', {
       storeId: 'itemSynchronizationStore',
       proxy: {
         type: 'ajax',
-        url: '/synchronization/Item',
+        url: '/synchronization/item',
         reader: {
           type: 'json',
           rootProperty: 'synchronizations'
@@ -123,7 +123,7 @@ Ext.define('CommonStore', {
       storeId: 'itemSynchronizationStatusStore',
       proxy: {
         type: 'ajax',
-        url: '/synchronization/Item?last=true',
+        url: '/synchronization/item?last=true',
         reader: {
           type: 'json',
           rootProperty: 'synchronizations'

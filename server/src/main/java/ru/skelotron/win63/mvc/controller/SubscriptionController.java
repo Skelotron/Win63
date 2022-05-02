@@ -16,7 +16,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/subscription")
+@RequestMapping("subscription")
 public class SubscriptionController extends AbstractController<SubscriptionModelConverter, SubscriptionRepository, Subscription, SubscriptionModel> {
 
     @Autowired
@@ -24,7 +24,7 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         super(subscriptionModelConverter, subscriptionRepository);
     }
 
-    @PostMapping("/")
+    @PostMapping
     public ResponseEntity<SubscriptionModel> subscribe(@RequestBody SubscriptionModel model) {
         Subscription subscription = getConverter().convertToEntity(model);
         getRepository().save(subscription);
@@ -35,7 +35,7 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         return ResponseEntity.ok(savedModel);
     }
 
-    @DeleteMapping("/")
+    @DeleteMapping
     public ResponseEntity<SubscriptionModel> unsubscribe(@RequestBody SubscriptionModel model) {
         Subscription subscription = getRepository().getOne(model.getId());
 
@@ -46,7 +46,7 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         return ResponseEntity.ok(model);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<SubscriptionModel> getSubscription(@PathVariable("id") Long id) {
         Subscription subscription = getRepository().findById(id).orElse(null);
         if (subscription != null) {
@@ -56,7 +56,7 @@ public class SubscriptionController extends AbstractController<SubscriptionModel
         throw new EntityNotFoundException(Subscription.class, id);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<CollectionModel<SubscriptionModel>> getAll(Pageable page) {
         return ResponseEntity.ok(getAllRecordsHolder(page));
     }

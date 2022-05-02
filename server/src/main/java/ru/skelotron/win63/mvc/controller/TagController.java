@@ -11,10 +11,10 @@ import ru.skelotron.win63.mvc.model.AvailableTags;
 import java.util.Arrays;
 
 @RestController
-@RequestMapping("/tag")
+@RequestMapping("tag")
 public class TagController {
 
-    @GetMapping("/available/{type}")
+    @GetMapping("available/{type}")
     public ResponseEntity<AvailableTags> getAvailableTags(@PathVariable TagType type) {
         switch (type) {
             case MESSAGE:

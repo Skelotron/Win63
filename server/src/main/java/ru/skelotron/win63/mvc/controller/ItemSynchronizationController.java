@@ -16,7 +16,7 @@ import ru.skelotron.win63.service.item.ItemSynchronizationService;
 import java.util.*;
 
 @RestController
-@RequestMapping("/synchronization/item")
+@RequestMapping("synchronization/item")
 public class ItemSynchronizationController extends AbstractController<ItemSynchronizationModelConverter, ItemSynchronizationRepository, ItemSynchronizationEntity, ItemSynchronizationModel> {
     private final CategoryRepository categoryRepository;
     private final ItemSynchronizationService itemSynchronizationService;
@@ -28,7 +28,7 @@ public class ItemSynchronizationController extends AbstractController<ItemSynchr
         this.itemSynchronizationService = itemSynchronizationService;
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<CollectionModel<ItemSynchronizationModel>> getSynchronizations(@PathVariable String entityName, @RequestParam(name = "last", required = false, defaultValue = "false") boolean onlyLast) {
         List<ItemSynchronizationEntity> synchronizationHistory;
         if (onlyLast) {
@@ -53,7 +53,7 @@ public class ItemSynchronizationController extends AbstractController<ItemSynchr
         return ResponseEntity.ok( convertToHolder(synchronizationHistory) );
     }
 
-    @PostMapping("/category/{categoryId}")
+    @PostMapping("category/{categoryId}")
     public ResponseEntity<Void> synchronize(@PathVariable String entityName, @PathVariable Long categoryId) {
         CategoryEntity category = categoryRepository.findById(categoryId).orElseThrow(() -> new EntityNotFoundException(CategoryEntity.class, categoryId));
         itemSynchronizationService.synchronize(category, true);

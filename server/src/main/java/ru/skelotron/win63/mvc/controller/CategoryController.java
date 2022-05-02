@@ -12,7 +12,7 @@ import ru.skelotron.win63.mvc.model.CategoryModel;
 import ru.skelotron.win63.repository.CategoryRepository;
 
 @RestController
-@RequestMapping("/category")
+@RequestMapping("category")
 public class CategoryController extends AbstractController<CategoryModelConverter, CategoryRepository, CategoryEntity, CategoryModel> {
 
     @Autowired
@@ -20,7 +20,7 @@ public class CategoryController extends AbstractController<CategoryModelConverte
         super(categoryModelConverter, categoryRepository);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<CollectionModel<CategoryModel>> getAll() {
         return ResponseEntity.ok(getAllRecordsHolder());
     }

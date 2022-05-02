@@ -12,7 +12,7 @@ import ru.skelotron.win63.mvc.model.CityModel;
 import ru.skelotron.win63.repository.CityRepository;
 
 @RestController
-@RequestMapping("/city")
+@RequestMapping("city")
 public class CityController extends AbstractController<CityModelConverter, CityRepository, CityEntity, CityModel> {
 
     @Autowired
@@ -20,7 +20,7 @@ public class CityController extends AbstractController<CityModelConverter, CityR
         super(cityModelConverter, cityRepository);
     }
 
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<CollectionModel<CityModel>> getAll() {
         return ResponseEntity.ok(getAllRecordsHolder());
     }
